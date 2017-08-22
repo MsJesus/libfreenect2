@@ -136,7 +136,7 @@ bool VideoStream::buildFrame(libfreenect2::Frame* lf2Frame)
   #undef min
   int width = std::min(oniFrame->width, (int)lf2Frame->width);
   int height = std::min(oniFrame->height, (int)lf2Frame->height);
-
+    
   populateFrame(lf2Frame, oniFrame->cropOriginX, oniFrame->cropOriginY, oniFrame, 0, 0, width, height);
   raiseNewFrame(oniFrame);
   getServices().releaseFrame(oniFrame);

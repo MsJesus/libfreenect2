@@ -84,6 +84,9 @@ void ColorStream::populateFrame(libfreenect2::Frame* srcFrame, int srcX, int src
                   static_cast<uint8_t*>(dstFrame->data), dstX, dstY, dstFrame->stride, 
                   width, height, mirroring);
       }
+          
+      dstFrame->dataSize = video_mode.resolutionX * video_mode.resolutionY * 3;
+          
       return;
   }
 }
