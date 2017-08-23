@@ -435,6 +435,8 @@ namespace Freenect2Driver
         std::string serial = freenect2.getDeviceSerialNumber(i);
 
         std::string uri = devid_to_uri(i) + "?serial=" + serial;
+        register_uri(uri);
+/*
         const char* modes_c[] = {
           "",
           "&depth-size=640x480",
@@ -448,6 +450,7 @@ namespace Freenect2Driver
         for (int j = 0; j < 3; j++) {
           register_uri(uri + modes[j]);
         }
+*/
 
 #if 0
         freenect_device* dev;
