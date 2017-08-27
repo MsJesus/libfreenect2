@@ -272,8 +272,8 @@ namespace Freenect2Driver
     // todo: fill out properties
     OniBool isPropertySupported(int propertyId)
     {
-      if (propertyId == ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION)
-        return true;
+//      if (propertyId == ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION)
+//        return true;
       return false;
     }
 
@@ -300,13 +300,14 @@ namespace Freenect2Driver
           return ONI_STATUS_NOT_SUPPORTED;
 
         case ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION:      // OniImageRegistrationMode
-          if (*pDataSize != sizeof(OniImageRegistrationMode))
-          {
-            LogError("Unexpected size for ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION");
-            return ONI_STATUS_ERROR;
-          }
-          *(static_cast<OniImageRegistrationMode*>(data)) = depth->getImageRegistrationMode();
-          return ONI_STATUS_OK;
+//          if (*pDataSize != sizeof(OniImageRegistrationMode))
+//          {
+//            LogError("Unexpected size for ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION");
+//            return ONI_STATUS_ERROR;
+//          }
+//          *(static_cast<OniImageRegistrationMode*>(data)) = depth->getImageRegistrationMode();
+//          return ONI_STATUS_OK;
+          return ONI_STATUS_NOT_SUPPORTED;
       }
     }
     
@@ -340,14 +341,15 @@ namespace Freenect2Driver
           return ONI_STATUS_NOT_SUPPORTED;
 
         case ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION:      // OniImageRegistrationMode
-          if (dataSize != sizeof(OniImageRegistrationMode))
-          {
-            LogError("Unexpected size for ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION");
-            return ONI_STATUS_ERROR;
-          }
-          OniImageRegistrationMode mode = *(static_cast<const OniImageRegistrationMode*>(data));
-          color->setImageRegistrationMode(mode);
-          return depth->setImageRegistrationMode(mode);
+//          if (dataSize != sizeof(OniImageRegistrationMode))
+//          {
+//            LogError("Unexpected size for ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION");
+//            return ONI_STATUS_ERROR;
+//          }
+//          OniImageRegistrationMode mode = *(static_cast<const OniImageRegistrationMode*>(data));
+//          color->setImageRegistrationMode(mode);
+//          return depth->setImageRegistrationMode(mode);
+          return ONI_STATUS_NOT_SUPPORTED;
       }
     }
 

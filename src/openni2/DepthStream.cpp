@@ -47,8 +47,8 @@ const double DepthStream::EMITTER_DCMOS_DISTANCE_VAL = 7.5;
 
 DepthStream::DepthStream(Device* driver_dev, libfreenect2::Freenect2Device* pDevice, Freenect2Driver::Registration *reg) : VideoStream(driver_dev, pDevice, reg)
 {
-  //video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 512, 424, 30);
-  video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 640, 480, 30);
+  video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 512, 424, 30);
+//  video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 640, 480, 30);
   setVideoMode(video_mode);
   setImageRegistrationMode(ONI_IMAGE_REGISTRATION_OFF);
 }
@@ -60,8 +60,9 @@ DepthStream::VideoModeMap DepthStream::getSupportedVideoModes() const
 {
   VideoModeMap modes;
   //                      pixelFormat, resolutionX, resolutionY, fps
-  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 640, 480, 30)] = 0;
-  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 512, 424, 30)] = 1;
+//  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 640, 480, 30)] = 0;
+//  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 512, 424, 30)] = 1;
+    modes[makeOniVideoMode(ONI_PIXEL_FORMAT_DEPTH_1_MM, 512, 424, 30)] = 0;
 
   return modes;
 }

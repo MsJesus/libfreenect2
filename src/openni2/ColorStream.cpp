@@ -46,8 +46,9 @@ ColorStream::FreenectVideoModeMap ColorStream::getSupportedVideoModes() const
 {
   FreenectVideoModeMap modes;
   //                    pixelFormat, resolutionX, resolutionY, fps    freenect_video_format, freenect_resolution
-  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 512, 424, 30)] = 0;
-  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 1920, 1080, 30)] = 1;
+//  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 512, 424, 30)] = 0;
+//  modes[makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 1920, 1080, 30)] = 1;
+    modes[makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 1920, 1080, 30)] = 0;
 
   return modes;
  
@@ -72,7 +73,7 @@ void ColorStream::populateFrame(libfreenect2::Frame* srcFrame, int srcX, int src
 
     case ONI_PIXEL_FORMAT_RGB888:
       if (reg->isEnabled()) {
-        libfreenect2::Frame registered(512, 424, 4);
+        libfreenect2::Frame registered(1920, 1080, 4);
 
         reg->colorFrameRGB888(srcFrame, &registered);
 
@@ -128,11 +129,11 @@ OniSensorType ColorStream::getSensorType() const { return ONI_SENSOR_COLOR; }
 
 OniStatus ColorStream::setImageRegistrationMode(OniImageRegistrationMode mode)
 {
-  if (mode == ONI_IMAGE_REGISTRATION_DEPTH_TO_COLOR) {
-    // XXX, switch color resolution to 512x424 for registrarion here
-    OniVideoMode video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 512, 424, 30);
-    setProperty(ONI_STREAM_PROPERTY_VIDEO_MODE, &video_mode, sizeof(video_mode));
-  }
+//  if (mode == ONI_IMAGE_REGISTRATION_DEPTH_TO_COLOR) {
+//    // XXX, switch color resolution to 512x424 for registrarion here
+//    OniVideoMode video_mode = makeOniVideoMode(ONI_PIXEL_FORMAT_RGB888, 512, 424, 30);
+//    setProperty(ONI_STREAM_PROPERTY_VIDEO_MODE, &video_mode, sizeof(video_mode));
+//  }
   return ONI_STATUS_OK;
 }
 
