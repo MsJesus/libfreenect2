@@ -931,8 +931,6 @@ PacketPipeline *createDefaultPacketPipeline()
     else
       LOG_WARNING << "`" << pipeline_env << "' pipeline is not available.";
   }
-    
-  return new DumpPacketPipeline();
 
 #if defined(LIBFREENECT2_WITH_OPENGL_SUPPORT)
   return new OpenGLPacketPipeline();

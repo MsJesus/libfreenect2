@@ -57,7 +57,7 @@ static RgbPacketProcessor *getDefaultRgbPacketProcessor()
 #elif defined(LIBFREENECT2_WITH_TURBOJPEG_SUPPORT)
   return new TurboJpegRgbPacketProcessor();
 #else
-  return new DumpRgbPacketProcessor();
+  #error No jpeg decoder is enabled
 #endif
 }
 
