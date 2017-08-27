@@ -71,8 +71,8 @@ public:
     
     void newFrame()
     {
-        frame = new Frame(1, 1, 1920*1080*4);
-        frame->format = Frame::Raw;
+        frame = new Frame(1920, 1080, 4);
+        frame->format = Frame::Float;
     }
 };
 
@@ -96,8 +96,8 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
         impl_->frame->exposure = packet.exposure;
         impl_->frame->gain = packet.gain;
         impl_->frame->gamma = packet.gamma;
-        impl_->frame->format = Frame::Raw;
-        impl_->frame->bytes_per_pixel = packet.jpeg_buffer_length;
+//        impl_->frame->format = Frame::Float;
+//        impl_->frame->bytes_per_pixel = packet.jpeg_buffer_length;
         
         std::memcpy(impl_->frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
         
