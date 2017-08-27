@@ -272,8 +272,8 @@ namespace Freenect2Driver
     // todo: fill out properties
     OniBool isPropertySupported(int propertyId)
     {
-//      if (propertyId == ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION)
-//        return true;
+      if (propertyId == ONI_DEVICE_PROPERTY_IMAGE_REGISTRATION)
+        return true;
       return false;
     }
 
@@ -307,7 +307,7 @@ namespace Freenect2Driver
 //          }
 //          *(static_cast<OniImageRegistrationMode*>(data)) = depth->getImageRegistrationMode();
 //          return ONI_STATUS_OK;
-          return ONI_STATUS_NOT_SUPPORTED;
+          return ONI_STATUS_OK;
       }
     }
     
@@ -349,7 +349,7 @@ namespace Freenect2Driver
 //          OniImageRegistrationMode mode = *(static_cast<const OniImageRegistrationMode*>(data));
 //          color->setImageRegistrationMode(mode);
 //          return depth->setImageRegistrationMode(mode);
-          return ONI_STATUS_NOT_SUPPORTED;
+          return ONI_STATUS_OK;
       }
     }
 
