@@ -130,7 +130,7 @@ DepthPacketProcessor *PacketPipeline::getDepthPacketProcessor() const
 
 CpuPacketPipeline::CpuPacketPipeline()
 {
-  comp_->initialize(new DumpRgbPacketProcessor(), new CpuDepthPacketProcessor());
+  comp_->initialize(getDefaultRgbPacketProcessor(), new CpuDepthPacketProcessor());
 }
 
 CpuPacketPipeline::~CpuPacketPipeline() { }
