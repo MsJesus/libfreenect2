@@ -131,8 +131,10 @@ public:
     /** Allocate a new IR frame. */
     void newIrFrame()
     {
-        ir_frame = new Frame(1, 1, 512 * 424 * 4);
-        ir_frame->format = Frame::Raw;
+//        ir_frame = new Frame(1, 1, 512 * 424 * 4);
+//        ir_frame->format = Frame::Raw;
+        ir_frame = new Frame(512, 424, 4);
+        ir_frame->format = Frame::Float;
         //ir_frame = new Frame(512, 424, 12);
     }
     
@@ -145,8 +147,10 @@ public:
     /** Allocate a new depth frame. */
     void newDepthFrame()
     {
-        depth_frame = new Frame(1, 1, 512 * 424 * 4);
-        depth_frame->format = Frame::Raw;
+//        depth_frame = new Frame(1, 1, 512 * 424 * 4);
+//        depth_frame->format = Frame::Raw;
+        depth_frame = new Frame(512, 424, 4);
+        depth_frame->format = Frame::Float;
     }
 };
     
@@ -168,19 +172,19 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
     {
         impl_->startTiming();
 
-        impl_->depth_frame->bytes_per_pixel = packet.buffer_length;
+//        impl_->depth_frame->bytes_per_pixel = packet.buffer_length;
         impl_->depth_frame->timestamp = packet.timestamp;
         impl_->depth_frame->sequence = packet.sequence;
-        impl_->depth_frame->format = Frame::Raw;
+//        impl_->depth_frame->format = Frame::Raw;
         std::memcpy(impl_->depth_frame->data, packet.buffer, packet.buffer_length);
         
         
-        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
+//        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
         impl_->ir_frame->data = impl_->depth_frame->data;
         impl_->ir_frame->timestamp = packet.timestamp;
         impl_->ir_frame->sequence = packet.sequence;
         impl_->ir_frame->data = packet.buffer;
-        impl_->ir_frame->format = Frame::Raw;
+//        impl_->ir_frame->format = Frame::Raw;
         
         impl_->stopTiming(LOG_INFO);
 
