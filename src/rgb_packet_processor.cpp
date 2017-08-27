@@ -28,6 +28,7 @@
 
 #include <libfreenect2/rgb_packet_processor.h>
 #include <libfreenect2/async_packet_processor.h>
+#include <libfreenect2/logging.h>
 
 #include <cstring>
 #include <fstream>
@@ -35,7 +36,7 @@
 
 namespace libfreenect2
 {
-
+    
 RgbPacketProcessor::RgbPacketProcessor() :
     listener_(0)
 {
@@ -50,26 +51,63 @@ void RgbPacketProcessor::setFrameListener(libfreenect2::FrameListener *listener)
   listener_ = listener;
 }
 
-DumpRgbPacketProcessor::DumpRgbPacketProcessor() {}
-DumpRgbPacketProcessor::~DumpRgbPacketProcessor() {}
+    
+/** Implementation of the Dump rgb packet processor. */
+class DumpRgbPacketProcessorImpl: public WithPerfLogging
+{
+public:
+    
+    Frame *frame;
+    
+    DumpRgbPacketProcessorImpl()
+    {
+        newFrame();
+    }
+    
+    ~DumpRgbPacketProcessorImpl()
+    {
+        delete frame;
+    }
+    
+    void newFrame()
+    {
+        frame = new Frame(1, 1, 1920*1080*4);
+        frame->format = Frame::Raw;
+    }
+};
+
+
+DumpRgbPacketProcessor::DumpRgbPacketProcessor() :  impl_(new DumpRgbPacketProcessorImpl())
+{}
+    
+DumpRgbPacketProcessor::~DumpRgbPacketProcessor()
+{
+    delete impl_;
+}
 
 void DumpRgbPacketProcessor::process(const RgbPacket &packet)
 {
-  Frame *frame = new Frame(1, 1, 1920*1080*4);
-  frame->sequence = packet.sequence;
-  frame->timestamp = packet.timestamp;
-  frame->exposure = packet.exposure;
-  frame->gain = packet.gain;
-  frame->gamma = packet.gamma;
-  frame->format = Frame::Raw;
-  frame->bytes_per_pixel = packet.jpeg_buffer_length;
+    if (listener_ != 0)
+    {
+        impl_->startTiming();
 
-  std::memcpy(frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
+        impl_->frame->sequence = packet.sequence;
+        impl_->frame->timestamp = packet.timestamp;
+        impl_->frame->exposure = packet.exposure;
+        impl_->frame->gain = packet.gain;
+        impl_->frame->gamma = packet.gamma;
+        impl_->frame->format = Frame::Raw;
+        impl_->frame->bytes_per_pixel = packet.jpeg_buffer_length;
+        
+        std::memcpy(impl_->frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
+        
+        impl_->stopTiming(LOG_INFO);
 
-  if (!listener_->onNewFrame(Frame::Color, frame)) {
-    delete frame;
-  }
-  frame = NULL;
+        if (listener_->onNewFrame(Frame::Color, impl_->frame))
+        {
+            impl_->newFrame();
+        }
+    }
 }
 
 } /* namespace libfreenect2 */

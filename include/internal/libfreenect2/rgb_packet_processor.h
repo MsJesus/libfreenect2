@@ -69,12 +69,15 @@ protected:
 };
 
 /** Class for dumping the JPEG information, eg to file. */
+class DumpRgbPacketProcessorImpl;
 class DumpRgbPacketProcessor : public RgbPacketProcessor
 {
 public:
   DumpRgbPacketProcessor();
   virtual ~DumpRgbPacketProcessor();
   virtual void process(const libfreenect2::RgbPacket &packet);
+private:
+  DumpRgbPacketProcessorImpl *impl_;
 };
 
 #ifdef LIBFREENECT2_WITH_TURBOJPEG_SUPPORT

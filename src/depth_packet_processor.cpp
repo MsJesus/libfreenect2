@@ -28,6 +28,7 @@
 
 #include <libfreenect2/depth_packet_processor.h>
 #include <libfreenect2/async_packet_processor.h>
+#include <libfreenect2/logging.h>
 
 #include <cstring>
 
@@ -116,39 +117,81 @@ void DepthPacketProcessor::setFrameListener(libfreenect2::FrameListener *listene
   listener_ = listener;
 }
 
+class DumpDepthPacketProcessorImpl: public WithPerfLogging
+{
+public:
+    Frame *ir_frame, *depth_frame;
+    
+    DumpDepthPacketProcessorImpl()
+    {
+        newIrFrame();
+        newDepthFrame();
+    }
+    
+    /** Allocate a new IR frame. */
+    void newIrFrame()
+    {
+        ir_frame = new Frame(1, 1, 512 * 424 * 4);
+        ir_frame->format = Frame::Raw;
+        //ir_frame = new Frame(512, 424, 12);
+    }
+    
+    ~DumpDepthPacketProcessorImpl()
+    {
+        delete ir_frame;
+        delete depth_frame;
+    }
+    
+    /** Allocate a new depth frame. */
+    void newDepthFrame()
+    {
+        depth_frame = new Frame(1, 1, 512 * 424 * 4);
+        depth_frame->format = Frame::Raw;
+    }
+};
+    
 DumpDepthPacketProcessor::DumpDepthPacketProcessor()
-  : p0table_(NULL), xtable_(NULL), ztable_(NULL), lut_(NULL) {
+  : p0table_(NULL), xtable_(NULL), ztable_(NULL), lut_(NULL), impl_(new DumpDepthPacketProcessorImpl()) {
 }
 
 DumpDepthPacketProcessor::~DumpDepthPacketProcessor(){
+  delete impl_;
   delete[] p0table_;
   delete[] xtable_;
   delete[] ztable_;
   delete[] lut_;
 }
 
-void DumpDepthPacketProcessor::process(const DepthPacket &packet) {
-  Frame* depth_frame = new Frame(1, 1, packet.buffer_length);
+void DumpDepthPacketProcessor::process(const DepthPacket &packet)
+{
+    if (listener_ != 0)
+    {
+        impl_->startTiming();
 
-  depth_frame->timestamp = packet.timestamp;
-  depth_frame->sequence = packet.sequence;
-  depth_frame->format = Frame::Raw;
-  std::memcpy(depth_frame->data, packet.buffer, packet.buffer_length);
+        impl_->depth_frame->bytes_per_pixel = packet.buffer_length;
+        impl_->depth_frame->timestamp = packet.timestamp;
+        impl_->depth_frame->sequence = packet.sequence;
+        impl_->depth_frame->format = Frame::Raw;
+        std::memcpy(impl_->depth_frame->data, packet.buffer, packet.buffer_length);
+        
+        
+        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
+        impl_->ir_frame->data = impl_->depth_frame->data;
+        impl_->ir_frame->timestamp = packet.timestamp;
+        impl_->ir_frame->sequence = packet.sequence;
+        impl_->ir_frame->data = packet.buffer;
+        impl_->ir_frame->format = Frame::Raw;
+        
+        impl_->stopTiming(LOG_INFO);
 
-  Frame* ir_frame = new Frame(1, 1, packet.buffer_length, depth_frame->data);
-  ir_frame->timestamp = packet.timestamp;
-  ir_frame->sequence = packet.sequence;
-  ir_frame->data = packet.buffer;
-  ir_frame->format = Frame::Raw;
-
-  if (!listener_->onNewFrame(Frame::Ir, ir_frame)) {
-    delete ir_frame;
-  }
-  ir_frame = NULL;
-  if (!listener_->onNewFrame(Frame::Depth, depth_frame)) {
-    delete depth_frame;
-  }
-  depth_frame = NULL;
+        if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
+            impl_->newIrFrame();
+        }
+        if(listener_->onNewFrame(Frame::Depth, impl_->depth_frame))
+        {
+            impl_->newDepthFrame();
+        }
+    }
 }
 
 const unsigned char* DumpDepthPacketProcessor::getP0Tables() { return p0table_; }

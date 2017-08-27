@@ -280,6 +280,7 @@ private:
 };
 #endif // LIBFREENECT2_WITH_CUDA_SUPPORT
 
+class DumpDepthPacketProcessorImpl;
 class DumpDepthPacketProcessor : public DepthPacketProcessor
 {
  public:
@@ -306,6 +307,8 @@ class DumpDepthPacketProcessor : public DepthPacketProcessor
   float* ztable_;
   
   short* lut_;
+private:
+  DumpDepthPacketProcessorImpl *impl_;
 };
 
 } /* namespace libfreenect2 */
