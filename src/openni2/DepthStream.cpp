@@ -73,8 +73,8 @@ void DepthStream::populateFrame(libfreenect2::Frame* srcFrame, int srcX, int src
   dstFrame->stride = dstFrame->width * sizeof(uint16_t);
 
   // XXX, save depth map for registration
-  if (reg->isEnabled())
-    reg->depthFrame(srcFrame);
+//  if (reg->isEnabled())
+//    reg->depthFrame(srcFrame);
 
   if (srcFrame->width < (size_t)dstFrame->width || srcFrame->height < (size_t)dstFrame->height)
     memset(dstFrame->data, 0x00, dstFrame->width * dstFrame->height * 2);
@@ -91,11 +91,12 @@ OniImageRegistrationMode DepthStream::getImageRegistrationMode() const { return 
 
 OniStatus DepthStream::setImageRegistrationMode(OniImageRegistrationMode mode)
 {
-  if (!isImageRegistrationModeSupported(mode))
-    return ONI_STATUS_NOT_SUPPORTED;
-  image_registration_mode = mode;
-  reg->setEnable(image_registration_mode == ONI_IMAGE_REGISTRATION_DEPTH_TO_COLOR);
-  return setVideoMode(video_mode);
+//  if (!isImageRegistrationModeSupported(mode))
+//    return ONI_STATUS_NOT_SUPPORTED;
+//  image_registration_mode = mode;
+//  reg->setEnable(image_registration_mode == ONI_IMAGE_REGISTRATION_DEPTH_TO_COLOR);
+//  return setVideoMode(video_mode);
+    return ONI_STATUS_OK;
 }
 
 // from StreamBase

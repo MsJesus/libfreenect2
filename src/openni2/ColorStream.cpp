@@ -72,21 +72,22 @@ void ColorStream::populateFrame(libfreenect2::Frame* srcFrame, int srcX, int src
       return;
 
     case ONI_PIXEL_FORMAT_RGB888:
-      if (reg->isEnabled()) {
-        libfreenect2::Frame registered(1920, 1080, 4);
-
-        reg->colorFrameRGB888(srcFrame, &registered);
-
-        copyFrame(static_cast<uint8_t*>(registered.data), srcX, srcY, registered.width * registered.bytes_per_pixel, 
-                  static_cast<uint8_t*>(dstFrame->data), dstX, dstY, dstFrame->stride, 
-                  width, height, mirroring);
-      } else {
+//      if (reg->isEnabled()) {
+//        libfreenect2::Frame registered(1920, 1080, 4);
+//
+//        reg->colorFrameRGB888(srcFrame, &registered);
+//
+//        copyFrame(static_cast<uint8_t*>(registered.data), srcX, srcY, registered.width * registered.bytes_per_pixel, 
+//                  static_cast<uint8_t*>(dstFrame->data), dstX, dstY, dstFrame->stride, 
+//                  width, height, mirroring);
+//      } else
+      {
         copyFrame(static_cast<uint8_t*>(srcFrame->data), srcX, srcY, srcFrame->width * srcFrame->bytes_per_pixel, 
                   static_cast<uint8_t*>(dstFrame->data), dstX, dstY, dstFrame->stride, 
                   width, height, mirroring);
       }
           
-      dstFrame->dataSize = video_mode.resolutionX * video_mode.resolutionY * 3;
+      dstFrame->dataSize = width * height * 3;
           
       return;
   }
