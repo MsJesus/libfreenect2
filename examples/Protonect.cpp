@@ -279,49 +279,49 @@ int main(int argc, char *argv[])
 /// [discovery]
 
 /// [test]
-    libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
-
-    for (int i = 0; i < devicesCount; i++)
-    {
-        freenect2Dev[i] = freenect2.openDevice(i);
-        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
-        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
-        if (dev->start())
-        {
-            std::cout << "device start" << std::endl;
-        }
-        else
-        {
-            std::cout << "device ERROR start" << std::endl;
-//            return -1;
-        }
-    }
-    for (int i = 0; i < devicesCount; i++)
-    {
-        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
-        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
-        if (dev->stop())
-        {
-            std::cout << "device stop" << std::endl;
-        }
-        else
-        {
-            std::cout << "device ERROR stop" << std::endl;
-//            return -1;
-        }
-        if (dev->close())
-        {
-            std::cout << "device close" << std::endl;
-        }
-        else
-        {
-            std::cout << "device ERROR close" << std::endl;
-            //            return -1;
-        }
-    }
-    return 0;
+//    libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
+//
+//    for (int i = 0; i < devicesCount; i++)
+//    {
+//        freenect2Dev[i] = freenect2.openDevice(i);
+//        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
+//        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
+//        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
+//        if (dev->start())
+//        {
+//            std::cout << "device start" << std::endl;
+//        }
+//        else
+//        {
+//            std::cout << "device ERROR start" << std::endl;
+////            return -1;
+//        }
+//    }
+//    for (int i = 0; i < devicesCount; i++)
+//    {
+//        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
+//        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
+//        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
+//        if (dev->stop())
+//        {
+//            std::cout << "device stop" << std::endl;
+//        }
+//        else
+//        {
+//            std::cout << "device ERROR stop" << std::endl;
+////            return -1;
+//        }
+//        if (dev->close())
+//        {
+//            std::cout << "device close" << std::endl;
+//        }
+//        else
+//        {
+//            std::cout << "device ERROR close" << std::endl;
+//            //            return -1;
+//        }
+//    }
+//    return 0;
 /// [test]
 
   if(pipeline)
