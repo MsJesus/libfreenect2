@@ -277,6 +277,29 @@ int main(int argc, char *argv[])
   }
 /// [discovery]
 
+/// [test]
+    int devicesCount = freenect2.enumerateDevices();
+    for (int i = 0; i < devicesCount; i++)
+    {
+        dev = freenect2.openDevice(i);
+        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
+        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
+        if (dev->start())
+        {
+            std::cout << "device start" << std::endl;
+        }
+        else
+        {
+            std::cout << "device ERROR start" << std::endl;
+            return -1;
+        }
+        std::cout << "device stop" << std::endl;
+        dev->stop();
+        dev->close();
+    }
+    return 0;
+/// [test]
+
   if(pipeline)
   {
 /// [open]
