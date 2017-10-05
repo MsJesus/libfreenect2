@@ -296,9 +296,6 @@ int main(int argc, char *argv[])
             std::cout << "device ERROR start" << std::endl;
 //            return -1;
         }
-        std::cout << "device stop" << std::endl;
-        dev->stop();
-        dev->close();
     }
     for (int i = 0; i < devicesCount; i++)
     {
