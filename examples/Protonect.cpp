@@ -265,7 +265,8 @@ int main(int argc, char *argv[])
   }
 
 /// [discovery]
-  if(freenect2.enumerateDevices() == 0)
+    int devicesCount = freenect2.enumerateDevices();
+  if(devicesCount == 0)
   {
     std::cout << "no device connected!" << std::endl;
     return -1;
@@ -278,7 +279,6 @@ int main(int argc, char *argv[])
 /// [discovery]
 
 /// [test]
-    int devicesCount = freenect2.getNumDevices();
     libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
 
     for (int i = 0; i < devicesCount; i++)
