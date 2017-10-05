@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
 /// [discovery]
 
 /// [test]
-    int devicesCount = freenect2.enumerateDevices();
+    int devicesCount = freenect2.getNumDevices();
     libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
 
     for (int i = 0; i < devicesCount; i++)
