@@ -283,47 +283,47 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < devicesCount; i++)
     {
-        std::cout << "device open start" << std::endl;
+        std::cout << "--PROTO OPEN START" << std::endl;
         freenect2Dev[i] = freenect2.openDevice(i);
         libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
-        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
+        std::cout << "--PROTO device serial: " << dev->getSerialNumber() << std::endl;
+        std::cout << "--PROTO device firmware: " << dev->getFirmwareVersion() << std::endl;
         if (dev->start())
         {
-            std::cout << "device start" << std::endl;
+            std::cout << "--PROTO device SUCCESS start" << std::endl;
         }
         else
         {
-            std::cout << "device ERROR start" << std::endl;
+            std::cout << "--PROTO device ERROR start" << std::endl;
 //            return -1;
         }
-        std::cout << "device open end" << std::endl;
+        std::cout << "--PROTO OPEN END" << std::endl;
     }
     for (int i = 0; i < devicesCount; i++)
     {
-        std::cout << "device close start" << std::endl;
+        std::cout << "--PROTO CLOSE START" << std::endl;
         libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
-        std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
+        std::cout << "--PROTO device serial: " << dev->getSerialNumber() << std::endl;
+        std::cout << "--PROTO device firmware: " << dev->getFirmwareVersion() << std::endl;
         if (dev->stop())
         {
-            std::cout << "device stop" << std::endl;
+            std::cout << "--PROTO device SUCCES stop" << std::endl;
         }
         else
         {
-            std::cout << "device ERROR stop" << std::endl;
+            std::cout << "--PROTO device ERROR stop" << std::endl;
 //            return -1;
         }
         if (dev->close())
         {
-            std::cout << "device close" << std::endl;
+            std::cout << "--PROTO device SUCCESS close" << std::endl;
         }
         else
         {
-            std::cout << "device ERROR close" << std::endl;
+            std::cout << "--PROTO device ERROR close" << std::endl;
             //            return -1;
         }
-        std::cout << "device close end" << std::endl;
+        std::cout << "--PROTO device CLOSE END" << std::endl;
     }
     return 0;
 /// [test]
