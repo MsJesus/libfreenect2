@@ -279,12 +279,12 @@ int main(int argc, char *argv[])
 
 /// [test]
     int devicesCount = freenect2.enumerateDevices();
-    libfreenect2::Freenect2Device *freenect2Dev[] = new libfreenect2::Freenect2Device*[devicesCount];
+    libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
 
     for (int i = 0; i < devicesCount; i++)
     {
         freenect2Dev[i] = freenect2.openDevice(i);
-        libfreenect2::Freenect2Device *dev = freenect2Dev[i];
+        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
         std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
         std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
         if (dev->start())
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
     }
     for (int i = 0; i < devicesCount; i++)
     {
-        auto dev = freenect2Dev[i];
+        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
         std::cout << "device serial: " << dev->getSerialNumber() << std::endl;
         std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
         if (dev->stop())
