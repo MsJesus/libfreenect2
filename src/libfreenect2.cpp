@@ -983,7 +983,7 @@ Freenect2Device *Freenect2::openDevice(int idx)
 
 Freenect2Device *Freenect2::openDevice(int idx, const PacketPipeline *pipeline)
 {
-  return impl_->openDevice(idx, pipeline, true);
+  return impl_->openDevice(idx, pipeline, false);
 }
 
 Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeline, bool attempting_reset)
@@ -1033,8 +1033,9 @@ Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeli
 
   if(attempting_reset)
   {
-    LOG_INFO << "attempt reset";
     r = libusb_reset_device(dev_handle);
+      
+    LOG_INFO << "attempt reset" << r;
 
     if(r == LIBUSB_ERROR_NOT_FOUND)
     {
