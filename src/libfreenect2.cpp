@@ -983,7 +983,7 @@ Freenect2Device *Freenect2::openDevice(int idx)
 
 Freenect2Device *Freenect2::openDevice(int idx, const PacketPipeline *pipeline)
 {
-  return impl_->openDevice(idx, pipeline, false);
+  return impl_->openDevice(idx, pipeline, true);
 }
 
 Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeline, bool attempting_reset)
