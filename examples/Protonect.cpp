@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
         << "my_x1y1 : " << colorParams.mx_x1y1 << std::endl
         << "my_x1y0 : " << colorParams.my_x1y0 << std::endl
         << "my_x0y1 : " << colorParams.my_x0y1 << std::endl
-        << "my_x0y0 : " << colorParams.my_x0y0 << std::endl
+        << "my_x0y0 : " << colorParams.my_x0y0 << std::endl;
         auto depthParams = dev->getIrCameraParams();
         std::cout << "**IR camera intrinsic calibration parameters" << std::endl
         << "**Kinect v2 includes factory preset values for these parameters." << std::endl
@@ -347,7 +347,7 @@ int main(int argc, char *argv[])
         << "Radial distortion coefficient, 2nd-order : " << depthParams.k2 << std::endl
         << "Radial distortion coefficient, 3rd-order : " << depthParams.k3 << std::endl
         << "Tangential distortion coefficient 1 : " << depthParams.p1 << std::endl
-        << "Tangential distortion coefficient 2 : " << depthParams.p2 << std::endl
+        << "Tangential distortion coefficient 2 : " << depthParams.p2 << std::endl;
     }
     for (int i = 0; i < devicesCount; i++)
     {
