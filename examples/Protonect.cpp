@@ -310,31 +310,31 @@ int main(int argc, char *argv[])
         << "Principal point x (pixel) : " << colorParams.cx << std::endl
         << "Principal point y (pixel) : " << colorParams.cy << std::endl
         << "**Extrinsic parameters" << std::endl
-        << "**These parameters are used in [a formula](https://github.com/OpenKinect/libfreenect2/issues/41#issuecomment-72022111) to map coordinates in the" << std::ednl
+        << "**These parameters are used in [a formula](https://github.com/OpenKinect/libfreenect2/issues/41#issuecomment-72022111) to map coordinates in the" << std::endl
         << "**depth camera to the color camera." << std::endl
         << "**They cannot be used for matrix transformation." << std::endl
-        << "shift_d : " << colorParams.shift_d << std::ednl
+        << "shift_d : " << colorParams.shift_d << std::endl
         << "shift_m : " << colorParams.shift_m << std::endl
-        << "mx_x3y0 : " << colorParams.mx_x3y0 << std::ednl
-        << "mx_x0y3 : " << colorParams.mx_x0y3 << std::ednl
-        << "mx_x2y1 : " << colorParams.mx_x2y1 << std::ednl
-        << "mx_x1y2 : " << colorParams.mx_x1y2 << std::ednl
-        << "mx_x2y0 : " << colorParams.mx_x2y0 << std::ednl
-        << "mx_x0y2 : " << colorParams.mx_x0y2 << std::ednl
-        << "mx_x1y1 : " << colorParams.mx_x1y1 << std::ednl
-        << "mx_x1y0 : " << colorParams.mx_x1y0 << std::ednl
-        << "mx_x0y1 : " << colorParams.mx_x0y1 << std::ednl
-        << "mx_x0y0 : " << colorParams.mx_x0y0 << std::ednl
-        << "my_x3y0 : " << colorParams.my_x3y0 << std::ednl
-        << "my_x0y3 : " << colorParams.my_x0y3 << std::ednl
-        << "my_x2y1 : " << colorParams.my_x2y1 << std::ednl
-        << "my_x1y2 : " << colorParams.my_x1y2 << std::ednl
-        << "my_x2y0 : " << colorParams.my_x2y0 << std::ednl
-        << "my_x0y2 : " << colorParams.my_x0y2 << std::ednl
-        << "my_x1y1 : " << colorParams.mx_x1y1 << std::ednl
-        << "my_x1y0 : " << colorParams.my_x1y0 << std::ednl
-        << "my_x0y1 : " << colorParams.my_x0y1 << std::ednl
-        << "my_x0y0 : " << colorParams.my_x0y0 << std::ednl
+        << "mx_x3y0 : " << colorParams.mx_x3y0 << std::endl
+        << "mx_x0y3 : " << colorParams.mx_x0y3 << std::endl
+        << "mx_x2y1 : " << colorParams.mx_x2y1 << std::endl
+        << "mx_x1y2 : " << colorParams.mx_x1y2 << std::endl
+        << "mx_x2y0 : " << colorParams.mx_x2y0 << std::endl
+        << "mx_x0y2 : " << colorParams.mx_x0y2 << std::endl
+        << "mx_x1y1 : " << colorParams.mx_x1y1 << std::endl
+        << "mx_x1y0 : " << colorParams.mx_x1y0 << std::endl
+        << "mx_x0y1 : " << colorParams.mx_x0y1 << std::endl
+        << "mx_x0y0 : " << colorParams.mx_x0y0 << std::endl
+        << "my_x3y0 : " << colorParams.my_x3y0 << std::endl
+        << "my_x0y3 : " << colorParams.my_x0y3 << std::endl
+        << "my_x2y1 : " << colorParams.my_x2y1 << std::endl
+        << "my_x1y2 : " << colorParams.my_x1y2 << std::endl
+        << "my_x2y0 : " << colorParams.my_x2y0 << std::endl
+        << "my_x0y2 : " << colorParams.my_x0y2 << std::endl
+        << "my_x1y1 : " << colorParams.mx_x1y1 << std::endl
+        << "my_x1y0 : " << colorParams.my_x1y0 << std::endl
+        << "my_x0y1 : " << colorParams.my_x0y1 << std::endl
+        << "my_x0y0 : " << colorParams.my_x0y0 << std::endl
         auto depthParams = dev->getIrCameraParams();
         std::cout << "**IR camera intrinsic calibration parameters" << std::endl
         << "**Kinect v2 includes factory preset values for these parameters." << std::endl
