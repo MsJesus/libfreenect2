@@ -405,7 +405,7 @@ int main(int argc, char *argv[])
     if (enable_rgb && enable_depth && enable_registration)
     {
 /// [registration]
-      registration->apply(rgb, depth, &undistorted, &registered);
+      // registration->apply(rgb, depth, &undistorted, &registered);
 /// [registration]
     }
 
@@ -414,13 +414,10 @@ int main(int argc, char *argv[])
     {
       std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
     }
-    if (enable_registration)
-    {
-      listener.release(frames);
-    }
+    listener.release(frames);
 
 /// [loop end]
-    /** libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100)); */
+    libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));
   }
 /// [loop end]
 
