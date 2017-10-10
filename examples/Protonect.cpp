@@ -414,7 +414,10 @@ int main(int argc, char *argv[])
     {
       std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
     }
-    listener.release(frames);
+    if (enable_registration)
+    {
+      listener.release(frames);
+    }
 
 /// [loop end]
     /** libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100)); */
