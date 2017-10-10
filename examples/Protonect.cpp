@@ -405,7 +405,7 @@ int main(int argc, char *argv[])
     if (enable_rgb && enable_depth && enable_registration)
     {
 /// [registration]
-      // registration->apply(rgb, depth, &undistorted, &registered);
+      registration->apply(rgb, depth, &undistorted, &registered);
 /// [registration]
     }
 
@@ -417,7 +417,6 @@ int main(int argc, char *argv[])
     listener.release(frames);
 
 /// [loop end]
-    break;
     /*libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));*/
   }
 /// [loop end]
