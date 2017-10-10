@@ -111,6 +111,7 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
           {
             if(processor_->ready())
             {
+              LOG_DEBUG << " depth processor ready";
               DepthPacket &packet = packet_;
               packet.sequence = current_sequence_;
               packet.timestamp = footer->timestamp;
