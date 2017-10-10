@@ -37,9 +37,6 @@
 #include <libfreenect2/packet_pipeline.h>
 #include <libfreenect2/logger.h>
 /// [headers]
-#ifdef EXAMPLES_WITH_OPENGL_SUPPORT
-#include "viewer.h"
-#endif
 
 
 bool protonect_shutdown = false; ///< Whether the running application should shut down.
@@ -113,8 +110,8 @@ int main(int argc, char *argv[])
   std::string program_path(argv[0]);
   std::cerr << "Version: " << LIBFREENECT2_VERSION << std::endl;
   std::cerr << "Environment variables: LOGFILE=<protonect.log>" << std::endl;
-  std::cerr << "Usage: " << program_path << " [-gpu=<id>] [gl | cl | clkde | cuda | cudakde | cpu] [<device serial>]" << std::endl;
-  std::cerr << "        [-noviewer] [-norgb | -nodepth] [-help] [-version]" << std::endl;
+  std::cerr << "Usage: " << program_path << " [dump | cpu] [<device serial>]" << std::endl;
+  std::cerr << "        [-norgb | -nodepth] [-help] [-version]" << std::endl;
   std::cerr << "        [-frames <number of frames to process>]" << std::endl;
   std::cerr << "To pause and unpause: pkill -USR1 Protonect" << std::endl;
   size_t executable_name_idx = program_path.rfind("Protonect");
@@ -151,10 +148,9 @@ int main(int argc, char *argv[])
 
   std::string serial = "";
 
-  bool viewer_enabled = true;
   bool enable_rgb = true;
   bool enable_depth = true;
-  int deviceId = -1;
+  bool enable_registration = true;
   size_t framemax = -1;
 
   for(int argI = 1; argI < argc; ++argI)
@@ -166,74 +162,28 @@ int main(int argc, char *argv[])
       // Just let the initial lines display at the beginning of main
       return 0;
     }
-    else if(arg.find("-gpu=") == 0)
-    {
-      if (pipeline)
-      {
-        std::cerr << "-gpu must be specified before pipeline argument" << std::endl;
-        return -1;
-      }
-      deviceId = atoi(argv[argI] + 5);
-    }
     else if(arg == "cpu")
     {
       if(!pipeline)
+      {
 /// [pipeline]
         pipeline = new libfreenect2::CpuPacketPipeline();
 /// [pipeline]
+      }
     }
-    else if(arg == "gl")
+    else if(arg == "dump")
     {
-#ifdef LIBFREENECT2_WITH_OPENGL_SUPPORT
       if(!pipeline)
-        pipeline = new libfreenect2::OpenGLPacketPipeline();
-#else
-      std::cout << "OpenGL pipeline is not supported!" << std::endl;
-#endif
-    }
-    else if(arg == "cl")
-    {
-#ifdef LIBFREENECT2_WITH_OPENCL_SUPPORT
-      if(!pipeline)
-        pipeline = new libfreenect2::OpenCLPacketPipeline(deviceId);
-#else
-      std::cout << "OpenCL pipeline is not supported!" << std::endl;
-#endif
-    }
-    else if(arg == "clkde")
-    {
-#ifdef LIBFREENECT2_WITH_OPENCL_SUPPORT
-      if(!pipeline)
-        pipeline = new libfreenect2::OpenCLKdePacketPipeline(deviceId);
-#else
-      std::cout << "OpenCL pipeline is not supported!" << std::endl;
-#endif
-    }
-    else if(arg == "cuda")
-    {
-#ifdef LIBFREENECT2_WITH_CUDA_SUPPORT
-      if(!pipeline)
-        pipeline = new libfreenect2::CudaPacketPipeline(deviceId);
-#else
-      std::cout << "CUDA pipeline is not supported!" << std::endl;
-#endif
-    }
-    else if(arg == "cudakde")
-    {
-#ifdef LIBFREENECT2_WITH_CUDA_SUPPORT
-      if(!pipeline)
-        pipeline = new libfreenect2::CudaKdePacketPipeline(deviceId);
-#else
-      std::cout << "CUDA pipeline is not supported!" << std::endl;
-#endif
+      {
+/// [pipeline]
+        pipeline = new libfreenect2::DumpPacketPipeline();
+        enable_registration = false;
+/// [pipeline]
+      }
     }
     else if(arg.find_first_not_of("0123456789") == std::string::npos) //check if parameter could be a serial number
     {
       serial = arg;
-    }
-    else if(arg == "-noviewer" || arg == "--noviewer")
-    {
-      viewer_enabled = false;
     }
     else if(arg == "-norgb" || arg == "--norgb")
     {
@@ -279,103 +229,103 @@ int main(int argc, char *argv[])
 /// [discovery]
 
 /// [test]
-    libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
+//     libfreenect2::Freenect2Device **freenect2Dev = new libfreenect2::Freenect2Device*[devicesCount];
 
-    for (int i = 0; i < devicesCount; i++)
-    {
-        std::cout << "--PROTO OPEN START" << std::endl;
-        freenect2Dev[i] = freenect2.openDevice(i);
-        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
-        if (dev->start())
-        {
-            std::cout << "--PROTO device SUCCESS start" << std::endl;
-        }
-        else
-        {
-            std::cout << "--PROTO device ERROR start" << std::endl;
-//            return -1;
-        }
-        std::cout << "--PROTO OPEN END" << std::endl;
+//     for (int i = 0; i < devicesCount; i++)
+//     {
+//         std::cout << "--PROTO OPEN START" << std::endl;
+//         freenect2Dev[i] = freenect2.openDevice(i);
+//         libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);
+//         if (dev->start())
+//         {
+//             std::cout << "--PROTO device SUCCESS start" << std::endl;
+//         }
+//         else
+//         {
+//             std::cout << "--PROTO device ERROR start" << std::endl;
+// //            return -1;
+//         }
+//         std::cout << "--PROTO OPEN END" << std::endl;
         
-        std::cout << "--Device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "--Device firmware: " << dev->getFirmwareVersion() << std::endl;
+//         std::cout << "--Device serial: " << dev->getSerialNumber() << std::endl;
+//         std::cout << "--Device firmware: " << dev->getFirmwareVersion() << std::endl;
         
-        auto colorParams = dev->getColorCameraParams();
-        std::cout << "**Color camera calibration parameters" << std::endl
-        << "**Kinect v2 includes factory preset values for these parameters" << std::endl
-        << std::endl
-        << "**Intrinsic parameters" << std::endl
-        << "Focal length x (pixel) : " << colorParams.fx << std::endl
-        << "Focal length y (pixel) : " << colorParams.fy << std::endl
-        << "Principal point x (pixel) : " << colorParams.cx << std::endl
-        << "Principal point y (pixel) : " << colorParams.cy << std::endl
-        << "**Extrinsic parameters" << std::endl
-        << "**These parameters are used in [a formula](https://github.com/OpenKinect/libfreenect2/issues/41#issuecomment-72022111) to map coordinates in the" << std::endl
-        << "**depth camera to the color camera." << std::endl
-        << "**They cannot be used for matrix transformation." << std::endl
-        << "shift_d : " << colorParams.shift_d << std::endl
-        << "shift_m : " << colorParams.shift_m << std::endl
-        << "mx_x3y0 : " << colorParams.mx_x3y0 << std::endl
-        << "mx_x0y3 : " << colorParams.mx_x0y3 << std::endl
-        << "mx_x2y1 : " << colorParams.mx_x2y1 << std::endl
-        << "mx_x1y2 : " << colorParams.mx_x1y2 << std::endl
-        << "mx_x2y0 : " << colorParams.mx_x2y0 << std::endl
-        << "mx_x0y2 : " << colorParams.mx_x0y2 << std::endl
-        << "mx_x1y1 : " << colorParams.mx_x1y1 << std::endl
-        << "mx_x1y0 : " << colorParams.mx_x1y0 << std::endl
-        << "mx_x0y1 : " << colorParams.mx_x0y1 << std::endl
-        << "mx_x0y0 : " << colorParams.mx_x0y0 << std::endl
-        << "my_x3y0 : " << colorParams.my_x3y0 << std::endl
-        << "my_x0y3 : " << colorParams.my_x0y3 << std::endl
-        << "my_x2y1 : " << colorParams.my_x2y1 << std::endl
-        << "my_x1y2 : " << colorParams.my_x1y2 << std::endl
-        << "my_x2y0 : " << colorParams.my_x2y0 << std::endl
-        << "my_x0y2 : " << colorParams.my_x0y2 << std::endl
-        << "my_x1y1 : " << colorParams.mx_x1y1 << std::endl
-        << "my_x1y0 : " << colorParams.my_x1y0 << std::endl
-        << "my_x0y1 : " << colorParams.my_x0y1 << std::endl
-        << "my_x0y0 : " << colorParams.my_x0y0 << std::endl;
-        auto depthParams = dev->getIrCameraParams();
-        std::cout << "**IR camera intrinsic calibration parameters" << std::endl
-        << "**Kinect v2 includes factory preset values for these parameters." << std::endl
-        << std::endl
-        << "Focal length x (pixel) : " << depthParams.fx << std::endl
-        << "Focal length y (pixel) : " << depthParams.fy << std::endl
-        << "Principal point x (pixel) : " << depthParams.cx << std::endl
-        << "Principal point y (pixel) : " << depthParams.cy << std::endl
-        << "Radial distortion coefficient, 1st-order : " << depthParams.k1 << std::endl
-        << "Radial distortion coefficient, 2nd-order : " << depthParams.k2 << std::endl
-        << "Radial distortion coefficient, 3rd-order : " << depthParams.k3 << std::endl
-        << "Tangential distortion coefficient 1 : " << depthParams.p1 << std::endl
-        << "Tangential distortion coefficient 2 : " << depthParams.p2 << std::endl;
-    }
-    for (int i = 0; i < devicesCount; i++)
-    {
-        std::cout << "--PROTO CLOSE START" << std::endl;
-        libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
-        std::cout << "--PROTO device serial: " << dev->getSerialNumber() << std::endl;
-        std::cout << "--PROTO device firmware: " << dev->getFirmwareVersion() << std::endl;
-        if (dev->stop())
-        {
-            std::cout << "--PROTO device SUCCES stop" << std::endl;
-        }
-        else
-        {
-            std::cout << "--PROTO device ERROR stop" << std::endl;
-//            return -1;
-        }
-        if (dev->close())
-        {
-            std::cout << "--PROTO device SUCCESS close" << std::endl;
-        }
-        else
-        {
-            std::cout << "--PROTO device ERROR close" << std::endl;
-            //            return -1;
-        }
-        std::cout << "--PROTO device CLOSE END" << std::endl;
-    }
-    return 0;
+//         auto colorParams = dev->getColorCameraParams();
+//         std::cout << "**Color camera calibration parameters" << std::endl
+//         << "**Kinect v2 includes factory preset values for these parameters" << std::endl
+//         << std::endl
+//         << "**Intrinsic parameters" << std::endl
+//         << "Focal length x (pixel) : " << colorParams.fx << std::endl
+//         << "Focal length y (pixel) : " << colorParams.fy << std::endl
+//         << "Principal point x (pixel) : " << colorParams.cx << std::endl
+//         << "Principal point y (pixel) : " << colorParams.cy << std::endl
+//         << "**Extrinsic parameters" << std::endl
+//         << "**These parameters are used in [a formula](https://github.com/OpenKinect/libfreenect2/issues/41#issuecomment-72022111) to map coordinates in the" << std::endl
+//         << "**depth camera to the color camera." << std::endl
+//         << "**They cannot be used for matrix transformation." << std::endl
+//         << "shift_d : " << colorParams.shift_d << std::endl
+//         << "shift_m : " << colorParams.shift_m << std::endl
+//         << "mx_x3y0 : " << colorParams.mx_x3y0 << std::endl
+//         << "mx_x0y3 : " << colorParams.mx_x0y3 << std::endl
+//         << "mx_x2y1 : " << colorParams.mx_x2y1 << std::endl
+//         << "mx_x1y2 : " << colorParams.mx_x1y2 << std::endl
+//         << "mx_x2y0 : " << colorParams.mx_x2y0 << std::endl
+//         << "mx_x0y2 : " << colorParams.mx_x0y2 << std::endl
+//         << "mx_x1y1 : " << colorParams.mx_x1y1 << std::endl
+//         << "mx_x1y0 : " << colorParams.mx_x1y0 << std::endl
+//         << "mx_x0y1 : " << colorParams.mx_x0y1 << std::endl
+//         << "mx_x0y0 : " << colorParams.mx_x0y0 << std::endl
+//         << "my_x3y0 : " << colorParams.my_x3y0 << std::endl
+//         << "my_x0y3 : " << colorParams.my_x0y3 << std::endl
+//         << "my_x2y1 : " << colorParams.my_x2y1 << std::endl
+//         << "my_x1y2 : " << colorParams.my_x1y2 << std::endl
+//         << "my_x2y0 : " << colorParams.my_x2y0 << std::endl
+//         << "my_x0y2 : " << colorParams.my_x0y2 << std::endl
+//         << "my_x1y1 : " << colorParams.mx_x1y1 << std::endl
+//         << "my_x1y0 : " << colorParams.my_x1y0 << std::endl
+//         << "my_x0y1 : " << colorParams.my_x0y1 << std::endl
+//         << "my_x0y0 : " << colorParams.my_x0y0 << std::endl;
+//         auto depthParams = dev->getIrCameraParams();
+//         std::cout << "**IR camera intrinsic calibration parameters" << std::endl
+//         << "**Kinect v2 includes factory preset values for these parameters." << std::endl
+//         << std::endl
+//         << "Focal length x (pixel) : " << depthParams.fx << std::endl
+//         << "Focal length y (pixel) : " << depthParams.fy << std::endl
+//         << "Principal point x (pixel) : " << depthParams.cx << std::endl
+//         << "Principal point y (pixel) : " << depthParams.cy << std::endl
+//         << "Radial distortion coefficient, 1st-order : " << depthParams.k1 << std::endl
+//         << "Radial distortion coefficient, 2nd-order : " << depthParams.k2 << std::endl
+//         << "Radial distortion coefficient, 3rd-order : " << depthParams.k3 << std::endl
+//         << "Tangential distortion coefficient 1 : " << depthParams.p1 << std::endl
+//         << "Tangential distortion coefficient 2 : " << depthParams.p2 << std::endl;
+//     }
+//     for (int i = 0; i < devicesCount; i++)
+//     {
+//         std::cout << "--PROTO CLOSE START" << std::endl;
+//         libfreenect2::Freenect2Device *dev = *(freenect2Dev + i);;
+//         std::cout << "--PROTO device serial: " << dev->getSerialNumber() << std::endl;
+//         std::cout << "--PROTO device firmware: " << dev->getFirmwareVersion() << std::endl;
+//         if (dev->stop())
+//         {
+//             std::cout << "--PROTO device SUCCES stop" << std::endl;
+//         }
+//         else
+//         {
+//             std::cout << "--PROTO device ERROR stop" << std::endl;
+// //            return -1;
+//         }
+//         if (dev->close())
+//         {
+//             std::cout << "--PROTO device SUCCESS close" << std::endl;
+//         }
+//         else
+//         {
+//             std::cout << "--PROTO device ERROR close" << std::endl;
+//             //            return -1;
+//         }
+//         std::cout << "--PROTO device CLOSE END" << std::endl;
+//     }
+//     return 0;
 /// [test]
 
   if(pipeline)
@@ -438,13 +388,6 @@ int main(int argc, char *argv[])
 /// [registration setup]
 
   size_t framecount = 0;
-#ifdef EXAMPLES_WITH_OPENGL_SUPPORT
-  Viewer viewer;
-  if (viewer_enabled)
-    viewer.initialize();
-#else
-  viewer_enabled = false;
-#endif
 
 /// [loop start]
   while(!protonect_shutdown && (framemax == (size_t)-1 || framecount < framemax))
@@ -459,7 +402,7 @@ int main(int argc, char *argv[])
     libfreenect2::Frame *depth = frames[libfreenect2::Frame::Depth];
 /// [loop start]
 
-    if (enable_rgb && enable_depth)
+    if (enable_rgb && enable_depth && enable_registration)
     {
 /// [registration]
       registration->apply(rgb, depth, &undistorted, &registered);
@@ -467,34 +410,13 @@ int main(int argc, char *argv[])
     }
 
     framecount++;
-    if (!viewer_enabled)
+    if (framecount % 100 == 0)
     {
-      if (framecount % 100 == 0)
-        std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
-      listener.release(frames);
-      continue;
+      std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
     }
-
-#ifdef EXAMPLES_WITH_OPENGL_SUPPORT
-    if (enable_rgb)
-    {
-      viewer.addFrame("RGB", rgb);
-    }
-    if (enable_depth)
-    {
-      viewer.addFrame("ir", ir);
-      viewer.addFrame("depth", depth);
-    }
-    if (enable_rgb && enable_depth)
-    {
-      viewer.addFrame("registered", &registered);
-    }
-
-    protonect_shutdown = protonect_shutdown || viewer.render();
-#endif
+    listener.release(frames);
 
 /// [loop end]
-    listener.release(frames);
     /** libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100)); */
   }
 /// [loop end]

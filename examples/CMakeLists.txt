@@ -16,7 +16,7 @@ PROJECT(libfreenect2_examples)
 SET(MY_DIR ${libfreenect2_examples_SOURCE_DIR})
 SET(DEPENDS_DIR "${MY_DIR}/../depends" CACHE STRING "Dependency directory")
 
-OPTION(ENABLE_OPENGL "Enable OpenGL support" ON)
+OPTION(ENABLE_OPENGL "Enable OpenGL support" OFF)
 
 # The example build system is standalone and will work out-of-tree with these files copied
 SET(freenect2_ROOT_DIR ${MY_DIR}/..)
