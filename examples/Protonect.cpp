@@ -414,7 +414,7 @@ int main(int argc, char *argv[])
     {
       std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
       auto nowTime = std::chrono::high_resolution_clock::now();
-      auto nowTimeMiliseconds = std::chrono::duration_cast<std::chrono::miliseconds>(now.time_since_epoch()).count();
+      auto nowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
       std::cout << "Time now" << nowTimeMiliseconds << std::endl;
     }
     listener.release(frames);
