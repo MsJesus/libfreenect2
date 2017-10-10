@@ -150,7 +150,6 @@ void RgbPacketStreamParser::onDataReceived(unsigned char* buffer, size_t length)
       // can the processor handle the next image?
       if(processor_->ready())
       {
-        LOG_DEBUG << " rgb processor ready";
         RgbPacket &rgb_packet = packet_;
         rgb_packet.sequence = raw_packet->sequence;
         rgb_packet.timestamp = footer->timestamp;
