@@ -133,7 +133,7 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
             }
             else
             {
-              LOG_DEBUG << "skipping depth packet";
+              // LOG_DEBUG << "skipping depth packet";
             }
           }
           else
