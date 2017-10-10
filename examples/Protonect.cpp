@@ -194,6 +194,10 @@ int main(int argc, char *argv[])
     {
       enable_depth = false;
     }
+    else if(arg == "-noreg" || arg == "--noreg")
+    {
+      enable_registration = false;
+    }
     else if(arg == "-frames")
     {
       ++argI;
@@ -413,10 +417,10 @@ int main(int argc, char *argv[])
     framecount++;
     if (framecount % 100 == 0)
     {
-      std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
       auto nowTime = std::chrono::high_resolution_clock::now();
       auto nowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime.time_since_epoch()).count();
-      std::cout << "Time now" << nowTimeMiliseconds << std::endl;
+      std::cout << "Time now in milliseconds " << nowTimeMiliseconds << std::endl;
+      std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
     }
     listener.release(frames);
 
