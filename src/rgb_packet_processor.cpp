@@ -89,7 +89,7 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
 {
     if (listener_ != 0)
     {
-        impl_->startTiming();
+        // impl_->startTiming();
 
         impl_->frame->sequence = packet.sequence;
         impl_->frame->timestamp = packet.timestamp;
@@ -101,7 +101,7 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
         
         std::memcpy(impl_->frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
         
-        impl_->stopTiming(LOG_INFO);
+        // impl_->stopTiming(LOG_INFO);
 
         if (listener_->onNewFrame(Frame::Color, impl_->frame))
         {
