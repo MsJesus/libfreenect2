@@ -106,7 +106,6 @@ bool SyncMultiFrameListener::hasNewFrame() const
 
 bool SyncMultiFrameListener::waitForNewFrame(FrameMap &frame, int milliseconds)
 {
-#ifdef LIBFREENECT2_THREADING_STDLIB
   libfreenect2::unique_lock l(impl_->mutex_);
 
   auto predicate = std::bind(&SyncMultiFrameListenerImpl::hasNewFrame, impl_);
@@ -123,10 +122,6 @@ bool SyncMultiFrameListener::waitForNewFrame(FrameMap &frame, int milliseconds)
   {
     return false;
   }
-#else
-  waitForNewFrame(frame);
-  return true;
-#endif // LIBFREENECT2_THREADING_STDLIB
 }
 
 void SyncMultiFrameListener::waitForNewFrame(FrameMap &frame)

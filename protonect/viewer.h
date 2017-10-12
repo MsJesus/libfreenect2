@@ -8,7 +8,10 @@
 #include <map>
 
 #include "flextGL.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include "glfw3.h"
+#pragma clang diagnostic pop
 
 struct Vertex
 {
@@ -26,9 +29,9 @@ protected:
 
     virtual void onOpenGLBindingsChanged(OpenGLBindings *b) { }
 public:
-    void gl(OpenGLBindings *bindings)
+    void gl(OpenGLBindings *newBindings)
     {
-        this->bindings = bindings;
+        this->bindings = newBindings;
         onOpenGLBindingsChanged(this->bindings);
     }
 
@@ -111,9 +114,9 @@ public:
         downloadToBuffer(data);
     }
 
-    void downloadToBuffer(unsigned char *data)
+    void downloadToBuffer(unsigned char *newData)
     {
-        glReadPixels(0, 0, width, height, FormatT::Format, FormatT::Type, data);
+        glReadPixels(0, 0, width, height, FormatT::Format, FormatT::Type, newData);
     }
 
     void flipY()
@@ -121,13 +124,13 @@ public:
         flipYBuffer(data);
     }
 
-    void flipYBuffer(unsigned char *data)
+    void flipYBuffer(unsigned char *newData)
     {
         typedef unsigned char type;
 
         size_t linestep = width * bytes_per_pixel / sizeof(type);
 
-        type *first_line = reinterpret_cast<type *>(data), *last_line = reinterpret_cast<type *>(data) + (height - 1) * linestep;
+        type *first_line = reinterpret_cast<type *>(newData), *last_line = reinterpret_cast<type *>(newData) + (height - 1) * linestep;
 
         for (size_t y = 0; y < height / 2; ++y)
         {

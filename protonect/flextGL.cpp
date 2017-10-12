@@ -1,6 +1,8 @@
 #include "flextGL.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include "glfw3.h"
-//#include <GLFW/glfw3.h>
+#pragma clang diagnostic pop
 
 #ifdef __cplusplus
 extern "C" {

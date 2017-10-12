@@ -31,8 +31,6 @@
 
 #include <libfreenect2/config.h>
 
-#ifdef LIBFREENECT2_THREADING_STDLIB
-
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -42,57 +40,24 @@
 
 namespace libfreenect2
 {
-
-typedef std::thread thread;
-typedef std::mutex mutex;
-typedef std::lock_guard<std::mutex> lock_guard;
-typedef std::unique_lock<std::mutex> unique_lock;
-typedef std::condition_variable condition_variable;
-
-namespace chrono
-{
-using namespace std::chrono;
-}
-
-namespace this_thread
-{
-using namespace std::this_thread;
-}
-
+    typedef std::thread thread;
+    typedef std::mutex mutex;
+    typedef std::lock_guard<std::mutex> lock_guard;
+    typedef std::unique_lock<std::mutex> unique_lock;
+    typedef std::condition_variable condition_variable;
+    
+    namespace chrono
+    {
+        using namespace std::chrono;
+    }
+    
+    namespace this_thread
+    {
+        using namespace std::this_thread;
+    }
+    
 } /* libfreenect2 */
 
-#endif
-
-#ifdef LIBFREENECT2_THREADING_TINYTHREAD
-
-#include <tinythread.h>
-
-// TODO: work around for tinythread incompatibility
-#define WAIT_CONDITION(var, mutex, lock) var.wait(mutex);
-
-namespace libfreenect2
-{
-
-typedef tthread::thread thread;
-typedef tthread::mutex mutex;
-typedef tthread::lock_guard<tthread::mutex> lock_guard;
-// TODO: this is not optimal
-typedef tthread::lock_guard<tthread::mutex> unique_lock;
-typedef tthread::condition_variable condition_variable;
-
-namespace chrono
-{
-using namespace tthread::chrono;
-}
-
-namespace this_thread
-{
-using namespace tthread::this_thread;
-}
-
-} /* libfreenect2 */
-
-#endif
 
 #if defined(__linux__)
 #include <sys/prctl.h>
@@ -102,17 +67,18 @@ using namespace tthread::this_thread;
 
 namespace libfreenect2
 {
-namespace this_thread
-{
-  static inline void set_name(const char *name)
-  {
+    namespace this_thread
+    {
+        static inline void set_name(const char *name)
+        {
 #if defined(__linux__)
-    prctl(PR_SET_NAME, name);
+            prctl(PR_SET_NAME, name);
 #elif defined(__APPLE__)
-    pthread_setname_np(name);
+            pthread_setname_np(name);
 #endif
-  }
-}
+        }
+    }
 }
 
 #endif /* THREADING_H_ */
+

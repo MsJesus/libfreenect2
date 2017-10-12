@@ -28,7 +28,6 @@
 #define LIBFREENECT2_CONFIG_H
 
 #define LIBFREENECT2_VERSION "0.2.0"
-//#define LIBFREENECT2_API_VERSION ((0 << 16) | 2)
 
 #ifdef _MSC_VER
 #define LIBFREENECT2_PACK( __Declaration__ ) __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop) )
@@ -37,18 +36,6 @@
 #endif
 
 #define LIBFREENECT2_API __attribute__((visibility("default")))
-
 #define LIBFREENECT2_WITH_TURBOJPEG_SUPPORT
-
-/* #undef LIBFREENECT2_WITH_TEGRAJPEG_SUPPORT */
-/* #define LIBFREENECT2_TEGRAJPEG_LIBRARY "TegraJPEG_LIBRARIES-NOTFOUND" */
-
-#define LIBFREENECT2_THREADING_STDLIB
-
-/* #undef LIBFREENECT2_THREADING_TINYTHREAD */
-
-#define LIBFREENECT2_WITH_CXX11_SUPPORT
-
-/* #undef LIBFREENECT2_WITH_PROFILING */
 
 #endif // LIBFREENECT2_CONFIG_H

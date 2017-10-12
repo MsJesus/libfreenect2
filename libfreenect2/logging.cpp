@@ -31,17 +31,7 @@
 #include <cstdlib>
 #include <string>
 #include <algorithm>
-
-#ifdef LIBFREENECT2_WITH_PROFILING
-#include <vector>
-#include <numeric>
-#include <functional>
-#include <cmath>
-#endif
-
-#ifdef LIBFREENECT2_WITH_CXX11_SUPPORT
 #include <chrono>
-#endif
 
 
 namespace libfreenect2
@@ -135,7 +125,7 @@ LogMessage::LogMessage(Logger *logger, Logger::Level level) : logger_(logger), l
 
 }
 
-std::string getShortName(const char *func)
+inline std::string getShortName(const char *func)
 {
   std::string src(func);
   size_t end = src.rfind('(');
@@ -205,7 +195,6 @@ class Timer
     count = 0;
   }
 
-#ifdef LIBFREENECT2_WITH_CXX11_SUPPORT
   std::chrono::time_point<std::chrono::high_resolution_clock> time_start;
 
   void start()
@@ -221,61 +210,14 @@ class Timer
     count++;
     return this_duration;
   }
-#else
-  void start()
-  {
-  }
-
-  double stop()
-  {
-    return 0;
-  }
-#endif
 };
 
 class WithPerfLoggingImpl: public Timer
 {
 public:
-#ifdef LIBFREENECT2_WITH_PROFILING
-  std::vector<double> stats;
-  std::string name;
-
-  WithPerfLoggingImpl()
-  {
-    stats.reserve(30*100);
-  }
-
-  ~WithPerfLoggingImpl()
-  {
-    if (stats.size() < 2)
-      return;
-    std::vector<double> &v = stats;
-    std::sort(v.begin(), v.end());
-    double sum = std::accumulate(v.begin(), v.end(), 0.0);
-    size_t n = v.size();
-    double mean = sum / n;
-    std::vector<double> diff(n);
-    std::transform(v.begin(), v.end(), diff.begin(), std::bind2nd(std::minus<double>(), mean));
-    double sqsum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-    double std = std::sqrt(sqsum / (n-1));
-
-    std::cout << name << v[0] << " " << v[n/20] << " " << v[n/2] << " " << v[n - (n+19)/20] << " " << v[n-1] << " mean=" << mean << " std=" << std <<  " n=" << n << std::endl;
-  }
-#endif
-
   std::ostream &stop(std::ostream &stream)
   {
-#ifndef LIBFREENECT2_WITH_PROFILING
     Timer::stop();
-#else
-    double this_duration = Timer::stop();
-    if (name.empty())
-    {
-      std::stringstream &ss = static_cast<std::stringstream &>(stream);
-      name = ss.str();
-    }
-    stats.push_back(this_duration*1e3);
-#endif
     if (count < 100)
     {
       stream.setstate(std::ios::eofbit);

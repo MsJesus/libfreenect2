@@ -120,7 +120,7 @@ void Viewer::winsize_callbackstatic(GLFWwindow* window, int w, int h)
     viewer->winsize_callback(window, w, h);
 }
 
-void Viewer::winsize_callback(GLFWwindow* window, int w, int h)
+void Viewer::winsize_callback(GLFWwindow* newWindow, int w, int h)
 {
     win_width = w/2;
     win_height = h/2;
@@ -132,7 +132,7 @@ void Viewer::key_callbackstatic(GLFWwindow* window, int key, int scancode, int a
     viewer->key_callback(window, key, scancode, action, mods);
 }
 
-void Viewer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Viewer::key_callback(GLFWwindow* newWindow, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         shouldStop = true;

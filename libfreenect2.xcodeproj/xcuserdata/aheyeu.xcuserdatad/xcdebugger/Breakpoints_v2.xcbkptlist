@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libfreenect2/depth_packet_processor.cpp"
-            timestampString = "529431970.783376"
+            timestampString = "529509338.576025"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "112"
@@ -26,23 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libfreenect2/cpu_depth_packet_processor.cpp"
-            timestampString = "529431970.78345"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "896"
-            endingLineNumber = "896"
-            landmarkName = "CpuDepthPacketProcessor::process(const DepthPacket &amp;packet)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "libfreenect2/cpu_depth_packet_processor.cpp"
-            timestampString = "529431970.783511"
+            timestampString = "529511620.463153"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "816"
@@ -64,6 +48,22 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "TurboJpegRgbPacketProcessor::process(const RgbPacket &amp;packet)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "libfreenect2/rgb_packet_stream_parser.cpp"
+            timestampString = "529512563.812388"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "RgbPacketStreamParser::onDataReceived(unsigned char* buffer, size_t length)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
