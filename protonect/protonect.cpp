@@ -29,6 +29,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <signal.h>
+#include <chrono>
 
 /// [headers]
 #include <include/libfreenect2.h>
