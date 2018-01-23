@@ -1,7 +1,7 @@
 TARGET = protonect
 CC = g++
 CFLAGS = -g -Wall -Os -std=gnu++11 -I.. -I../../libfreenect2 -I../../include
-LDFLAGS = -Wall -lfreenect2
+LDFLAGS = -Wall
 
 
 .PHONY: default all clean $(TARGET)
