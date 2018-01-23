@@ -5,8 +5,6 @@ CFLAGS = -g -Wall -Os -std=gnu++11
 CFLAGS += -I..
 CFLAGS += -I./../libfreenect2
 CFLAGS += -I./../include
-#CFLAGS += -I./../external/libusb
-#CFLAGS += -I./../external/turbojpeg
 
 LDFLAGS = -Wall
 LDFLAGS += -L/usr/local/opt/libjpeg-turbo/lib
@@ -14,6 +12,7 @@ LDFLAGS += -L/usr/local/opt/libusb/lib
 LDFLAGS += -lfreenect2
 LDFLAGS += -lturbojpeg
 LDFLAGS += -lusb
+LDFLAGS += -lpthread
 
 .PHONY: default all clean $(TARGET)
 
@@ -32,7 +31,6 @@ SOURCES = $(shell find . -type f -name '*.cpp' -not -name 'viewer.*' -not -name 
 OBJECTS = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 EXECUTABLE = $(BIN_DIR)/$(TARGET)
 
-#LIB_FILES = $(shell find ../libfreenect2 -type f)
 
 $(BIN_DIR)/libfreenect2.a:
 	$(MAKE) -C ../libfreenect2
