@@ -419,11 +419,13 @@ int main(int argc, char *argv[])
 #endif
 
     /// [loop start]
+    static auto lastNowTime = std::chrono::high_resolution_clock::now();
+    static size_t numberFrames = 100;
     while(!protonect_shutdown && (framemax == (size_t)-1 || framecount < framemax))
     {
         if (!listener.waitForNewFrame(frames, 10*1000)) // 10 sconds
         {
-            std::cout << "timeout!" << std::endl;
+            std::cout << "Protonect Timeout!" << std::endl;
             return -1;
         }
         libfreenect2::Frame *rgb = frames[libfreenect2::Frame::Color];
@@ -441,11 +443,15 @@ int main(int argc, char *argv[])
         framecount++;
         if (!viewer_enabled)
         {
-            if (framecount % 100 == 0)
+            if (framecount % numberFrames == 0)
             {
                 auto nowTime = std::chrono::high_resolution_clock::now();
+                auto lastNowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(lastNowTime.time_since_epoch()).count();
                 auto nowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime.time_since_epoch()).count();
-                std::cout << "Time now in milliseconds " << nowTimeMiliseconds << std::endl;
+                auto lastMiliseconds = nowTimeMiliseconds - lastNowTimeMiliseconds;
+                int fps = (numberFrames / lastMiliseconds);
+                std::cout << "Time last in milliseconds :: " << lastMiliseconds << std::endl;
+                std::cout << "FPS :: " << fps << std::endl;
                 std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
             }
         }
