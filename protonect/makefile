@@ -11,7 +11,7 @@ LDFLAGS += -L/usr/local/opt/libjpeg-turbo/lib
 LDFLAGS += -L/usr/local/opt/libusb/lib
 LDFLAGS += -lfreenect2
 LDFLAGS += -lturbojpeg
-LDFLAGS += -lusb
+LDFLAGS += -lusb-1.0
 LDFLAGS += -lpthread
 
 .PHONY: default all clean $(TARGET)
