@@ -29,7 +29,7 @@
 
 #include <vector>
 #include <libusb.h>
-#include <libfreenect2/protocol/command.h>
+#include "command.h"
 
 namespace libfreenect2
 {

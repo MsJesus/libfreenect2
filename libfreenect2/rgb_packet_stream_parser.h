@@ -31,10 +31,10 @@
 
 #include <stddef.h>
 
-#include <libfreenect2/config.h>
-#include <libfreenect2/rgb_packet_processor.h>
+#include <include/config.h>
+#include "rgb_packet_processor.h"
 
-#include <libfreenect2/data_callback.h>
+#include "data_callback.h"
 
 namespace libfreenect2
 {

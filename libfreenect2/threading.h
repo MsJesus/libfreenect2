@@ -29,7 +29,7 @@
 #ifndef THREADING_H_
 #define THREADING_H_
 
-#include <libfreenect2/config.h>
+#include <include/config.h>
 
 #include <thread>
 #include <mutex>

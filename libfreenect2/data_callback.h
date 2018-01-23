@@ -30,7 +30,7 @@
 #define DATA_CALLBACK_H_
 
 #include <stddef.h>
-#include <libfreenect2/config.h>
+#include <include/config.h>
 
 namespace libfreenect2
 {

@@ -32,10 +32,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <libfreenect2/config.h>
-#include <libfreenect2/libfreenect2.h>
-#include <libfreenect2/frame_listener.h>
-#include <libfreenect2/packet_processor.h>
+#include <include/config.h>
+#include <include/libfreenect2.h>
+#include <include/frame_listener.h>
+#include "packet_processor.h"
 
 namespace libfreenect2
 {

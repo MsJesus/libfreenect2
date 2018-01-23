@@ -257,8 +257,8 @@
 			children = (
 				94B8A61A1F52E13F008CBD18 /* allocator.cpp */,
 				94B8A61B1F52E13F008CBD18 /* allocator.h */,
-				94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */,
 				94B8A6351F52E13F008CBD18 /* packet_processor.h */,
+				94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */,
 				94B8A6241F52E13F008CBD18 /* depth_packet_processor.h */,
 				94B8A6231F52E13F008CBD18 /* depth_packet_processor.cpp */,
 				94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */,

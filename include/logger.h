@@ -31,7 +31,7 @@
 
 #include <string>
 
-#include <libfreenect2/config.h>
+#include <include/config.h>
 
 namespace libfreenect2
 {

@@ -35,17 +35,17 @@
 #include <cstdlib>
 #define WRITE_LIBUSB_ERROR(__RESULT) libusb_error_name(__RESULT) << " " << libusb_strerror((libusb_error)__RESULT)
 
-#include <libfreenect2/libfreenect2.h>
+#include <include/libfreenect2.h>
 
-#include <libfreenect2/usb/event_loop.h>
-#include <libfreenect2/usb/transfer_pool.h>
-#include <libfreenect2/depth_packet_processor.h>
-#include <libfreenect2/rgb_packet_processor.h>
-#include <libfreenect2/protocol/usb_control.h>
-#include <libfreenect2/protocol/command.h>
-#include <libfreenect2/protocol/response.h>
-#include <libfreenect2/protocol/command_transaction.h>
-#include <libfreenect2/logging.h>
+#include "usb/event_loop.h"
+#include "usb/transfer_pool.h"
+#include "depth_packet_processor.h"
+#include "rgb_packet_processor.h"
+#include "protocol/usb_control.h"
+#include "protocol/command.h"
+#include "protocol/response.h"
+#include "protocol/command_transaction.h"
+#include "logging.h"
 
 namespace libfreenect2
 {

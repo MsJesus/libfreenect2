@@ -29,7 +29,7 @@
 #ifndef PACKET_PIPELINE_H_
 #define PACKET_PIPELINE_H_
 
-#include <libfreenect2/config.h>
+#include <include/config.h>
 
 #include <stdlib.h>
 

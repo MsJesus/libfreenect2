@@ -31,15 +31,19 @@
 #include <signal.h>
 
 /// [headers]
-#include <libfreenect2/libfreenect2.h>
+#include <include/libfreenect2.h>
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>
 #include <libfreenect2/packet_pipeline.h>
 #include <libfreenect2/logger.h>
 
+#define ENABLE_VIEWER 1
+
 /// [headers]
 #ifdef __APPLE__
+#if ENABLE_VIEWER
 #include "viewer.h"
+#endif
 #endif
 
 #include <inttypes.h>
@@ -404,9 +408,11 @@ int main(int argc, char *argv[])
     size_t framecount = 0;
     
 #ifdef __APPLE__
+#if ENABLE_VIEWER
     Viewer viewer;
     if (viewer_enabled)
         viewer.initialize();
+#endif
 #else
     viewer_enabled = false;
 #endif
@@ -445,6 +451,7 @@ int main(int argc, char *argv[])
         else
         {
 #ifdef __APPLE__
+#if ENABLE_VIEWER
             if (enable_rgb)
             {
                 viewer.addFrame("RGB", rgb);
@@ -460,6 +467,7 @@ int main(int argc, char *argv[])
             }
             
             protonect_shutdown = protonect_shutdown || viewer.render();
+#endif
 #endif
         }
         

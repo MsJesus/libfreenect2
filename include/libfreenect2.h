@@ -30,7 +30,7 @@
 #define LIBFREENECT2_HPP_
 
 #include "config.h"
-#include <libfreenect2/frame_listener.h>
+#include <include/frame_listener.h>
 #include <libfreenect2/packet_pipeline.h>
 #include <string>
 

@@ -26,8 +26,8 @@
 
 /** @file depth_packet_stream_parser.cpp Parser for getting packets from the depth stream. */
 
-#include <libfreenect2/depth_packet_stream_parser.h>
-#include <libfreenect2/logging.h>
+#include "depth_packet_stream_parser.h"
+#include "logging.h"
 #include <memory.h>
 
 namespace libfreenect2

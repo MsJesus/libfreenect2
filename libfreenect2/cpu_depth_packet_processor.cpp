@@ -26,9 +26,9 @@
 
 /** @file cpu_depth_packet_processor.cpp Depth processor implementation for the CPU. */
 
-#include <libfreenect2/depth_packet_processor.h>
-#include <libfreenect2/protocol/response.h>
-#include <libfreenect2/logging.h>
+#include "depth_packet_processor.h"
+#include "protocol/response.h"
+#include "logging.h"
 
 #include <fstream>
 

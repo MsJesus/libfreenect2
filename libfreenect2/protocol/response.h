@@ -32,8 +32,8 @@
 #include <iomanip>
 #include <stdint.h>
 #include <algorithm>
-#include <libfreenect2/config.h>
-#include <libfreenect2/libfreenect2.h>
+#include <include/config.h>
+#include <include/libfreenect2.h>
 
 namespace libfreenect2
 {
