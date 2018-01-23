@@ -449,10 +449,11 @@ int main(int argc, char *argv[])
                 auto lastNowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(lastNowTime.time_since_epoch()).count();
                 auto nowTimeMiliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime.time_since_epoch()).count();
                 auto lastMiliseconds = nowTimeMiliseconds - lastNowTimeMiliseconds;
-                int fps = (numberFrames / lastMiliseconds);
+                int fps = (numberFrames * 1000 / lastMiliseconds);
                 std::cout << "Time last in milliseconds :: " << lastMiliseconds << std::endl;
                 std::cout << "FPS :: " << fps << std::endl;
                 std::cout << "The viewer is turned off. Received " << framecount << " frames. Ctrl-C to stop." << std::endl;
+                lastNowTime = nowTime;
             }
         }
         else
