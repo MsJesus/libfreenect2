@@ -26,7 +26,7 @@
 
 /** @file command_transaction.cpp Protocol transactions for device. */
 
-#include "command_transaction.h"
+#include <libfreenect2/protocol/command_transaction.h>
 #include <libfreenect2/logging.h>
 
 #include <stdint.h>

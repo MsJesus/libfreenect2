@@ -1,11 +1,21 @@
 TARGET = protonect
 CC = g++
-CFLAGS = -g -Wall -Os -std=gnu++11 -I.. -I../../libfreenect2 -I../../include
-LDFLAGS = -Wall
 
+CFLAGS = -g -Wall -Os -std=gnu++11
+CFLAGS += -I..
+CFLAGS += -I./../libfreenect2
+CFLAGS += -I./../include
+#CFLAGS += -I./../external/libusb
+#CFLAGS += -I./../external/turbojpeg
+
+LDFLAGS = -Wall
+LDFLAGS += -L/usr/local/opt/libjpeg-turbo/lib
+LDFLAGS += -L/usr/local/opt/libusb/lib
+LDFLAGS += -lfreenect2
+LDFLAGS += -lturbojpeg
+LDFLAGS += -lusb
 
 .PHONY: default all clean $(TARGET)
-
 
 default: $(TARGET)
 all: default
@@ -22,16 +32,16 @@ SOURCES = $(shell find . -type f -name '*.cpp' -not -name 'viewer.*' -not -name 
 OBJECTS = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 EXECUTABLE = $(BIN_DIR)/$(TARGET)
 
-LIB_FILES = $(shell find ../libfreenect2 -type f)
+#LIB_FILES = $(shell find ../libfreenect2 -type f)
 
-$(BIN_DIR)/libfreenect2.a: $(LIB_FILES)
+$(BIN_DIR)/libfreenect2.a:
 	$(MAKE) -C ../libfreenect2
 
 directories:
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(BIN_DIR)
 
-$(OBJ_DIR)/%.o: %.cpp $(HEADERS) $(BIN_DIR)/libfreenect2.a
+$(OBJ_DIR)/%.o: %.cpp $(HEADERS)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 

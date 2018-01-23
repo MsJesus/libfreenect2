@@ -26,9 +26,9 @@
 
 /** @file rgb_packet_processor.cpp Implementation of generic color packet processors. */
 
-#include "rgb_packet_processor.h"
-#include "async_packet_processor.h"
-#include "logging.h"
+#include <libfreenect2/rgb_packet_processor.h>
+#include <libfreenect2/async_packet_processor.h>
+#include <libfreenect2/logging.h>
 
 #include <cstring>
 #include <fstream>

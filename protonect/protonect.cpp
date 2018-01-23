@@ -38,7 +38,7 @@
 #include <libfreenect2/packet_pipeline.h>
 #include <include/logger.h>
 
-#define ENABLE_VIEWER 1
+#define ENABLE_VIEWER 0
 
 /// [headers]
 #ifdef __APPLE__

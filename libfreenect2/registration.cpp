@@ -28,7 +28,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "registration.h"
+#include <libfreenect2/registration.h>
 #include <limits>
 
 namespace libfreenect2

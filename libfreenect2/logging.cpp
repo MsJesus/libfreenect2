@@ -26,7 +26,7 @@
 
 /** @file logging.cpp Logging message handler classes. */
 
-#include "logging.h"
+#include <libfreenect2/logging.h>
 #include <iostream>
 #include <cstdlib>
 #include <string>

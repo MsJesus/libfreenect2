@@ -26,8 +26,8 @@
 
 /** @file packet_processor.h Packet processor definitions. */
 
-#include "allocator.h"
-#include "threading.h"
+#include <libfreenect2/allocator.h>
+#include <libfreenect2/threading.h>
 
 namespace libfreenect2
 {

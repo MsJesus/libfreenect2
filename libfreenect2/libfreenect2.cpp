@@ -37,15 +37,15 @@
 
 #include <include/libfreenect2.h>
 
-#include "usb/event_loop.h"
-#include "usb/transfer_pool.h"
-#include "depth_packet_processor.h"
-#include "rgb_packet_processor.h"
-#include "protocol/usb_control.h"
-#include "protocol/command.h"
-#include "protocol/response.h"
-#include "protocol/command_transaction.h"
-#include "logging.h"
+#include <libfreenect2/usb/event_loop.h>
+#include <libfreenect2/usb/transfer_pool.h>
+#include <libfreenect2/depth_packet_processor.h>
+#include <libfreenect2/rgb_packet_processor.h>
+#include <libfreenect2/protocol/usb_control.h>
+#include <libfreenect2/protocol/command.h>
+#include <libfreenect2/protocol/response.h>
+#include <libfreenect2/protocol/command_transaction.h>
+#include <libfreenect2/logging.h>
 
 namespace libfreenect2
 {

@@ -29,8 +29,8 @@
 #ifndef ASYNC_PACKET_PROCESSOR_H_
 #define ASYNC_PACKET_PROCESSOR_H_
 
-#include "threading.h"
-#include "packet_processor.h"
+#include <libfreenect2/threading.h>
+#include <libfreenect2/packet_processor.h>
 
 namespace libfreenect2
 {

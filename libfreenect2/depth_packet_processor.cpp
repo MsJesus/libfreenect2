@@ -26,9 +26,9 @@
 
 /** @file depth_packet_processor.cpp Generic part of the depth processors (configuration and parameters). */
 
-#include "depth_packet_processor.h"
-#include "async_packet_processor.h"
-#include "logging.h"
+#include <libfreenect2/depth_packet_processor.h>
+#include <libfreenect2/async_packet_processor.h>
+#include <libfreenect2/logging.h>
 
 #include <cstring>
 

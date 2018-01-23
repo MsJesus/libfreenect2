@@ -28,7 +28,7 @@
 #define COMMAND_H_
 
 #include <stdint.h>
-#include "response.h"
+#include <libfreenect2/protocol/response.h>
 
 #define KCMD_READ_FIRMWARE_VERSIONS 0x02
 #define KCMD_INIT_STREAMS 0x09

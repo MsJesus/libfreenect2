@@ -34,8 +34,8 @@
 
 #include <include/config.h>
 
-#include "depth_packet_processor.h"
-#include "data_callback.h"
+#include <libfreenect2/depth_packet_processor.h>
+#include <libfreenect2/data_callback.h>
 
 namespace libfreenect2
 {

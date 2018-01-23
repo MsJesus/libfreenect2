@@ -1,7 +1,9 @@
-TARGET = libfreenect2
+TARGET = freenect2
 CC = g++
-CFLAGS = -g -Wall -Os -std=gnu++11 -I.. -I../external/libusb -I../external/turbojpeg
-LDFLAGS = -Wall -ljpeg -lusb
+CFLAGS = -g -Wall -Os -std=gnu++11 
+CFLAGS += -I..
+CFLAGS += -I./../external/libusb
+CFLAGS += -I./../external/turbojpeg
 
 
 .PHONY: default all clean $(TARGET)
@@ -18,7 +20,7 @@ BIN_DIR = $(BUILD_DIR)/bin
 HEADERS = $(shell find . -type f -name '*.h')
 SOURCES = $(shell find . -type f -name '*.cpp')
 OBJECTS = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
-EXECUTABLE = $(BIN_DIR)/lib$(TARGET).dylib
+EXECUTABLE = $(BIN_DIR)/lib$(TARGET).a
 
 directories:
 	mkdir -p $(OBJ_DIR)

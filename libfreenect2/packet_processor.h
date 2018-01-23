@@ -29,7 +29,7 @@
 #ifndef PACKET_PROCESSOR_H_
 #define PACKET_PROCESSOR_H_
 
-#include "allocator.h"
+#include <libfreenect2/allocator.h>
 
 namespace libfreenect2
 {
