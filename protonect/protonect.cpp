@@ -35,7 +35,7 @@
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>
 #include <libfreenect2/packet_pipeline.h>
-#include <libfreenect2/logger.h>
+#include <include/logger.h>
 
 #define ENABLE_VIEWER 1
 
