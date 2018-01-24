@@ -85,7 +85,7 @@
 		941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libusb-1.0.0.dylib"; sourceTree = "<group>"; };
 		941AE60A1F53620D00073D32 /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libusb.h; sourceTree = "<group>"; };
 		941AE62E1F53620D00073D32 /* turbojpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = turbojpeg.h; sourceTree = "<group>"; };
-		941AE6641F53653B00073D32 /* libturbojpeg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libturbojpeg.dylib; path = "../../../../../../../opt/libjpeg-turbo/lib/libturbojpeg.dylib"; sourceTree = "<group>"; };
+		941AE6641F53653B00073D32 /* libturbojpeg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libturbojpeg.dylib; sourceTree = "<group>"; };
 		9460143C1F8D22F6008F88C6 /* protonect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = protonect.cpp; sourceTree = "<group>"; };
 		946014421F8D231E008F88C6 /* protonect */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = protonect; sourceTree = BUILT_PRODUCTS_DIR; };
 		949708421F52E04A00BC9C22 /* liblibfreenect2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = liblibfreenect2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,7 +101,7 @@
 		9498E8C71F8FA9CC00D4E7B6 /* frame_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener.h; sourceTree = "<group>"; };
 		9498E8C81F8FA9CC00D4E7B6 /* libfreenect2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libfreenect2.h; sourceTree = "<group>"; };
 		9498E8C91F8FA9CC00D4E7B6 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
-		94B8A6181F52E083008CBD18 /* libfreenect2.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = libfreenect2.xcconfig; sourceTree = "<group>"; };
+		94B8A6181F52E083008CBD18 /* freenect2.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freenect2.xcconfig; sourceTree = "<group>"; };
 		94B8A61A1F52E13F008CBD18 /* allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = allocator.cpp; sourceTree = "<group>"; };
 		94B8A61B1F52E13F008CBD18 /* allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = allocator.h; sourceTree = "<group>"; };
 		94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = async_packet_processor.h; sourceTree = "<group>"; };
@@ -215,7 +215,7 @@
 				9460143B1F8D22F6008F88C6 /* protonect */,
 				9498E8C51F8FA9CC00D4E7B6 /* include */,
 				94B8A6191F52E13F008CBD18 /* libfreenect2 */,
-				94B8A6181F52E083008CBD18 /* libfreenect2.xcconfig */,
+				94B8A6181F52E083008CBD18 /* freenect2.xcconfig */,
 				941AE6051F53620D00073D32 /* external */,
 				949708431F52E04A00BC9C22 /* Products */,
 				9460144C1F8D2337008F88C6 /* Frameworks */,
@@ -402,7 +402,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9497083D1F52E04A00BC9C22 /* Build configuration list for PBXProject "libfreenect2" */;
+			buildConfigurationList = 9497083D1F52E04A00BC9C22 /* Build configuration list for PBXProject "freenect2" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -558,7 +558,7 @@
 		};
 		949708441F52E04A00BC9C22 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94B8A6181F52E083008CBD18 /* libfreenect2.xcconfig */;
+			baseConfigurationReference = 94B8A6181F52E083008CBD18 /* freenect2.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -581,7 +581,7 @@
 		};
 		949708451F52E04A00BC9C22 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94B8A6181F52E083008CBD18 /* libfreenect2.xcconfig */;
+			baseConfigurationReference = 94B8A6181F52E083008CBD18 /* freenect2.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -644,7 +644,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9497083D1F52E04A00BC9C22 /* Build configuration list for PBXProject "libfreenect2" */ = {
+		9497083D1F52E04A00BC9C22 /* Build configuration list for PBXProject "freenect2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				949708441F52E04A00BC9C22 /* Debug */,
