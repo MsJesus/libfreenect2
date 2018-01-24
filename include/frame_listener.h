@@ -31,7 +31,7 @@
 
 #include <cstddef>
 #include <stdint.h>
-#include <include/config.h>
+#include "config.h"
 
 namespace libfreenect2
 {

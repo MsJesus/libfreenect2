@@ -30,8 +30,8 @@
 #define LIBFREENECT2_HPP_
 
 #include "config.h"
-#include <include/frame_listener.h>
-#include <libfreenect2/packet_pipeline.h>
+#include "frame_listener.h"
+//#include <libfreenect2/packet_pipeline.h>
 #include <string>
 
 namespace libfreenect2
@@ -236,12 +236,12 @@ public:
    */
   Freenect2Device *openDevice(int idx);
 
-  /** Open device by index.
-   * @param idx Index number. Index numbers are not determinstic during enumeration.
-   * @param factory New PacketPipeline instance. This is always automatically freed.
-   * @return New device object, or NULL on failure
-   */
-  Freenect2Device *openDevice(int idx, const PacketPipeline *factory);
+//  /** Open device by index.
+//   * @param idx Index number. Index numbers are not determinstic during enumeration.
+//   * @param factory New PacketPipeline instance. This is always automatically freed.
+//   * @return New device object, or NULL on failure
+//   */
+//  Freenect2Device *openDevice(int idx, const PacketPipeline *factory);
 
   /** Open device by serial number with default pipeline.
    * @param serial Serial number
@@ -249,23 +249,23 @@ public:
    */
   Freenect2Device *openDevice(const std::string &serial);
 
-  /** Open device by serial number.
-   * @param serial Serial number
-   * @param factory New PacketPipeline instance. This is always automatically freed.
-   * @return New device object, or NULL on failure
-   */
-  Freenect2Device *openDevice(const std::string &serial, const PacketPipeline *factory);
+//  /** Open device by serial number.
+//   * @param serial Serial number
+//   * @param factory New PacketPipeline instance. This is always automatically freed.
+//   * @return New device object, or NULL on failure
+//   */
+//  Freenect2Device *openDevice(const std::string &serial, const PacketPipeline *factory);
 
   /** Open the first device with default pipeline.
    * @return New device object, or NULL on failure
    */
   Freenect2Device *openDefaultDevice();
 
-  /** Open the first device.
-   * @param factory New PacketPipeline instance. This is always automatically freed.
-   * @return New device object, or NULL on failure
-   */
-  Freenect2Device *openDefaultDevice(const PacketPipeline *factory);
+//  /** Open the first device.
+//   * @param factory New PacketPipeline instance. This is always automatically freed.
+//   * @return New device object, or NULL on failure
+//   */
+//  Freenect2Device *openDefaultDevice(const PacketPipeline *factory);
 private:
   Freenect2Impl *impl_;
 
