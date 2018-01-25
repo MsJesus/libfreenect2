@@ -12,7 +12,6 @@
 		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
 		941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		941AE6631F53633D00073D32 /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
-		941AE6651F53653B00073D32 /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6641F53653B00073D32 /* libturbojpeg.dylib */; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
 		9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.a */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
@@ -56,6 +55,7 @@
 		94B8A6771F52E13F008CBD18 /* usb_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6491F52E13F008CBD18 /* usb_control.cpp */; };
 		94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */; };
 		94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67F1F52E215008CBD18 /* packet_pipeline.h */; };
+		94C58E9C201A29F90025AD4A /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6641F53653B00073D32 /* libturbojpeg.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,7 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */,
-				941AE6651F53653B00073D32 /* libturbojpeg.dylib in Frameworks */,
+				94C58E9C201A29F90025AD4A /* libturbojpeg.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +506,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/glfw",
+					"$(PROJECT_DIR)/external/turbojpeg",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
@@ -549,6 +550,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/glfw",
+					"$(PROJECT_DIR)/external/turbojpeg",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";

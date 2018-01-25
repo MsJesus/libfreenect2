@@ -31,7 +31,6 @@
 
 #include "config.h"
 #include "frame_listener.h"
-//#include <libfreenect2/packet_pipeline.h>
 #include <string>
 
 namespace libfreenect2
