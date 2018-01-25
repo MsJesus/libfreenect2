@@ -46,6 +46,7 @@
 #include <libfreenect2/protocol/response.h>
 #include <libfreenect2/protocol/command_transaction.h>
 #include <libfreenect2/logging.h>
+#include <libfreenect2/packet_pipeline.h>
 
 namespace libfreenect2
 {
@@ -508,6 +509,9 @@ public:
     return enumerated_devices_.size();
   }
 
+  Freenect2Device *openDefaultDevice(const PacketPipeline *factory);
+  Freenect2Device *openDevice(const std::string &serial, const PacketPipeline *factory);
+  Freenect2Device *openDevice(int idx, const PacketPipeline *factory);
   Freenect2Device *openDevice(int idx, const PacketPipeline *factory, bool attempting_reset);
 };
 
@@ -905,6 +909,8 @@ PacketPipeline *createPacketPipelineByName(std::string name)
 {
   if (name == "cpu")
     return new CpuPacketPipeline();
+if (name == "dump")
+    return new DumpPacketPipeline();
   return NULL;
 }
 
@@ -920,7 +926,7 @@ PacketPipeline *createDefaultPacketPipeline()
       LOG_WARNING << "`" << pipeline_env << "' pipeline is not available.";
   }
 
-  return new CpuPacketPipeline();
+  return new DumpPacketPipeline();
 }
 
 Freenect2::Freenect2(void *usb_context) :
@@ -956,12 +962,12 @@ std::string Freenect2::getDefaultDeviceSerialNumber()
 
 Freenect2Device *Freenect2::openDevice(int idx)
 {
-  return openDevice(idx, createDefaultPacketPipeline());
+  return impl_->openDevice(idx, createDefaultPacketPipeline());
 }
 
-Freenect2Device *Freenect2::openDevice(int idx, const PacketPipeline *pipeline)
+Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeline)
 {
-  return impl_->openDevice(idx, pipeline, true);
+  return openDevice(idx, pipeline, true);
 }
 
 Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeline, bool attempting_reset)
@@ -1068,17 +1074,17 @@ Freenect2Device *Freenect2Impl::openDevice(int idx, const PacketPipeline *pipeli
 
 Freenect2Device *Freenect2::openDevice(const std::string &serial)
 {
-  return openDevice(serial, createDefaultPacketPipeline());
+    return impl_->openDevice(serial, createDefaultPacketPipeline());
 }
 
-Freenect2Device *Freenect2::openDevice(const std::string &serial, const PacketPipeline *pipeline)
+Freenect2Device *Freenect2Impl::openDevice(const std::string &serial, const PacketPipeline *pipeline)
 {
   Freenect2Device *device = 0;
-  int num_devices = impl_->getNumDevices();
+  int num_devices = getNumDevices();
 
   for(int idx = 0; idx < num_devices; ++idx)
   {
-    if(impl_->enumerated_devices_[idx].serial == serial)
+    if(enumerated_devices_[idx].serial == serial)
     {
       return openDevice(idx, pipeline);
     }
@@ -1093,7 +1099,7 @@ Freenect2Device *Freenect2::openDefaultDevice()
   return openDevice(0);
 }
 
-Freenect2Device *Freenect2::openDefaultDevice(const PacketPipeline *pipeline)
+Freenect2Device *Freenect2Impl::openDefaultDevice(const PacketPipeline *pipeline)
 {
   return openDevice(0, pipeline);
 }
