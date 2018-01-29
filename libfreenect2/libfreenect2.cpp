@@ -675,6 +675,9 @@ bool Freenect2DeviceImpl::open()
   rgb_num_xfers = 3;
   ir_pkts_per_xfer = 64;
   ir_num_xfers = 8;
+#elif defined(__linux__)
+  ir_pkts_per_xfer = 64;
+  ir_num_xfers = 4;
 #endif
 
   const char *xfer_str;
