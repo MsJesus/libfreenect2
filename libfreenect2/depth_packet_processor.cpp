@@ -192,11 +192,21 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
         if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
             impl_->newIrFrame();
         }
+//        else
+//        {
+//            delete impl_->ir_frame;
+//            impl_->newIrFrame();
+//        }
         
         if(listener_->onNewFrame(Frame::Depth, impl_->depth_frame))
         {
             impl_->newDepthFrame();
         }
+//        else
+//        {
+//            delete impl_->depth_frame;
+//            impl_->newDepthFrame();
+//        }
     }
 }
 
