@@ -1,4 +1,4 @@
-TARGET = Freenect2
+TARGET = freenect2
 CC = g++
 CFLAGS = -g -Wall -Os -std=gnu++11 
 CFLAGS += -I..

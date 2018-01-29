@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
     if(pipeline)
     {
         /// [open]
-        dev = freenect2.openDevice(serial, pipeline);
+        dev = freenect2.openDevice(serial);
         /// [open]
     }
     else
