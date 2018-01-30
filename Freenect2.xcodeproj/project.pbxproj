@@ -55,7 +55,6 @@
 		94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */; };
 		94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67F1F52E215008CBD18 /* packet_pipeline.h */; };
 		94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
-		94C58EA4201A37420025AD4A /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
 		94C58EA5201A37420025AD4A /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
 /* End PBXBuildFile section */
 
@@ -156,7 +155,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */,
-				94C58EA4201A37420025AD4A /* libturbojpeg.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

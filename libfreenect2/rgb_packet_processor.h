@@ -75,6 +75,8 @@ class DumpRgbPacketProcessor : public RgbPacketProcessor
 public:
   DumpRgbPacketProcessor();
   virtual ~DumpRgbPacketProcessor();
+    
+  virtual const char *name() { return "DUMP RGB"; }
   virtual void process(const libfreenect2::RgbPacket &packet);
 private:
   DumpRgbPacketProcessorImpl *impl_;

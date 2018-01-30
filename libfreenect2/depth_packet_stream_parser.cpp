@@ -111,14 +111,15 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
           {
             if(processor_->ready())
             {
+
               DepthPacket &packet = packet_;
               packet.sequence = current_sequence_;
               packet.timestamp = footer->timestamp;
               packet.buffer = packet_.memory->data;
               packet.buffer_length = packet_.memory->capacity;
 
+              processor_->allocateBuffer(packet_, buffer_size_);                
               processor_->process(packet);
-              processor_->allocateBuffer(packet_, buffer_size_);
 
               processed_packets_++;
               if (processed_packets_ == 0)
@@ -138,7 +139,7 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
           }
           else
           {
-//            LOG_DEBUG << "not all subsequences received " << current_subsequence_;
+            LOG_DEBUG << "not all subsequences received " << current_subsequence_;
           }
 
           current_sequence_ = footer->sequence;

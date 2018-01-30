@@ -152,6 +152,7 @@ class DumpDepthPacketProcessor : public DepthPacketProcessor
   DumpDepthPacketProcessor();
   virtual ~DumpDepthPacketProcessor();
 
+  virtual const char *name() { return "DUMP DEPTH"; }
   virtual void process(const DepthPacket &packet);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
