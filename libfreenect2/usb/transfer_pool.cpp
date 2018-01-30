@@ -95,7 +95,7 @@ bool TransferPool::submit()
     for(size_t i = 0; i < transfers_.size(); ++i)
     {
         transfers_[i].setStopped(true);
-        transfers_[i].setSubmited(true);
+        transfers_[i].setSubmited(false);
         transfers_[i].setProccessing(false);
     }
     
@@ -136,6 +136,13 @@ bool TransferPool::submit()
     LOG_ERROR << "all submissions failed. Try debugging with environment variable: LIBUSB_DEBUG=3.";
     return false;
   }
+    else
+    {
+        for(size_t i = 0; i < transfers_.size(); ++i)
+        {
+            transfers_[i].setStopped(false);
+        }
+    }
 
     if (proccess_thread_ == nullptr)
     {
