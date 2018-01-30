@@ -177,7 +177,6 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
 {
     if (listener_ != 0)
     {
-        std::cerr << "Depth process start" << std::endl;
         impl_->depth_frame->bytes_per_pixel = packet.buffer_length;
         impl_->depth_frame->timestamp = packet.timestamp;
         impl_->depth_frame->sequence = packet.sequence;
@@ -194,22 +193,11 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
         if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
             impl_->newIrFrame();
         }
-//        else
-//        {
-//            delete impl_->ir_frame;
-//            impl_->newIrFrame();
-//        }
         
         if(listener_->onNewFrame(Frame::Depth, impl_->depth_frame))
         {
             impl_->newDepthFrame();
         }
-//        else
-//        {
-//            delete impl_->depth_frame;
-//            impl_->newDepthFrame();
-//        }
-        std::cerr << "Depth process stop" << std::endl;
     }
 }
 
