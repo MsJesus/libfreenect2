@@ -159,10 +159,10 @@ void RgbPacketStreamParser::onDataReceived(unsigned char* buffer, size_t length)
         rgb_packet.jpeg_buffer = raw_packet->jpeg_buffer;
         rgb_packet.jpeg_buffer_length = jpeg_length;
 
-        //allocatePacket() should never return NULL when processor is ready()
-        processor_->allocateBuffer(packet_, buffer_size_);
         // call the processor
         processor_->process(rgb_packet);
+          //allocatePacket() should never return NULL when processor is ready()
+          processor_->allocateBuffer(packet_, buffer_size_);
       }
       else
       {

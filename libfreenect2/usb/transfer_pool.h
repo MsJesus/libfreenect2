@@ -27,6 +27,7 @@
 #ifndef TRANSFER_POOL_H_
 #define TRANSFER_POOL_H_
 
+#include <atomic>
 #include <vector>
 #include <libusb.h>
 
@@ -59,25 +60,57 @@ public:
 
   void setCallback(DataCallback *callback);
 protected:
-  libfreenect2::mutex stopped_mutex;
+
+    size_t counter = 0;
+    libfreenect2::mutex stopped_mutex;
   struct Transfer
   {
-    libusb_transfer *transfer;
-    TransferPool *pool;
-    bool stopped;
-    Transfer(libusb_transfer *transfer, TransferPool *pool):
+      Transfer(libusb_transfer *transfer, TransferPool *pool):
       transfer(transfer), pool(pool), stopped(true) {}
-    void setStopped(bool value)
-    {
-      libfreenect2::lock_guard guard(pool->stopped_mutex);
-      stopped = value;
-    }
-    bool getStopped()
-    {
-      libfreenect2::lock_guard guard(pool->stopped_mutex);
-      return stopped;
-    }
+
+      libusb_transfer *transfer;
+      TransferPool *pool;
+      bool stopped;
+      bool submited;
+      size_t proccessing = 0;
+      
+      void setStopped(bool value)
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          stopped = value;
+      }
+      bool getStopped()
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          return stopped;
+      }
+      
+      void setSubmited(bool value)
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          submited = value;
+      }
+      bool getSubmited()
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          return submited;
+      }
+
+      void setProccessing(size_t value)
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          proccessing = value;
+      }
+      size_t getProccessing()
+      {
+          libfreenect2::lock_guard guard(pool->stopped_mutex);
+          return proccessing;
+      }
   };
+
+    typedef std::vector<Transfer> TransferQueue;
+    TransferQueue transfers_;
+    bool enable_submit_;
 
   void allocateTransfers(size_t num_transfers, size_t transfer_size);
 
@@ -85,23 +118,29 @@ protected:
   virtual void fillTransfer(libusb_transfer *transfer) = 0;
 
   virtual void processTransfer(libusb_transfer *transfer) = 0;
+    
+    virtual const char *poolName() = 0;
+    virtual int poolSubmit() = 0;
+//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue) = 0;
+    virtual void onTransferComplete(Transfer *transfer) = 0;
 
   DataCallback *callback_;
 private:
-  typedef std::vector<Transfer> TransferQueue;
+//  typedef std::vector<Transfer> TransferQueue;
 
   libusb_device_handle *device_handle_;
   unsigned char device_endpoint_;
 
-  TransferQueue transfers_;
   unsigned char *buffer_;
   size_t buffer_size_;
 
-  bool enable_submit_;
 
   static void onTransferCompleteStatic(libusb_transfer *transfer);
 
-  void onTransferComplete(Transfer *transfer);
+
+    libfreenect2::thread *proccess_thread_;
+    bool proccess_thread_shutdown_;
+    void proccessExecute();
 };
 
 class BulkTransferPool : public TransferPool
@@ -116,6 +155,11 @@ protected:
   virtual libusb_transfer *allocateTransfer();
   virtual void fillTransfer(libusb_transfer *transfer);
   virtual void processTransfer(libusb_transfer *transfer);
+    
+    virtual const char *poolName() { return "BULK USB"; };
+    virtual int poolSubmit() { return 20; }
+//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
+    virtual void onTransferComplete(Transfer *transfer);
 };
 
 class IsoTransferPool : public TransferPool
@@ -130,6 +174,11 @@ protected:
   virtual libusb_transfer *allocateTransfer();
   virtual void fillTransfer(libusb_transfer *transfer);
   virtual void processTransfer(libusb_transfer *transfer);
+
+    virtual const char *poolName() { return "ISO USB"; };
+    virtual int poolSubmit() { return 2; }
+//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
+    virtual void onTransferComplete(Transfer *transfer);
 
 private:
   size_t num_packets_;

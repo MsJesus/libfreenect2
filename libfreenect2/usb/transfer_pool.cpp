@@ -28,6 +28,7 @@
 
 #include <libfreenect2/usb/transfer_pool.h>
 #include <libfreenect2/logging.h>
+#include <iostream>
 
 #define WRITE_LIBUSB_ERROR(__RESULT) libusb_error_name(__RESULT) << " " << libusb_strerror((libusb_error)__RESULT)
 
@@ -42,7 +43,8 @@ TransferPool::TransferPool(libusb_device_handle* device_handle, unsigned char de
     device_endpoint_(device_endpoint),
     buffer_(0),
     buffer_size_(0),
-    enable_submit_(false)
+    enable_submit_(false),
+    proccess_thread_(nullptr)
 {
 }
 
@@ -89,42 +91,81 @@ bool TransferPool::submit()
     LOG_WARNING << "transfer submission disabled!";
     return false;
   }
-
+    
+    for(size_t i = 0; i < transfers_.size(); ++i)
+    {
+        transfers_[i].setStopped(true);
+        transfers_[i].setSubmited(true);
+        transfers_[i].setProccessing(false);
+    }
+    
   size_t failcount = 0;
+    size_t submitCount = 0;
   for(size_t i = 0; i < transfers_.size(); ++i)
   {
     libusb_transfer *transfer = transfers_[i].transfer;
-    transfers_[i].setStopped(false);
+//    transfers_[i].setStopped(false);
+//      transfers_[i].setSubmited(false);
 
-    int r = libusb_submit_transfer(transfer);
-
-    if(r != LIBUSB_SUCCESS)
-    {
-      LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-      transfers_[i].setStopped(true);
-      failcount++;
-    }
+      if (submitCount < poolSubmit())
+      {
+          int r = libusb_submit_transfer(transfer);
+          
+          if(r != LIBUSB_SUCCESS)
+          {
+              LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
+              transfers_[i].setStopped(true);
+              transfers_[i].setSubmited(false);
+              failcount++;
+          }
+          else
+          {
+              submitCount++;
+              transfers_[i].setStopped(false);
+              transfers_[i].setSubmited(true);
+          }
+      }
+      
   }
 
-  if (failcount == transfers_.size())
+    if (failcount >= poolSubmit())
+
+//  if (failcount == transfers_.size())
   {
     LOG_ERROR << "all submissions failed. Try debugging with environment variable: LIBUSB_DEBUG=3.";
     return false;
   }
 
+    if (proccess_thread_ == nullptr)
+    {
+        proccess_thread_shutdown_ = false;
+        proccess_thread_ = new libfreenect2::thread(&TransferPool::proccessExecute, this);
+    }
+    
   return true;
 }
 
 void TransferPool::cancel()
 {
+    if(proccess_thread_ != nullptr)
+    {
+        proccess_thread_shutdown_ = true;
+        proccess_thread_->join();
+        delete proccess_thread_;
+        proccess_thread_ = nullptr;
+    }
+
   for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
   {
-    int r = libusb_cancel_transfer(it->transfer);
-
-    if(r != LIBUSB_SUCCESS && r != LIBUSB_ERROR_NOT_FOUND)
-    {
-      LOG_ERROR << "failed to cancel transfer: " << WRITE_LIBUSB_ERROR(r);
-    }
+      bool submitted = it->getSubmited();
+      if (submitted)
+      {
+          int r = libusb_cancel_transfer(it->transfer);
+          if(r != LIBUSB_SUCCESS && r != LIBUSB_ERROR_NOT_FOUND)
+          {
+              LOG_ERROR << "failed to cancel transfer: " << WRITE_LIBUSB_ERROR(r);
+          }
+      }
   }
 
   for(;;)
@@ -177,33 +218,33 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
   TransferPool::Transfer *t = reinterpret_cast<TransferPool::Transfer*>(transfer->user_data);
   t->pool->onTransferComplete(t);
 }
+    
+    void TransferPool::proccessExecute()
+    {
+        this_thread::set_name(poolName());
+        while (!proccess_thread_shutdown_)
+        {
+            TransferQueue::iterator processIterator = transfers_.end();
+            size_t minCounter = std::numeric_limits<size_t>::max();
+            for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
+            {
+                auto curCounter = it->getProccessing();
+                if (curCounter > 0 && curCounter < minCounter)
+                {
+                    processIterator = it;
+                    minCounter = curCounter;
+                }
+            }
+            
+            if (processIterator != transfers_.end())
+            {
+                processTransfer(processIterator->transfer);
+                processIterator->setProccessing(0);
+            }
 
-void TransferPool::onTransferComplete(TransferPool::Transfer* t)
-{
-  if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
-  {
-    t->setStopped(true);
-    return;
-  }
-
-  // process data
-  processTransfer(t->transfer);
-
-  if(!enable_submit_)
-  {
-    t->setStopped(true);
-    return;
-  }
-
-  // resubmit self
-  int r = libusb_submit_transfer(t->transfer);
-
-  if(r != LIBUSB_SUCCESS)
-  {
-    LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-    t->setStopped(true);
-  }
-}
+            this_thread::sleep_for(std::chrono::microseconds(10));
+        }
+    }
 
 BulkTransferPool::BulkTransferPool(libusb_device_handle* device_handle, unsigned char device_endpoint) :
     TransferPool(device_handle, device_endpoint)
@@ -236,6 +277,46 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
   if(callback_)
     callback_->onDataReceived(transfer->buffer, transfer->actual_length);
 }
+    
+    void BulkTransferPool::onTransferComplete(TransferPool::Transfer* t)
+    {
+        t->setSubmited(false);
+        
+        if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
+        {
+            t->setStopped(true);
+            return;
+        }
+        
+        // process data
+        counter += 1;
+        t->setProccessing(counter);
+        
+        if(!enable_submit_)
+        {
+            t->setStopped(true);
+            return;
+        }
+        
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
+        {
+            if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
+            {
+                int r = libusb_submit_transfer(it->transfer);
+                
+                if(r != LIBUSB_SUCCESS)
+                {
+                    LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
+                    it->setStopped(true);
+                }
+                else
+                {
+                    it->setSubmited(true);
+                }
+                break;
+            }
+        }
+    }
 
 IsoTransferPool::IsoTransferPool(libusb_device_handle* device_handle, unsigned char device_endpoint) :
     TransferPool(device_handle, device_endpoint),
@@ -283,6 +364,47 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
     ptr += transfer->iso_packet_desc[i].length;
   }
 }
+    
+    
+    void IsoTransferPool::onTransferComplete(TransferPool::Transfer* t)
+    {
+        t->setSubmited(false);
+        
+        if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
+        {
+            t->setStopped(true);
+            return;
+        }
+        
+        // process data
+        counter += 1;
+        t->setProccessing(counter);
+        
+        if(!enable_submit_)
+        {
+            t->setStopped(true);
+            return;
+        }
+
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
+        {
+            if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
+            {
+                int r = libusb_submit_transfer(it->transfer);
+                
+                if(r != LIBUSB_SUCCESS)
+                {
+                    LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
+                    it->setStopped(true);
+                }
+                else
+                {
+                    it->setSubmited(true);
+                }
+                break;
+            }
+        }
+    }
 
 } /* namespace usb */
 } /* namespace libfreenect2 */

@@ -118,8 +118,8 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
               packet.buffer = packet_.memory->data;
               packet.buffer_length = packet_.memory->capacity;
 
-              processor_->allocateBuffer(packet_, buffer_size_);                
               processor_->process(packet);
+                processor_->allocateBuffer(packet_, buffer_size_);
 
               processed_packets_++;
               if (processed_packets_ == 0)
