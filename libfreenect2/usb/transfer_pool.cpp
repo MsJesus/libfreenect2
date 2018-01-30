@@ -240,6 +240,26 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             if (processIterator != transfers_.end())
             {
                 processTransfer(processIterator->transfer);
+                
+                if (submittedCount == 0)
+                {
+                    if (!(processIterator->getStopped()) && !(processIterator->getSubmited()))
+                    {
+                        int r = libusb_submit_transfer(processIterator->transfer);
+                        
+                        if(r != LIBUSB_SUCCESS)
+                        {
+                            LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
+                            processIterator->setStopped(true);
+                        }
+                        else
+                        {
+                            processIterator->setSubmited(true);
+                            submittedCount += 1;
+                        }
+                    }
+                }
+                
                 processIterator->setProccessing(0);
             }
 

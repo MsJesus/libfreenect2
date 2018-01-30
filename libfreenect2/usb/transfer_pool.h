@@ -62,7 +62,7 @@ public:
 protected:
 
     size_t counter = 0;
-    size_t submittedCount = 0;
+    std::atomic_ulong submittedCount;
     libfreenect2::mutex stopped_mutex;
   struct Transfer
   {
