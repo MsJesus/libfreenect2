@@ -62,6 +62,7 @@ public:
 protected:
 
     size_t counter = 0;
+    size_t submittedCount = 0;
     libfreenect2::mutex stopped_mutex;
   struct Transfer
   {
@@ -120,7 +121,7 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer) = 0;
     
     virtual const char *poolName() = 0;
-    virtual int poolSubmit() = 0;
+    virtual size_t poolSubmit() = 0;
 //    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue) = 0;
     virtual void onTransferComplete(Transfer *transfer) = 0;
 
@@ -157,7 +158,7 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer);
     
     virtual const char *poolName() { return "BULK USB"; };
-    virtual int poolSubmit() { return 20; }
+    virtual size_t poolSubmit() { return 20; }
 //    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
     virtual void onTransferComplete(Transfer *transfer);
 };
@@ -176,7 +177,7 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer);
 
     virtual const char *poolName() { return "ISO USB"; };
-    virtual int poolSubmit() { return 10; }
+    virtual size_t poolSubmit() { return 10; }
 //    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
     virtual void onTransferComplete(Transfer *transfer);
 

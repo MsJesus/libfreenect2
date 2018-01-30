@@ -121,6 +121,7 @@ bool TransferPool::submit()
           else
           {
               submitCount++;
+              submittedCount++;
               transfers_[i].setStopped(false);
               transfers_[i].setSubmited(true);
           }
@@ -281,6 +282,7 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
     void BulkTransferPool::onTransferComplete(TransferPool::Transfer* t)
     {
         t->setSubmited(false);
+        submittedCount -= 1;
         
         if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
         {
@@ -298,8 +300,7 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
             return;
         }
         
-        bool submit_found = false;
-        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && !submit_found; ++it)
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && (submittedCount < poolSubmit()); ++it)
         {
             if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
             {
@@ -313,13 +314,14 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
                 else
                 {
                     it->setSubmited(true);
+                    submittedCount += 1;
                 }
-                submit_found = true;
             }
         }
-        if (!submit_found)
+        
+        if (submittedCount == 0)
         {
-            LOG_ERROR << "Alarm failed to found submit";
+            LOG_ERROR << "transfer finished!!!";
         }
     }
 
@@ -374,6 +376,7 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
     void IsoTransferPool::onTransferComplete(TransferPool::Transfer* t)
     {
         t->setSubmited(false);
+        submittedCount -= 1;
         
         if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
         {
@@ -391,8 +394,7 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
             return;
         }
 
-        bool submit_found = false;
-        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && !submit_found; ++it)
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && (submittedCount < poolSubmit()); ++it)
         {
             if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
             {
@@ -406,13 +408,14 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
                 else
                 {
                     it->setSubmited(true);
+                    submittedCount += 1;
                 }
-                submit_found = true;
             }
         }
-        if (!submit_found)
+        
+        if (submittedCount == 0)
         {
-            LOG_ERROR << "Alarm failed to found submit";
+            LOG_ERROR << "transfer finished!!!";
         }
     }
 
