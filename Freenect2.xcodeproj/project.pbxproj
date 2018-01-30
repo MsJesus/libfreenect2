@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		94147CAA20206C17001D9E4F /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
+		558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
+		558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
+		558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		941AE6041F535DEB00073D32 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE6031F535DEB00073D32 /* registration.h */; };
 		941AE6311F53620D00073D32 /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE60A1F53620D00073D32 /* libusb.h */; };
 		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
-		941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
 		9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.a */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
@@ -56,7 +57,6 @@
 		94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */; };
 		94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67F1F52E215008CBD18 /* packet_pipeline.h */; };
 		94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
-		94C58EA5201A37420025AD4A /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,7 +136,7 @@
 		94B8A6491F52E13F008CBD18 /* usb_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = usb_control.cpp; sourceTree = "<group>"; };
 		94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener_impl.h; sourceTree = "<group>"; };
 		94B8A67F1F52E215008CBD18 /* packet_pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_pipeline.h; sourceTree = "<group>"; };
-		94C58EA3201A37420025AD4A /* libturbojpeg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libturbojpeg.dylib; sourceTree = "<group>"; };
+		94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libturbojpeg-dynamic.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +144,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94C58EA5201A37420025AD4A /* libturbojpeg.dylib in Frameworks */,
 				9498E8C21F8E53ED00D4E7B6 /* OpenGL.framework in Frameworks */,
+				558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */,
 				9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */,
 				9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */,
 			);
@@ -155,8 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */,
-				94147CAA20206C17001D9E4F /* libturbojpeg.dylib in Frameworks */,
+				558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */,
+				558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +185,7 @@
 		941AE62D1F53620D00073D32 /* turbojpeg */ = {
 			isa = PBXGroup;
 			children = (
-				94C58EA3201A37420025AD4A /* libturbojpeg.dylib */,
+				94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */,
 				941AE62E1F53620D00073D32 /* turbojpeg.h */,
 			);
 			path = turbojpeg;
@@ -616,7 +616,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/libusb",
 					"$(PROJECT_DIR)/external/turbojpeg",
-					"/opt/libjpeg-turbo/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -632,7 +631,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/libusb",
 					"$(PROJECT_DIR)/external/turbojpeg",
-					"/opt/libjpeg-turbo/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
