@@ -145,6 +145,10 @@ void DepthPacketStreamParser::onDataReceived(unsigned char* buffer, size_t in_le
           current_sequence_ = footer->sequence;
           current_subsequence_ = 0;
         }
+          else
+          {
+              LOG_DEBUG << "current sequence not equal footer sequence";
+          }
 
         Buffer &fb = *packet_.memory;
 
