@@ -298,7 +298,8 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
             return;
         }
         
-        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
+        bool submit_found = false;
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && !submit_found; ++it)
         {
             if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
             {
@@ -313,8 +314,12 @@ void BulkTransferPool::processTransfer(libusb_transfer* transfer)
                 {
                     it->setSubmited(true);
                 }
-                break;
+                submit_found = true;
             }
+        }
+        if (!submit_found)
+        {
+            LOG_ERROR << "Alarm failed to found submit";
         }
     }
 
@@ -386,7 +391,8 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
             return;
         }
 
-        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
+        bool submit_found = false;
+        for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && !submit_found; ++it)
         {
             if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
             {
@@ -401,8 +407,12 @@ void IsoTransferPool::processTransfer(libusb_transfer* transfer)
                 {
                     it->setSubmited(true);
                 }
-                break;
+                submit_found = true;
             }
+        }
+        if (!submit_found)
+        {
+            LOG_ERROR << "Alarm failed to found submit";
         }
     }
 

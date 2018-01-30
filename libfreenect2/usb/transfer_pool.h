@@ -176,7 +176,7 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer);
 
     virtual const char *poolName() { return "ISO USB"; };
-    virtual int poolSubmit() { return 2; }
+    virtual int poolSubmit() { return 10; }
 //    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
     virtual void onTransferComplete(Transfer *transfer);
 
