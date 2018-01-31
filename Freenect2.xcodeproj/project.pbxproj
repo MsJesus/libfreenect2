@@ -10,55 +10,30 @@
 		558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
-		5583650C2021D02E0035DF19 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		5583650D2021D02E0035DF19 /* libusb-1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		5583650E2021D02E0035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		941AE6041F535DEB00073D32 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE6031F535DEB00073D32 /* registration.h */; };
-		941AE6311F53620D00073D32 /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE60A1F53620D00073D32 /* libusb.h */; };
-		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
+		558365102021D7E30035DF19 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		558365112021D7E30035DF19 /* libusb-1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		558365122021D7E30035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
 		9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.a */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
 		9498E8BB1F8E522800D4E7B6 /* flextGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B91F8E522800D4E7B6 /* flextGL.cpp */; };
 		9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; };
 		9498E8C21F8E53ED00D4E7B6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9498E8C11F8E53ED00D4E7B6 /* OpenGL.framework */; };
-		9498E8CA1F8FA9E500D4E7B6 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 9498E8C61F8FA9CC00D4E7B6 /* config.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9498E8CB1F8FA9E500D4E7B6 /* frame_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = 9498E8C71F8FA9CC00D4E7B6 /* frame_listener.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9498E8CC1F8FA9E500D4E7B6 /* libfreenect2.h in Headers */ = {isa = PBXBuildFile; fileRef = 9498E8C81F8FA9CC00D4E7B6 /* libfreenect2.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9498E8CD1F8FA9E500D4E7B6 /* logger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9498E8C91F8FA9CC00D4E7B6 /* logger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		94B8A64C1F52E13F008CBD18 /* allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A61A1F52E13F008CBD18 /* allocator.cpp */; };
-		94B8A64D1F52E13F008CBD18 /* allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A61B1F52E13F008CBD18 /* allocator.h */; };
-		94B8A64E1F52E13F008CBD18 /* async_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */; };
 		94B8A64F1F52E13F008CBD18 /* command_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A61D1F52E13F008CBD18 /* command_transaction.cpp */; };
 		94B8A6511F52E13F008CBD18 /* cpu_depth_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */; };
-		94B8A6521F52E13F008CBD18 /* data_callback.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6221F52E13F008CBD18 /* data_callback.h */; };
 		94B8A6531F52E13F008CBD18 /* depth_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6231F52E13F008CBD18 /* depth_packet_processor.cpp */; };
-		94B8A6541F52E13F008CBD18 /* depth_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6241F52E13F008CBD18 /* depth_packet_processor.h */; };
 		94B8A6551F52E13F008CBD18 /* depth_packet_stream_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */; };
-		94B8A6561F52E13F008CBD18 /* depth_packet_stream_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6261F52E13F008CBD18 /* depth_packet_stream_parser.h */; };
 		94B8A6571F52E13F008CBD18 /* event_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6271F52E13F008CBD18 /* event_loop.cpp */; };
 		94B8A65B1F52E13F008CBD18 /* frame_listener_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62B1F52E13F008CBD18 /* frame_listener_impl.cpp */; };
 		94B8A65C1F52E13F008CBD18 /* libfreenect2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62C1F52E13F008CBD18 /* libfreenect2.cpp */; };
 		94B8A65D1F52E13F008CBD18 /* logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62D1F52E13F008CBD18 /* logging.cpp */; };
-		94B8A65E1F52E13F008CBD18 /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A62E1F52E13F008CBD18 /* logging.h */; };
 		94B8A6641F52E13F008CBD18 /* packet_pipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6341F52E13F008CBD18 /* packet_pipeline.cpp */; };
-		94B8A6651F52E13F008CBD18 /* packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6351F52E13F008CBD18 /* packet_processor.h */; };
-		94B8A6661F52E13F008CBD18 /* command.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6371F52E13F008CBD18 /* command.h */; };
-		94B8A6671F52E13F008CBD18 /* command_transaction.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6381F52E13F008CBD18 /* command_transaction.h */; };
-		94B8A6681F52E13F008CBD18 /* response.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6391F52E13F008CBD18 /* response.h */; };
-		94B8A6691F52E13F008CBD18 /* usb_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A63A1F52E13F008CBD18 /* usb_control.h */; };
 		94B8A66A1F52E13F008CBD18 /* registration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A63B1F52E13F008CBD18 /* registration.cpp */; };
 		94B8A66D1F52E13F008CBD18 /* rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A63E1F52E13F008CBD18 /* rgb_packet_processor.cpp */; };
-		94B8A66E1F52E13F008CBD18 /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A63F1F52E13F008CBD18 /* rgb_packet_processor.h */; };
 		94B8A66F1F52E13F008CBD18 /* rgb_packet_stream_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6401F52E13F008CBD18 /* rgb_packet_stream_parser.cpp */; };
-		94B8A6701F52E13F008CBD18 /* rgb_packet_stream_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6411F52E13F008CBD18 /* rgb_packet_stream_parser.h */; };
-		94B8A6721F52E13F008CBD18 /* threading.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6431F52E13F008CBD18 /* threading.h */; };
 		94B8A6731F52E13F008CBD18 /* transfer_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6441F52E13F008CBD18 /* transfer_pool.cpp */; };
-		94B8A6751F52E13F008CBD18 /* event_loop.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6471F52E13F008CBD18 /* event_loop.h */; };
-		94B8A6761F52E13F008CBD18 /* transfer_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A6481F52E13F008CBD18 /* transfer_pool.h */; };
 		94B8A6771F52E13F008CBD18 /* usb_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6491F52E13F008CBD18 /* usb_control.cpp */; };
-		94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */; };
-		94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67F1F52E215008CBD18 /* packet_pipeline.h */; };
 		94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
 /* End PBXBuildFile section */
 
@@ -73,15 +48,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		946014401F8D231E008F88C6 /* CopyFiles */ = {
+		5583650F2021D7D60035DF19 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				5583650C2021D02E0035DF19 /* libglfw.3.2.dylib in CopyFiles */,
-				5583650D2021D02E0035DF19 /* libusb-1.0.0.dylib in CopyFiles */,
-				5583650E2021D02E0035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */,
+				558365102021D7E30035DF19 /* libglfw.3.2.dylib in CopyFiles */,
+				558365112021D7E30035DF19 /* libusb-1.0.0.dylib in CopyFiles */,
+				558365122021D7E30035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,41 +295,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		949708401F52E04A00BC9C22 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				94B8A64E1F52E13F008CBD18 /* async_packet_processor.h in Headers */,
-				94B8A6561F52E13F008CBD18 /* depth_packet_stream_parser.h in Headers */,
-				941AE6491F53620D00073D32 /* turbojpeg.h in Headers */,
-				94B8A6541F52E13F008CBD18 /* depth_packet_processor.h in Headers */,
-				94B8A6651F52E13F008CBD18 /* packet_processor.h in Headers */,
-				94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */,
-				94B8A6751F52E13F008CBD18 /* event_loop.h in Headers */,
-				94B8A6661F52E13F008CBD18 /* command.h in Headers */,
-				9498E8CA1F8FA9E500D4E7B6 /* config.h in Headers */,
-				94B8A6701F52E13F008CBD18 /* rgb_packet_stream_parser.h in Headers */,
-				94B8A6761F52E13F008CBD18 /* transfer_pool.h in Headers */,
-				94B8A6691F52E13F008CBD18 /* usb_control.h in Headers */,
-				94B8A64D1F52E13F008CBD18 /* allocator.h in Headers */,
-				941AE6041F535DEB00073D32 /* registration.h in Headers */,
-				94B8A65E1F52E13F008CBD18 /* logging.h in Headers */,
-				94B8A6671F52E13F008CBD18 /* command_transaction.h in Headers */,
-				94B8A6521F52E13F008CBD18 /* data_callback.h in Headers */,
-				9498E8CC1F8FA9E500D4E7B6 /* libfreenect2.h in Headers */,
-				94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */,
-				94B8A66E1F52E13F008CBD18 /* rgb_packet_processor.h in Headers */,
-				94B8A6721F52E13F008CBD18 /* threading.h in Headers */,
-				94B8A6681F52E13F008CBD18 /* response.h in Headers */,
-				9498E8CB1F8FA9E500D4E7B6 /* frame_listener.h in Headers */,
-				9498E8CD1F8FA9E500D4E7B6 /* logger.h in Headers */,
-				941AE6311F53620D00073D32 /* libusb.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		946014411F8D231E008F88C6 /* protonect */ = {
 			isa = PBXNativeTarget;
@@ -362,7 +302,6 @@
 			buildPhases = (
 				9460143E1F8D231E008F88C6 /* Sources */,
 				9460143F1F8D231E008F88C6 /* Frameworks */,
-				946014401F8D231E008F88C6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -380,7 +319,7 @@
 			buildPhases = (
 				9497083E1F52E04A00BC9C22 /* Sources */,
 				9497083F1F52E04A00BC9C22 /* Frameworks */,
-				949708401F52E04A00BC9C22 /* Headers */,
+				5583650F2021D7D60035DF19 /* CopyFiles */,
 			);
 			buildRules = (
 			);
