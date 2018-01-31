@@ -14,7 +14,7 @@
 		558365112021D7E30035DF19 /* libusb-1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		558365122021D7E30035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
-		9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.a */; };
+		9460144D1F8D2337008F88C6 /* libFreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.dylib */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
 		9498E8BB1F8E522800D4E7B6 /* flextGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B91F8E522800D4E7B6 /* flextGL.cpp */; };
 		9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; };
@@ -69,7 +69,7 @@
 		941AE62E1F53620D00073D32 /* turbojpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = turbojpeg.h; sourceTree = "<group>"; };
 		9460143C1F8D22F6008F88C6 /* protonect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = protonect.cpp; sourceTree = "<group>"; };
 		946014421F8D231E008F88C6 /* protonect */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = protonect; sourceTree = BUILT_PRODUCTS_DIR; };
-		949708421F52E04A00BC9C22 /* libFreenect2.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFreenect2.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		949708421F52E04A00BC9C22 /* libFreenect2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFreenect2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		9498E8B61F8E4BE300D4E7B6 /* viewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viewer.h; sourceTree = "<group>"; };
 		9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewer.cpp; sourceTree = "<group>"; };
 		9498E8B91F8E522800D4E7B6 /* flextGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flextGL.cpp; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 			files = (
 				9498E8C21F8E53ED00D4E7B6 /* OpenGL.framework in Frameworks */,
 				558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */,
-				9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */,
+				9460144D1F8D2337008F88C6 /* libFreenect2.dylib in Frameworks */,
 				9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,7 +208,7 @@
 		949708431F52E04A00BC9C22 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				949708421F52E04A00BC9C22 /* libFreenect2.a */,
+				949708421F52E04A00BC9C22 /* libFreenect2.dylib */,
 				946014421F8D231E008F88C6 /* protonect */,
 			);
 			name = Products;
@@ -327,7 +327,7 @@
 			);
 			name = Freenect2;
 			productName = libfreenect2;
-			productReference = 949708421F52E04A00BC9C22 /* libFreenect2.a */;
+			productReference = 949708421F52E04A00BC9C22 /* libFreenect2.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -525,6 +525,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -548,13 +549,14 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		949708471F52E04A00BC9C22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_EXTENSION = a;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path";
 				EXECUTABLE_PREFIX = lib;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 				LIBRARY_SEARCH_PATHS = (
@@ -569,7 +571,7 @@
 		949708481F52E04A00BC9C22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_EXTENSION = a;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path";
 				EXECUTABLE_PREFIX = lib;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 				LIBRARY_SEARCH_PATHS = (
