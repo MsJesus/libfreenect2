@@ -10,6 +10,9 @@
 		558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
+		5583650C2021D02E0035DF19 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5583650D2021D02E0035DF19 /* libusb-1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5583650E2021D02E0035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		941AE6041F535DEB00073D32 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE6031F535DEB00073D32 /* registration.h */; };
 		941AE6311F53620D00073D32 /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE60A1F53620D00073D32 /* libusb.h */; };
 		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
@@ -72,12 +75,15 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		946014401F8D231E008F88C6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				5583650C2021D02E0035DF19 /* libglfw.3.2.dylib in CopyFiles */,
+				5583650D2021D02E0035DF19 /* libusb-1.0.0.dylib in CopyFiles */,
+				5583650E2021D02E0035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
