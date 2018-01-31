@@ -71,49 +71,54 @@ protected:
   struct Transfer
   {
       Transfer(libusb_transfer *transfer, TransferPool *pool):
-      transfer(transfer), pool(pool), stopped(true) {}
+      transfer(transfer),
+      pool(pool),
+      stopped(true),
+      submited(false),
+      proccessing(0)
+      {}
 
       libusb_transfer *transfer;
       TransferPool *pool;
-      bool stopped;
-      bool submited;
-      size_t proccessing = 0;
+      std::atomic_bool stopped;
+      std::atomic_bool submited;
+      std::atomic_ulong proccessing;
       
       void setStopped(bool value)
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           stopped = value;
       }
       bool getStopped()
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           return stopped;
       }
       
       void setSubmited(bool value)
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           submited = value;
       }
       bool getSubmited()
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           return submited;
       }
 
       void setProccessing(size_t value)
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           proccessing = value;
       }
       size_t getProccessing()
       {
-          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          libfreenect2::lock_guard guard(pool->stopped_mutex);
           return proccessing;
       }
   };
 
-    typedef std::vector<Transfer> TransferQueue;
+    typedef std::vector<std::unique_ptr<Transfer>> TransferQueue;
     TransferQueue transfers_;
 
   void allocateTransfers(size_t num_transfers, size_t transfer_size);

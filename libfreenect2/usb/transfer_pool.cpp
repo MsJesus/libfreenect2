@@ -72,7 +72,8 @@ void TransferPool::deallocate()
 {
   for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
   {
-    libusb_free_transfer(it->transfer);
+      auto element = it->get();
+    libusb_free_transfer(element->transfer);
   }
   transfers_.clear();
 
@@ -96,9 +97,10 @@ bool TransferPool::submit()
     
     for(size_t i = 0; i < transfers_.size(); ++i)
     {
-        transfers_[i].setStopped(false);
-        transfers_[i].setSubmited(true);
-        transfers_[i].setProccessing(false);
+        auto element = transfers_[i].get();
+        element->setStopped(false);
+        element->setSubmited(true);
+        element->setProccessing(false);
     }
     
     submittedCount = 0;
@@ -106,7 +108,8 @@ bool TransferPool::submit()
     size_t submitCount = 0;
   for(size_t i = 0; i < transfers_.size(); ++i)
   {
-    libusb_transfer *transfer = transfers_[i].transfer;
+      auto element = transfers_[i].get();
+    libusb_transfer *transfer = element->transfer;
 
       if (submitCount < num_submit_)
       {
@@ -118,8 +121,8 @@ bool TransferPool::submit()
           if(r != LIBUSB_SUCCESS)
           {
               LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-              transfers_[i].setStopped(true);
-              transfers_[i].setSubmited(false);
+              element->setStopped(true);
+              element->setSubmited(false);
               failcount++;
               submitCount--;
               submittedCount--;
@@ -158,10 +161,11 @@ void TransferPool::cancel()
 
   for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
   {
-      bool submitted = it->getSubmited();
+      auto element = it->get();
+      bool submitted = element->getSubmited();
       if (submitted)
       {
-          int r = libusb_cancel_transfer(it->transfer);
+          int r = libusb_cancel_transfer(element->transfer);
           if(r != LIBUSB_SUCCESS && r != LIBUSB_ERROR_NOT_FOUND)
           {
               LOG_ERROR << "failed to cancel transfer: " << WRITE_LIBUSB_ERROR(r);
@@ -174,7 +178,10 @@ void TransferPool::cancel()
     libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));
     size_t stopped_transfers = 0;
     for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
-      stopped_transfers += it->getStopped();
+    {
+        auto element = it->get();
+        stopped_transfers += element->getStopped();
+    }
     if (stopped_transfers == transfers_.size())
       break;
     LOG_INFO << "waiting for transfer cancellation";
@@ -186,12 +193,14 @@ void TransferPool::setCallback(DataCallback *callback)
 {
   callback_ = callback;
 }
+    
+    
 
 void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
 {
   buffer_size_ = num_transfers * transfer_size;
   buffer_ = new unsigned char[buffer_size_];
-  transfers_.reserve(num_transfers);
+//  transfers_.reserve(num_transfers);
     num_submit_ = num_transfers / 2;
     
   unsigned char *ptr = buffer_;
@@ -201,7 +210,7 @@ void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
     libusb_transfer *transfer = allocateTransfer();
     fillTransfer(transfer);
 
-    transfers_.push_back(TransferPool::Transfer(transfer, this));
+    transfers_.emplace_back(new TransferPool::Transfer(transfer, this));
 
     transfer->dev_handle = device_handle_;
     transfer->endpoint = device_endpoint_;
@@ -209,7 +218,7 @@ void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
     transfer->length = transfer_size;
     transfer->timeout = 1000;
     transfer->callback = (libusb_transfer_cb_fn) &TransferPool::onTransferCompleteStatic;
-    transfer->user_data = &transfers_.back();
+    transfer->user_data = transfers_.back().get();
 
     ptr += transfer_size;
   }
@@ -228,7 +237,7 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
         
         if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
         {
-            LOG_INFO << "Transfer canceled";
+//            LOG_INFO << "Transfer canceled";
             t->setStopped(true);
             return;
         }
@@ -248,18 +257,19 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             submiting_ = true;
             for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && (submittedCount < num_submit_); ++it)
             {
-                if (!(it->getStopped()) && !(it->getSubmited()) && (it->getProccessing() == 0))
+                auto element = it->get();
+                if (!(element->getStopped()) && !(element->getSubmited()) && (element->getProccessing() == 0))
                 {
-                    it->setSubmited(true);
+                    element->setSubmited(true);
                     submittedCount += 1;
 
-                    int r = libusb_submit_transfer(it->transfer);
+                    int r = libusb_submit_transfer(element->transfer);
                     
                     if(r != LIBUSB_SUCCESS)
                     {
                         LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-                        it->setStopped(true);
-                        it->setSubmited(false);
+                        element->setStopped(true);
+                        element->setSubmited(false);
                         submittedCount -= 1;
                     }
                 }
@@ -282,7 +292,8 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             size_t minCounter = std::numeric_limits<size_t>::max();
             for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
             {
-                auto curCounter = it->getProccessing();
+                auto element = it->get();
+                auto curCounter = element->getProccessing();
                 if (curCounter > 0 && curCounter < minCounter)
                 {
                     processIterator = it;
@@ -292,23 +303,24 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             
             if (processIterator != transfers_.end())
             {
-                processTransfer(processIterator->transfer);
-                processIterator->setProccessing(0);
+                auto element = processIterator->get();
+                processTransfer(element->transfer);
+                element->setProccessing(0);
 
                 if ((submittedCount == 0) && (!submiting_))
                 {
-                    if (!(processIterator->getStopped()) && !(processIterator->getSubmited()))
+                    if (!(element->getStopped()) && !(element->getSubmited()))
                     {
-                        processIterator->setSubmited(true);
+                        element->setSubmited(true);
                         submittedCount += 1;
 
-                        int r = libusb_submit_transfer(processIterator->transfer);
+                        int r = libusb_submit_transfer(element->transfer);
                         
                         if(r != LIBUSB_SUCCESS)
                         {
                             LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-                            processIterator->setStopped(true);
-                            processIterator->setSubmited(false);
+                            element->setStopped(true);
+                            element->setSubmited(false);
                             submittedCount -= 1;
                         }
                     }
