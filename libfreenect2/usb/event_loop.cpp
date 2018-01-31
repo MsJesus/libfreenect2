@@ -52,6 +52,7 @@ void EventLoop::static_execute(void *cookie)
 EventLoop::EventLoop() :
     shutdown_(false),
     thread_(0),
+    thread_alt_(0),
     usb_context_(0)
 {
 }
@@ -72,6 +73,7 @@ void EventLoop::start(void *usb_context)
     shutdown_ = false;
     usb_context_ = usb_context;
     thread_ = new libfreenect2::thread(&EventLoop::static_execute, this);
+      thread_alt_ = new libfreenect2::thread(&EventLoop::static_execute, this);
   }
 }
 
