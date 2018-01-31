@@ -46,7 +46,6 @@ public:
 private:
   bool shutdown_;
   libfreenect2::thread *thread_;
-    libfreenect2::thread *thread_alt_;
   void *usb_context_;
 
   static void static_execute(void *cookie);

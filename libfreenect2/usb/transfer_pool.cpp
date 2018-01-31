@@ -144,6 +144,7 @@ bool TransferPool::submit()
     {
         proccess_thread_shutdown_ = false;
         proccess_thread_ = new libfreenect2::thread(&TransferPool::proccessExecute, this);
+        submit_thread_ = new libfreenect2::thread(&TransferPool::submitExecute, this);
     }
     
   return true;
@@ -157,6 +158,9 @@ void TransferPool::cancel()
         proccess_thread_->join();
         delete proccess_thread_;
         proccess_thread_ = nullptr;
+        
+        submit_thread_->join();
+        delete submit_thread_;
     }
 
   for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end(); ++it)
@@ -201,7 +205,7 @@ void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
   buffer_size_ = num_transfers * transfer_size;
   buffer_ = new unsigned char[buffer_size_];
 //  transfers_.reserve(num_transfers);
-    num_submit_ = num_transfers / 2;
+    num_submit_ = num_transfers / 3;
     
   unsigned char *ptr = buffer_;
 
@@ -216,7 +220,7 @@ void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
     transfer->endpoint = device_endpoint_;
     transfer->buffer = ptr;
     transfer->length = transfer_size;
-    transfer->timeout = 1000;
+    transfer->timeout = 100;
     transfer->callback = (libusb_transfer_cb_fn) &TransferPool::onTransferCompleteStatic;
     transfer->user_data = transfers_.back().get();
 
@@ -251,37 +255,7 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             t->setStopped(true);
             return;
         }
-        
-        if (!submiting_)
-        {
-            submiting_ = true;
-            for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && (submittedCount < num_submit_); ++it)
-            {
-                auto element = it->get();
-                if (!(element->getStopped()) && !(element->getSubmited()) && (element->getProccessing() == 0))
-                {
-                    element->setSubmited(true);
-                    submittedCount += 1;
-
-                    int r = libusb_submit_transfer(element->transfer);
-                    
-                    if(r != LIBUSB_SUCCESS)
-                    {
-                        LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-                        element->setStopped(true);
-                        element->setSubmited(false);
-                        submittedCount -= 1;
-                    }
-                }
-            }
-            
-            if (submittedCount == 0)
-            {
-                LOG_ERROR << "transfer finished!!!";
-            }
-            submiting_ = false;
-        }
-    }
+     }
     
     void TransferPool::proccessExecute()
     {
@@ -303,33 +277,60 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             
             if (processIterator != transfers_.end())
             {
-                auto element = processIterator->get();
-                processTransfer(element->transfer);
-                element->setProccessing(0);
-
-                if ((submittedCount == 0) && (!submiting_))
-                {
-                    if (!(element->getStopped()) && !(element->getSubmited()))
-                    {
-                        element->setSubmited(true);
-                        submittedCount += 1;
-
-                        int r = libusb_submit_transfer(element->transfer);
-                        
-                        if(r != LIBUSB_SUCCESS)
-                        {
-                            LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
-                            element->setStopped(true);
-                            element->setSubmited(false);
-                            submittedCount -= 1;
-                        }
-                    }
-                }                
+                auto prcoessElement = processIterator->get();
+                processTransfer(prcoessElement->transfer);
+                
+                prcoessElement->setProccessing(0);
             }
 
-            this_thread::sleep_for(std::chrono::microseconds(10));
+            this_thread::yield();
+//            this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
+    
+    void TransferPool::submitExecute()
+    {
+        std::string name = poolName();
+        name += " SUBMIT";
+        this_thread::set_name(name.c_str());
+        while (!proccess_thread_shutdown_)
+        {
+                if (!submiting_)
+                {
+                    submiting_ = true;
+                    for(TransferQueue::iterator it = transfers_.begin(); it != transfers_.end() && (submittedCount < num_submit_); ++it)
+                    {
+                        auto element = it->get();
+                        if (!(element->getStopped()) && !(element->getSubmited()) && (element->getProccessing() == 0))
+                        {
+                            element->setSubmited(true);
+                            submittedCount += 1;
+                            
+                            int r = libusb_submit_transfer(element->transfer);
+                            
+                            if(r != LIBUSB_SUCCESS)
+                            {
+                                LOG_ERROR << "failed to submit transfer: " << WRITE_LIBUSB_ERROR(r);
+                                element->setStopped(true);
+                                element->setSubmited(false);
+                                submittedCount -= 1;
+                            }
+                        }
+                    }
+                    
+                    if (submittedCount == 0)
+                    {
+                        LOG_ERROR << "transfer finished!!!";
+                    }
+                    submiting_ = false;
+                }
+            
+            this_thread::yield();
+
+//            this_thread::sleep_for(std::chrono::microseconds(1));
+        }
+    }
+
 
 BulkTransferPool::BulkTransferPool(libusb_device_handle* device_handle, unsigned char device_endpoint) :
     TransferPool(device_handle, device_endpoint)

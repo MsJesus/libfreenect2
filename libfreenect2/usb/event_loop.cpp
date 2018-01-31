@@ -52,7 +52,6 @@ void EventLoop::static_execute(void *cookie)
 EventLoop::EventLoop() :
     shutdown_(false),
     thread_(0),
-    thread_alt_(0),
     usb_context_(0)
 {
 }
@@ -73,7 +72,6 @@ void EventLoop::start(void *usb_context)
     shutdown_ = false;
     usb_context_ = usb_context;
     thread_ = new libfreenect2::thread(&EventLoop::static_execute, this);
-      thread_alt_ = new libfreenect2::thread(&EventLoop::static_execute, this);
   }
 }
 
@@ -96,11 +94,13 @@ void EventLoop::execute()
   this_thread::set_name("USB");
   timeval t;
   t.tv_sec = 0;
-  t.tv_usec = 100000;
+  t.tv_usec = 1000;
 
   while(!shutdown_)
   {
     libusb_handle_events_timeout_completed(reinterpret_cast<libusb_context *>(usb_context_), &t, 0);
+      
+      
   }
 }
 

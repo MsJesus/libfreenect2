@@ -147,6 +147,8 @@ private:
 
     libfreenect2::thread *proccess_thread_;
     void proccessExecute();
+    libfreenect2::thread *submit_thread_;
+    void submitExecute();
 };
 
 class BulkTransferPool : public TransferPool
