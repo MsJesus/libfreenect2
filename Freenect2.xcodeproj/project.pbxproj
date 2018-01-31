@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		94147CAA20206C17001D9E4F /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
+		94147CAA20206C17001D9E4F /* libturbojpeg-dylib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dylib.dylib */; };
+		94147CAD20221C73001D9E4F /* object.h in Headers */ = {isa = PBXBuildFile; fileRef = 94147CAB20221C73001D9E4F /* object.h */; };
+		94147CAE20221C73001D9E4F /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 94147CAC20221C73001D9E4F /* collection.h */; };
 		941AE6041F535DEB00073D32 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE6031F535DEB00073D32 /* registration.h */; };
 		941AE6311F53620D00073D32 /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE60A1F53620D00073D32 /* libusb.h */; };
 		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
@@ -56,7 +58,6 @@
 		94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */; };
 		94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 94B8A67F1F52E215008CBD18 /* packet_pipeline.h */; };
 		94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
-		94C58EA5201A37420025AD4A /* libturbojpeg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		94147CAB20221C73001D9E4F /* object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = "<group>"; };
+		94147CAC20221C73001D9E4F /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
 		941AE6031F535DEB00073D32 /* registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registration.h; sourceTree = "<group>"; };
 		941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libusb-1.0.0.dylib"; sourceTree = "<group>"; };
 		941AE60A1F53620D00073D32 /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libusb.h; sourceTree = "<group>"; };
@@ -136,7 +139,7 @@
 		94B8A6491F52E13F008CBD18 /* usb_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = usb_control.cpp; sourceTree = "<group>"; };
 		94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener_impl.h; sourceTree = "<group>"; };
 		94B8A67F1F52E215008CBD18 /* packet_pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_pipeline.h; sourceTree = "<group>"; };
-		94C58EA3201A37420025AD4A /* libturbojpeg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libturbojpeg.dylib; sourceTree = "<group>"; };
+		94C58EA3201A37420025AD4A /* libturbojpeg-dylib.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libturbojpeg-dylib.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,7 +147,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94C58EA5201A37420025AD4A /* libturbojpeg.dylib in Frameworks */,
 				9498E8C21F8E53ED00D4E7B6 /* OpenGL.framework in Frameworks */,
 				9460144D1F8D2337008F88C6 /* libFreenect2.a in Frameworks */,
 				9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */,
@@ -156,7 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				941AE65F1F5362AF00073D32 /* libusb-1.0.0.dylib in Frameworks */,
-				94147CAA20206C17001D9E4F /* libturbojpeg.dylib in Frameworks */,
+				94147CAA20206C17001D9E4F /* libturbojpeg-dylib.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +187,7 @@
 		941AE62D1F53620D00073D32 /* turbojpeg */ = {
 			isa = PBXGroup;
 			children = (
-				94C58EA3201A37420025AD4A /* libturbojpeg.dylib */,
+				94C58EA3201A37420025AD4A /* libturbojpeg-dylib.dylib */,
 				941AE62E1F53620D00073D32 /* turbojpeg.h */,
 			);
 			path = turbojpeg;
@@ -304,6 +306,8 @@
 		94B8A6461F52E13F008CBD18 /* usb */ = {
 			isa = PBXGroup;
 			children = (
+				94147CAC20221C73001D9E4F /* collection.h */,
+				94147CAB20221C73001D9E4F /* object.h */,
 				94B8A6271F52E13F008CBD18 /* event_loop.cpp */,
 				94B8A6471F52E13F008CBD18 /* event_loop.h */,
 				94B8A6441F52E13F008CBD18 /* transfer_pool.cpp */,
@@ -322,9 +326,11 @@
 				94B8A64E1F52E13F008CBD18 /* async_packet_processor.h in Headers */,
 				94B8A6561F52E13F008CBD18 /* depth_packet_stream_parser.h in Headers */,
 				941AE6491F53620D00073D32 /* turbojpeg.h in Headers */,
+				94147CAE20221C73001D9E4F /* collection.h in Headers */,
 				94B8A6541F52E13F008CBD18 /* depth_packet_processor.h in Headers */,
 				94B8A6651F52E13F008CBD18 /* packet_processor.h in Headers */,
 				94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */,
+				94147CAD20221C73001D9E4F /* object.h in Headers */,
 				94B8A6751F52E13F008CBD18 /* event_loop.h in Headers */,
 				94B8A6661F52E13F008CBD18 /* command.h in Headers */,
 				9498E8CA1F8FA9E500D4E7B6 /* config.h in Headers */,
@@ -616,7 +622,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/libusb",
 					"$(PROJECT_DIR)/external/turbojpeg",
-					"/opt/libjpeg-turbo/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -632,7 +637,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/libusb",
 					"$(PROJECT_DIR)/external/turbojpeg",
-					"/opt/libjpeg-turbo/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

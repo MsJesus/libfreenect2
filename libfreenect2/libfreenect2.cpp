@@ -662,13 +662,13 @@ bool Freenect2DeviceImpl::open()
   }
 
   unsigned rgb_xfer_size = 0x4000;
-  unsigned rgb_num_xfers = 40;
+  unsigned rgb_num_xfers = 20;
   unsigned ir_pkts_per_xfer = 8;
   unsigned ir_num_xfers = 60;
 
 #if defined(__APPLE__)
   ir_pkts_per_xfer = 128;
-  ir_num_xfers = 10;
+  ir_num_xfers = 4;
 #elif defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
   // For multi-Kinect setup, there is a 64 fd limit on poll().
   rgb_xfer_size = 1048576;

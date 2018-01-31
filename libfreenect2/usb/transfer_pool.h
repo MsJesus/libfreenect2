@@ -29,10 +29,13 @@
 
 #include <atomic>
 #include <vector>
+#include <queue>
+#include <string>
 #include <libusb.h>
 
 #include <libfreenect2/data_callback.h>
 #include <libfreenect2/threading.h>
+#include <libfreenect2/usb/collection.h>
 
 namespace libfreenect2
 {
@@ -44,6 +47,7 @@ class TransferPool
 {
 public:
   TransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
+    
   virtual ~TransferPool();
 
   void deallocate();
@@ -59,128 +63,203 @@ public:
   void cancel();
 
   void setCallback(DataCallback *callback);
+    
 protected:
 
-    size_t counter = 0;
-    std::atomic_ulong submittedCount;
-    std::atomic_bool enable_submit_;
-    std::atomic_bool submiting_;
-    std::atomic_bool proccess_thread_shutdown_;
+//    size_t counter = 0;
+//    std::atomic_ulong submittedCount;
+    std::atomic_bool _enableSubmit;
+//    std::atomic_bool submiting_;
+    std::atomic_bool _enableThreads;
 
-    libfreenect2::mutex stopped_mutex;
+//    libfreenect2::mutex stopped_mutex;
+    
+    struct Buffer
+    {
+        unsigned char *buffer;
+        size_t bufferSize;
+        
+        unsigned int *actualLength;
+        bool *actualStatusCompleted;
+//        size_t actual_size;
+        
+        Buffer(size_t numberPackets, size_t sizePackets):
+        buffer(nullptr),
+        bufferSize(numberPackets * sizePackets),
+        actualLength(nullptr),
+        actualStatusCompleted(nullptr)
+//        actual_size(0)
+        {
+            buffer = new unsigned char[bufferSize];
+            
+            actualLength = new unsigned int[numberPackets];
+            actualStatusCompleted = new bool[numberPackets];
+        };
+        
+        ~Buffer()
+        {
+            if (buffer != nullptr)
+            {
+                delete[] buffer;
+                buffer = nullptr;
+            }
+            if (actualLength != nullptr)
+            {
+                delete[] actualLength;
+                actualLength = nullptr;
+            }
+            if (actualStatusCompleted != nullptr)
+            {
+                delete[] actualStatusCompleted;
+                actualStatusCompleted = nullptr;
+            }
+            bufferSize = 0;
+        }
+    };
+
   struct Transfer
   {
+//      Transfer(libusb_transfer *transfer):
       Transfer(libusb_transfer *transfer, TransferPool *pool):
       transfer(transfer),
       pool(pool),
-      stopped(true),
-      submited(false),
-      proccessing(0)
+      buffer(nullptr),
+      stopped(true)
+//      submited(false),
+//      proccessing(0)
       {}
 
       libusb_transfer *transfer;
       TransferPool *pool;
+      Buffer *buffer;
       std::atomic_bool stopped;
-      std::atomic_bool submited;
-      std::atomic_ulong proccessing;
+//      std::atomic_bool submited;
+//      std::atomic_ulong proccessing;
       
       void setStopped(bool value)
       {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
           stopped = value;
       }
       bool getStopped()
       {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
           return stopped;
       }
       
-      void setSubmited(bool value)
-      {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
-          submited = value;
-      }
-      bool getSubmited()
-      {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
-          return submited;
-      }
-
-      void setProccessing(size_t value)
-      {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
-          proccessing = value;
-      }
-      size_t getProccessing()
-      {
-//          libfreenect2::lock_guard guard(pool->stopped_mutex);
-          return proccessing;
-      }
+//      void setSubmited(bool value)
+//      {
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          submited = value;
+//      }
+//      bool getSubmited()
+//      {
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          return submited;
+//      }
+//
+//      void setProccessing(size_t value)
+//      {
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          proccessing = value;
+//      }
+//      size_t getProccessing()
+//      {
+////          libfreenect2::lock_guard guard(pool->stopped_mutex);
+//          return proccessing;
+//      }
   };
-
-    typedef std::vector<std::unique_ptr<Transfer>> TransferQueue;
-    TransferQueue transfers_;
-
-  void allocateTransfers(size_t num_transfers, size_t transfer_size);
-
-  virtual libusb_transfer *allocateTransfer() = 0;
-  virtual void fillTransfer(libusb_transfer *transfer) = 0;
-
-  virtual void processTransfer(libusb_transfer *transfer) = 0;
     
-  virtual const char *poolName() = 0;
+
+    typedef std::vector<std::unique_ptr<Transfer>> TransferVector;
+    TransferVector _transfers;
+
+    typedef std::vector<std::unique_ptr<Buffer>> BufferVector;
+    BufferVector _buffers;
+
+    typedef Collection<std::deque<Transfer*>> SyncTransferQueue;
+    SyncTransferQueue _submitTransfers;
+
+    typedef Collection<std::deque<Buffer*>> SyncBufferQueue;
+    SyncBufferQueue _proccessBuffers;
+    SyncBufferQueue _avalaibleBuffers;
+
+  void allocatePool(size_t num_transfers, size_t transfer_size);
+
+    virtual Transfer *allocateTransfer() = 0;
+    virtual Buffer* allocateBuffer() = 0;
+    virtual void processTransfer(Transfer *transfer) = 0;
+    virtual void proccessBuffer(Buffer* buffer) = 0;
+
+  virtual const char *poolName(std::string suffix) = 0;
 
   DataCallback *callback_;
+    
 private:
-//  typedef std::vector<Transfer> TransferQueue;
 
   libusb_device_handle *device_handle_;
   unsigned char device_endpoint_;
 
-  unsigned char *buffer_;
-  size_t buffer_size_;
-    size_t num_submit_;
+//  unsigned char *buffer_;
+//  size_t buffer_size_;
+//    size_t _transfer_size;
 
 
   static void onTransferCompleteStatic(libusb_transfer *transfer);
     void onTransferComplete(Transfer *transfer);
 
-    libfreenect2::thread *proccess_thread_;
-    void proccessExecute();
-    libfreenect2::thread *submit_thread_;
-    void submitExecute();
+    libfreenect2::thread *_proccess_thread;
+    void proccessThreadExecute();
+    libfreenect2::thread *_submit_thread;
+    void submitThreadExecute();
 };
 
 class BulkTransferPool : public TransferPool
 {
 public:
-  BulkTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
-  virtual ~BulkTransferPool();
+    BulkTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint):
+    TransferPool(device_handle, device_endpoint)
+    {};
+    
+    virtual ~BulkTransferPool() {};
 
   void allocate(size_t num_transfers, size_t transfer_size);
 
 protected:
-  virtual libusb_transfer *allocateTransfer();
-  virtual void fillTransfer(libusb_transfer *transfer);
-  virtual void processTransfer(libusb_transfer *transfer);
+      virtual Transfer *allocateTransfer();
+    virtual Buffer* allocateBuffer();
     
-    virtual const char *poolName() { return "BULK USB"; };
+    virtual void processTransfer(Transfer *transfer);
+    virtual void proccessBuffer(Buffer* buffer);
+
+    
+    virtual const char *poolName(std::string suffix) { return (std::string("BULK USB ") + suffix).c_str(); };
+    
+private:
+    size_t transfer_size_;
 };
 
 class IsoTransferPool : public TransferPool
 {
 public:
-  IsoTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
-  virtual ~IsoTransferPool();
+    IsoTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint):
+    TransferPool(device_handle, device_endpoint),
+    num_packets_(0),
+    packet_size_(0)
+    {};
 
-  void allocate(size_t num_transfers, size_t num_packets, size_t packet_size);
+    virtual ~IsoTransferPool() {};
+
+    void allocate(size_t num_transfers, size_t num_packets, size_t packet_size);
 
 protected:
-  virtual libusb_transfer *allocateTransfer();
-  virtual void fillTransfer(libusb_transfer *transfer);
-  virtual void processTransfer(libusb_transfer *transfer);
+    virtual Transfer *allocateTransfer();
+    virtual Buffer* allocateBuffer();
 
-    virtual const char *poolName() { return "ISO USB"; };
+    virtual void processTransfer(Transfer *transfer);
+    virtual void proccessBuffer(Buffer* buffer);
+
+    virtual const char *poolName(std::string suffix) { return (std::string("ISO USB ") + suffix).c_str(); };
 
 private:
   size_t num_packets_;
