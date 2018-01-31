@@ -63,6 +63,10 @@ protected:
 
     size_t counter = 0;
     std::atomic_ulong submittedCount;
+    std::atomic_bool enable_submit_;
+    std::atomic_bool submiting_;
+    std::atomic_bool proccess_thread_shutdown_;
+
     libfreenect2::mutex stopped_mutex;
   struct Transfer
   {
@@ -111,7 +115,6 @@ protected:
 
     typedef std::vector<Transfer> TransferQueue;
     TransferQueue transfers_;
-    bool enable_submit_;
 
   void allocateTransfers(size_t num_transfers, size_t transfer_size);
 
@@ -120,10 +123,7 @@ protected:
 
   virtual void processTransfer(libusb_transfer *transfer) = 0;
     
-    virtual const char *poolName() = 0;
-    virtual size_t poolSubmit() = 0;
-//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue) = 0;
-    virtual void onTransferComplete(Transfer *transfer) = 0;
+  virtual const char *poolName() = 0;
 
   DataCallback *callback_;
 private:
@@ -134,13 +134,13 @@ private:
 
   unsigned char *buffer_;
   size_t buffer_size_;
+    size_t num_submit_;
 
 
   static void onTransferCompleteStatic(libusb_transfer *transfer);
-
+    void onTransferComplete(Transfer *transfer);
 
     libfreenect2::thread *proccess_thread_;
-    bool proccess_thread_shutdown_;
     void proccessExecute();
 };
 
@@ -158,9 +158,6 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer);
     
     virtual const char *poolName() { return "BULK USB"; };
-    virtual size_t poolSubmit() { return 20; }
-//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
-    virtual void onTransferComplete(Transfer *transfer);
 };
 
 class IsoTransferPool : public TransferPool
@@ -177,9 +174,6 @@ protected:
   virtual void processTransfer(libusb_transfer *transfer);
 
     virtual const char *poolName() { return "ISO USB"; };
-    virtual size_t poolSubmit() { return 10; }
-//    virtual void proccessResumbit(Transfer *tr, TransferQueue& queue);
-    virtual void onTransferComplete(Transfer *transfer);
 
 private:
   size_t num_packets_;
