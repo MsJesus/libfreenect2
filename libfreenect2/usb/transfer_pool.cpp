@@ -220,7 +220,7 @@ void TransferPool::allocateTransfers(size_t num_transfers, size_t transfer_size)
     transfer->endpoint = device_endpoint_;
     transfer->buffer = ptr;
     transfer->length = transfer_size;
-    transfer->timeout = 100;
+    transfer->timeout = 1000;
     transfer->callback = (libusb_transfer_cb_fn) &TransferPool::onTransferCompleteStatic;
     transfer->user_data = transfers_.back().get();
 
@@ -283,8 +283,8 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
                 prcoessElement->setProccessing(0);
             }
 
-            this_thread::yield();
-//            this_thread::sleep_for(std::chrono::microseconds(1));
+//            this_thread::yield();
+            this_thread::sleep_for(std::chrono::microseconds(10));
         }
     }
     
@@ -325,9 +325,9 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
                     submiting_ = false;
                 }
             
-            this_thread::yield();
+//            this_thread::yield();
 
-//            this_thread::sleep_for(std::chrono::microseconds(1));
+            this_thread::sleep_for(std::chrono::microseconds(10));
         }
     }
 

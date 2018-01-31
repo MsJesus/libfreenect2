@@ -94,7 +94,7 @@ void EventLoop::execute()
   this_thread::set_name("USB");
   timeval t;
   t.tv_sec = 0;
-  t.tv_usec = 1000;
+  t.tv_usec = 10000;
 
   while(!shutdown_)
   {
