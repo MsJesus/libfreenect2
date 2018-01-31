@@ -122,7 +122,7 @@ protected:
 
       libusb_transfer *transfer;
       TransferPool *pool;
-      Buffer *buffer;
+      std::unique_ptr<Buffer> buffer;
       std::atomic_bool stopped;
       
       void setStopped(bool value)
@@ -138,21 +138,21 @@ protected:
 
     typedef std::vector<std::unique_ptr<Transfer>> TransferVector;
     TransferVector _transfers;
+//
+//    typedef std::vector<std::unique_ptr<Buffer>> BufferVector;
+//    BufferVector _buffers;
 
-    typedef std::vector<std::unique_ptr<Buffer>> BufferVector;
-    BufferVector _buffers;
-
-    typedef Collection<std::deque<Transfer*>> SyncTransferQueue;
+    typedef Collection<std::deque<Transfer *>> SyncTransferQueue;
     SyncTransferQueue _submitTransfers;
 
-    typedef Collection<std::deque<Buffer*>> SyncBufferQueue;
+    typedef Collection<std::deque<std::unique_ptr<Buffer>>> SyncBufferQueue;
     SyncBufferQueue _proccessBuffers;
     SyncBufferQueue _avalaibleBuffers;
 
   void allocatePool(size_t num_transfers, size_t transfer_size);
 
-    virtual Transfer *allocateTransfer() = 0;
-    virtual Buffer* allocateBuffer() = 0;
+    virtual std::unique_ptr<Transfer> allocateTransfer() = 0;
+    virtual std::unique_ptr<Buffer> allocateBuffer() = 0;
     virtual void processTransfer(Transfer *transfer) = 0;
     virtual void proccessBuffer(Buffer* buffer) = 0;
 
@@ -191,9 +191,9 @@ public:
   void allocate(size_t num_transfers, size_t transfer_size);
 
 protected:
-      virtual Transfer *allocateTransfer();
-    virtual Buffer* allocateBuffer();
-    
+    virtual std::unique_ptr<Transfer> allocateTransfer();
+    virtual std::unique_ptr<Buffer> allocateBuffer();
+
     virtual void processTransfer(Transfer *transfer);
     virtual void proccessBuffer(Buffer* buffer);
 
@@ -218,8 +218,8 @@ public:
     void allocate(size_t num_transfers, size_t num_packets, size_t packet_size);
 
 protected:
-    virtual Transfer *allocateTransfer();
-    virtual Buffer* allocateBuffer();
+    virtual std::unique_ptr<Transfer> allocateTransfer();
+    virtual std::unique_ptr<Buffer> allocateBuffer();
 
     virtual void processTransfer(Transfer *transfer);
     virtual void proccessBuffer(Buffer* buffer);
