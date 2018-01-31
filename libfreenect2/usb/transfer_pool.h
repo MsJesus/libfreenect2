@@ -66,13 +66,9 @@ public:
     
 protected:
 
-//    size_t counter = 0;
-//    std::atomic_ulong submittedCount;
     std::atomic_bool _enableSubmit;
-//    std::atomic_bool submiting_;
     std::atomic_bool _enableThreads;
 
-//    libfreenect2::mutex stopped_mutex;
     
     struct Buffer
     {
@@ -81,14 +77,12 @@ protected:
         
         unsigned int *actualLength;
         bool *actualStatusCompleted;
-//        size_t actual_size;
         
         Buffer(size_t numberPackets, size_t sizePackets):
         buffer(nullptr),
         bufferSize(numberPackets * sizePackets),
         actualLength(nullptr),
         actualStatusCompleted(nullptr)
-//        actual_size(0)
         {
             buffer = new unsigned char[bufferSize];
             
@@ -119,55 +113,26 @@ protected:
 
   struct Transfer
   {
-//      Transfer(libusb_transfer *transfer):
       Transfer(libusb_transfer *transfer, TransferPool *pool):
       transfer(transfer),
       pool(pool),
       buffer(nullptr),
       stopped(true)
-//      submited(false),
-//      proccessing(0)
       {}
 
       libusb_transfer *transfer;
       TransferPool *pool;
       Buffer *buffer;
       std::atomic_bool stopped;
-//      std::atomic_bool submited;
-//      std::atomic_ulong proccessing;
       
       void setStopped(bool value)
       {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
           stopped = value;
       }
       bool getStopped()
       {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
           return stopped;
       }
-      
-//      void setSubmited(bool value)
-//      {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
-//          submited = value;
-//      }
-//      bool getSubmited()
-//      {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
-//          return submited;
-//      }
-//
-//      void setProccessing(size_t value)
-//      {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
-//          proccessing = value;
-//      }
-//      size_t getProccessing()
-//      {
-////          libfreenect2::lock_guard guard(pool->stopped_mutex);
-//          return proccessing;
-//      }
   };
     
 

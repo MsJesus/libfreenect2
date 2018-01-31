@@ -191,14 +191,6 @@ void TransferPool::setCallback(DataCallback *callback)
 
 void TransferPool::allocatePool(size_t num_transfers, size_t transfer_size)
 {
-//    _transfer_size = transfer_size;
-//  buffer_size_ = num_transfers * transfer_size;
-//  buffer_ = new unsigned char[buffer_size_];
-//  transfers_.reserve(num_transfers);
-//    num_submit_ = num_transfers / 3;
-    
-//  unsigned char *ptr = buffer_;
-
   for (size_t i = 0; i < num_transfers; ++i)
   {
       _buffers.emplace_back(allocateBuffer());
@@ -215,8 +207,6 @@ void TransferPool::allocatePool(size_t num_transfers, size_t transfer_size)
     transfer->transfer->timeout = 1000;
     transfer->transfer->callback = (libusb_transfer_cb_fn) &TransferPool::onTransferCompleteStatic;
     transfer->transfer->user_data = transfer;
-
-//    ptr += transfer_size;
   }
     
     for (size_t i = 0; i < num_transfers; ++i)
@@ -241,9 +231,9 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             return;
         }
         
-        _submitTransfers.push_back(t);
         processTransfer(t);
         _proccessBuffers.push_back(t->buffer);
+        _submitTransfers.push_back(t);
         
         if(!_enableSubmit)
         {
@@ -263,7 +253,9 @@ void TransferPool::onTransferCompleteStatic(libusb_transfer* transfer)
             {
                 if (_avalaibleBuffers.empty())
                 {
-                    _buffers.emplace_back(allocateBuffer());
+                    Buffer *newBuffer = allocateBuffer();
+                    _buffers.emplace_back(newBuffer);
+                    _avalaibleBuffers.push_back(newBuffer);
                 }
                 
                 auto pointerBuffer = _avalaibleBuffers.pop_front_out();
