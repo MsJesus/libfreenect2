@@ -152,7 +152,7 @@ namespace usb
             }
         }
         
-        for(;;)
+        for (;;)
         {
             libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));
             size_t stopped_transfers = 0;
@@ -206,6 +206,7 @@ namespace usb
         if (t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
         {
             t->setStopped(true);
+            LOG_INFO << "usb transfer cancel";
         }
         
         processTransfer(t);
@@ -228,7 +229,7 @@ namespace usb
                 if (_avalaibleBuffers.empty())
                 {
                     _avalaibleBuffers.push_back_move(allocateBuffer());
-                    LOG_INFO << "Need more memory!!!!";
+                    LOG_INFO << "need more memory!!!!";
                 }
                 
                 {
@@ -251,6 +252,7 @@ namespace usb
                 }
             }
         }
+        LOG_INFO << "submit thread exit";
     }
 
     
@@ -264,8 +266,11 @@ namespace usb
             proccessBuffer(pointer.get());
             _avalaibleBuffers.push_back_move(std::move(pointer));
         }
+        LOG_INFO << "execute thread exit";
     }
 
+
+#pragma mark - BULK TransferPool
 
     void BulkTransferPool::allocate(size_t num_transfers, size_t transfer_size)
     {
@@ -306,6 +311,7 @@ namespace usb
     }
 
 
+#pragma mark - ISO TransferPool
     
     void IsoTransferPool::allocate(size_t num_transfers, size_t num_packets, size_t packet_size)
     {
