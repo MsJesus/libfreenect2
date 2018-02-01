@@ -206,7 +206,6 @@ namespace usb
         if (t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
         {
             t->setStopped(true);
-            LOG_ERROR << "usb transfer canceled";
         }
         
         processTransfer(t);
@@ -224,7 +223,7 @@ namespace usb
         {
             auto pointer = _submitTransfers.pop_front_out();
             
-            if (_enableSubmit)
+            if ((_enableSubmit) && !(pointer->getStopped()))
             {
                 if (_avalaibleBuffers.empty())
                 {
@@ -250,11 +249,6 @@ namespace usb
                 {
                     LOG_ERROR << "all submissions failed. Try debugging with environment variable: LIBUSB_DEBUG=3.";
                 }
-            }
-            else
-            {
-                pointer->setStopped(true);
-                LOG_INFO << "stop transfer cancellation";
             }
         }
     }
