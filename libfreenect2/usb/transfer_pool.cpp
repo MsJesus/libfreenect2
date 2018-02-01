@@ -152,6 +152,11 @@ namespace usb
             }
         }
         
+        _submitTransfers.forEach([] (Transfer *transfer) {
+            
+            transfer->setStopped(true);
+        });
+        
         for (;;)
         {
             libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));
@@ -224,7 +229,7 @@ namespace usb
         {
             auto pointer = _submitTransfers.pop_front_out();
             
-            if ((_enableSubmit) && !(pointer->getStopped()))
+            if (_enableSubmit)
             {
                 if (_avalaibleBuffers.empty())
                 {
