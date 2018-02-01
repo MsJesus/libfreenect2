@@ -37,147 +37,135 @@
 #include <libfreenect2/threading.h>
 #include <libfreenect2/usb/collection.h>
 
-namespace libfreenect2
-{
+namespace libfreenect2 {
+namespace usb {
 
-namespace usb
-{
-
-class TransferPool
-{
-public:
-  TransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
-    
-  virtual ~TransferPool();
-
-  void deallocate();
-
-  void enableSubmission();
-
-  void disableSubmission();
-
-  bool enabled();
-
-  bool submit();
-
-  void cancel();
-
-  void setCallback(DataCallback *callback);
-    
-protected:
-
-    std::atomic_bool _enableSubmit;
-    std::atomic_bool _enableThreads;
-
-    
-    struct Buffer
+    class TransferPool
     {
-        unsigned char *buffer;
-        size_t bufferSize;
+    public:
+        TransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
         
-        unsigned int *actualLength;
-        bool *actualStatusCompleted;
+        virtual ~TransferPool();
         
-        Buffer(size_t numberPackets, size_t sizePackets):
-        buffer(nullptr),
-        bufferSize(numberPackets * sizePackets),
-        actualLength(nullptr),
-        actualStatusCompleted(nullptr)
+        void deallocate();
+        
+        void enableSubmission();
+        
+        void disableSubmission();
+        
+        bool enabled();
+        
+        bool submit();
+        
+        void cancel();
+        
+        void setCallback(DataCallback *callback);
+        
+    protected:
+        
+        struct Buffer
         {
-            buffer = new unsigned char[bufferSize];
+            unsigned char *buffer;
+            size_t bufferSize;
             
-            actualLength = new unsigned int[numberPackets];
-            actualStatusCompleted = new bool[numberPackets];
+            unsigned int *actualLength;
+            bool *actualStatusCompleted;
+            
+            Buffer(size_t numberPackets, size_t sizePackets):
+            buffer(nullptr),
+            bufferSize(numberPackets * sizePackets),
+            actualLength(nullptr),
+            actualStatusCompleted(nullptr)
+            {
+                buffer = new unsigned char[bufferSize];
+                
+                actualLength = new unsigned int[numberPackets];
+                actualStatusCompleted = new bool[numberPackets];
+            };
+            
+            ~Buffer()
+            {
+                if (buffer != nullptr)
+                {
+                    delete[] buffer;
+                    buffer = nullptr;
+                }
+                if (actualLength != nullptr)
+                {
+                    delete[] actualLength;
+                    actualLength = nullptr;
+                }
+                if (actualStatusCompleted != nullptr)
+                {
+                    delete[] actualStatusCompleted;
+                    actualStatusCompleted = nullptr;
+                }
+                bufferSize = 0;
+            }
         };
         
-        ~Buffer()
+        struct Transfer
         {
-            if (buffer != nullptr)
+            Transfer(libusb_transfer *transfer, TransferPool *pool):
+            transfer(transfer),
+            pool(pool),
+            buffer(nullptr),
+            stopped(true)
+            {}
+            
+            libusb_transfer *transfer;
+            TransferPool *pool;
+            std::unique_ptr<Buffer> buffer;
+            std::atomic_bool stopped;
+            
+            void setStopped(bool value)
             {
-                delete[] buffer;
-                buffer = nullptr;
+                stopped = value;
             }
-            if (actualLength != nullptr)
+            bool getStopped()
             {
-                delete[] actualLength;
-                actualLength = nullptr;
+                return stopped;
             }
-            if (actualStatusCompleted != nullptr)
-            {
-                delete[] actualStatusCompleted;
-                actualStatusCompleted = nullptr;
-            }
-            bufferSize = 0;
-        }
+        };
+        
+        std::atomic_bool _enableSubmit;
+        std::atomic_bool _enableThreads;
+        DataCallback *_callback;
+
+        typedef std::vector<std::unique_ptr<Transfer>> TransferVector;
+        TransferVector _transfers;
+        
+        typedef Collection<std::deque<Transfer *>> SyncTransferQueue;
+        SyncTransferQueue _submitTransfers;
+        
+        typedef Collection<std::deque<std::unique_ptr<Buffer>>> SyncBufferQueue;
+        SyncBufferQueue _proccessBuffers;
+        SyncBufferQueue _avalaibleBuffers;
+        
+        
+        void allocate(size_t num_transfers, size_t transfer_size);
+        
+        virtual std::unique_ptr<Transfer> allocateTransfer() = 0;
+        virtual std::unique_ptr<Buffer> allocateBuffer() = 0;
+        virtual void processTransfer(Transfer *transfer) = 0;
+        virtual void proccessBuffer(Buffer* buffer) = 0;
+        
+        virtual const char *poolName(std::string suffix) = 0;
+        
+        
+    private:
+        
+        libusb_device_handle *device_handle_;
+        unsigned char device_endpoint_;
+        
+        libfreenect2::thread *_proccess_thread;
+        libfreenect2::thread *_submit_thread;
+        
+        static void onTransferCompleteStatic(libusb_transfer *transfer);
+        void onTransferComplete(Transfer *transfer);
+        void proccessThreadExecute();
+        void submitThreadExecute();
     };
-
-  struct Transfer
-  {
-      Transfer(libusb_transfer *transfer, TransferPool *pool):
-      transfer(transfer),
-      pool(pool),
-      buffer(nullptr),
-      stopped(true)
-      {}
-
-      libusb_transfer *transfer;
-      TransferPool *pool;
-      std::unique_ptr<Buffer> buffer;
-      std::atomic_bool stopped;
-      
-      void setStopped(bool value)
-      {
-          stopped = value;
-      }
-      bool getStopped()
-      {
-          return stopped;
-      }
-  };
-    
-
-    typedef std::vector<std::unique_ptr<Transfer>> TransferVector;
-    TransferVector _transfers;
-//
-//    typedef std::vector<std::unique_ptr<Buffer>> BufferVector;
-//    BufferVector _buffers;
-
-    typedef Collection<std::deque<Transfer *>> SyncTransferQueue;
-    SyncTransferQueue _submitTransfers;
-
-    typedef Collection<std::deque<std::unique_ptr<Buffer>>> SyncBufferQueue;
-    SyncBufferQueue _proccessBuffers;
-    SyncBufferQueue _avalaibleBuffers;
-
-  void allocatePool(size_t num_transfers, size_t transfer_size);
-
-    virtual std::unique_ptr<Transfer> allocateTransfer() = 0;
-    virtual std::unique_ptr<Buffer> allocateBuffer() = 0;
-    virtual void processTransfer(Transfer *transfer) = 0;
-    virtual void proccessBuffer(Buffer* buffer) = 0;
-
-  virtual const char *poolName(std::string suffix) = 0;
-
-  DataCallback *callback_;
-    
-private:
-
-  libusb_device_handle *device_handle_;
-  unsigned char device_endpoint_;
-
-//  unsigned char *buffer_;
-//  size_t buffer_size_;
-//    size_t _transfer_size;
-
-
-  static void onTransferCompleteStatic(libusb_transfer *transfer);
-    void onTransferComplete(Transfer *transfer);
-
-    libfreenect2::thread *_proccess_thread;
-    void proccessThreadExecute();
-    libfreenect2::thread *_submit_thread;
-    void submitThreadExecute();
-};
 
 class BulkTransferPool : public TransferPool
 {
