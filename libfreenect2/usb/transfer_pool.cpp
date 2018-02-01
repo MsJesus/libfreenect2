@@ -112,23 +112,25 @@ namespace usb
             return false;
         }
         
+        if (!_enableThreads)
+        {
+            _enableThreads = true;
+        }
+
         for (const auto& transfer : _transfers)
         {
             _submitTransfers.push_back(transfer.get());
         }
         
-        if (!_enableThreads)
+        if (_submit_thread == nullptr)
         {
-            _enableThreads = true;
-            if (_submit_thread == nullptr)
-            {
-                _submit_thread = new libfreenect2::thread(&TransferPool::submitThreadExecute, this);
-            }
-            if (_proccess_thread == nullptr)
-            {
-                _proccess_thread = new libfreenect2::thread(&TransferPool::proccessThreadExecute, this);
-            }
+            _submit_thread = new libfreenect2::thread(&TransferPool::submitThreadExecute, this);
         }
+        if (_proccess_thread == nullptr)
+        {
+            _proccess_thread = new libfreenect2::thread(&TransferPool::proccessThreadExecute, this);
+        }
+        
         return true;
     }
 
@@ -138,19 +140,6 @@ namespace usb
         if (_enableThreads)
         {
             _enableThreads = false;
-            
-            if (_proccess_thread != nullptr)
-            {
-                _proccess_thread->join();
-                delete _proccess_thread;
-                _proccess_thread = nullptr;
-            }
-            if (_submit_thread != nullptr)
-            {
-                _submit_thread->join();
-                delete _submit_thread;
-                _submit_thread = nullptr;
-            }
         }
         
         for (const auto& transfer : _transfers)
@@ -181,6 +170,19 @@ namespace usb
         _submitTransfers.clear();
         _proccessBuffers.clear();
         _avalaibleBuffers.clear();
+        
+        if (_proccess_thread != nullptr)
+        {
+            _proccess_thread->join();
+            delete _proccess_thread;
+            _proccess_thread = nullptr;
+        }
+        if (_submit_thread != nullptr)
+        {
+            _submit_thread->join();
+            delete _submit_thread;
+            _submit_thread = nullptr;
+        }
 
         LOG_INFO << "complete transfer cancellation";
     }
