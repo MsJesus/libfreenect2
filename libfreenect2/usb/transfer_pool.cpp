@@ -155,6 +155,10 @@ namespace usb
         for (;;)
         {
             libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(100));
+            _submitTransfers.forEach([] (Transfer *transfer) {
+                
+                transfer->setStopped(true);
+            });
             size_t stopped_transfers = 0;
             for (const auto& transfer : _transfers)
             {
@@ -252,11 +256,6 @@ namespace usb
                 }
             }
         }
-        
-        _submitTransfers.forEach([] (Transfer *transfer) {
-            
-            transfer->setStopped(true);
-        });
         LOG_INFO << "submit thread exit";
     }
 
