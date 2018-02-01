@@ -70,7 +70,7 @@ namespace usb
     
     void TransferPool::allocate(size_t num_transfers, size_t transfer_size)
     {
-        for (size_t i = 0; i < (2 * num_transfers); ++i)
+        for (size_t i = 0; i < (10 * num_transfers); ++i)
         {
             _avalaibleBuffers.push_back_move(allocateBuffer());
         }
@@ -153,10 +153,6 @@ namespace usb
             }
         }
         
-        _submitTransfers.clear();
-        _proccessBuffers.clear();
-        _avalaibleBuffers.clear();
-        
         for (const auto& transfer : _transfers)
         {
             auto element = transfer.get();
@@ -165,8 +161,7 @@ namespace usb
             {
                 LOG_ERROR << "failed to cancel transfer: " << WRITE_LIBUSB_ERROR(r);
             }
-        }
-        
+        }        
         
         for(;;)
         {
@@ -182,6 +177,12 @@ namespace usb
             LOG_INFO << "waiting for transfer cancellation";
             libfreenect2::this_thread::sleep_for(libfreenect2::chrono::milliseconds(1000));
         }
+
+        _submitTransfers.clear();
+        _proccessBuffers.clear();
+        _avalaibleBuffers.clear();
+
+        LOG_INFO << "complete transfer cancellation";
     }
 
     
