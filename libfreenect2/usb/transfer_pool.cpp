@@ -161,7 +161,7 @@ namespace usb
             {
                 LOG_ERROR << "failed to cancel transfer: " << WRITE_LIBUSB_ERROR(r);
             }
-        }        
+        }
         
         for(;;)
         {
@@ -227,6 +227,7 @@ namespace usb
                 if (_avalaibleBuffers.empty())
                 {
                     _avalaibleBuffers.push_back_move(allocateBuffer());
+                    LOG_INFO << "Need more memory!!!!";
                 }
                 
                 {
