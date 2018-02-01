@@ -70,7 +70,7 @@ namespace usb
     
     void TransferPool::allocate(size_t num_transfers, size_t transfer_size)
     {
-        for (size_t i = 0; i < (10 * num_transfers); ++i)
+        for (size_t i = 0; i < (50 * num_transfers); ++i)
         {
             _avalaibleBuffers.push_back_move(allocateBuffer());
         }
