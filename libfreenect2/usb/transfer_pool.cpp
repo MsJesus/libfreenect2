@@ -201,17 +201,11 @@ namespace usb
     
     void TransferPool::onTransferComplete(libfreenect2::usb::TransferPool::Transfer *t)
     {
-        if(t->transfer->status == LIBUSB_TRANSFER_CANCELLED)
-        {
-            t->setStopped(true);
-            LOG_ERROR << "usb transfer canceled";
-            return;
-        }
-        
         processTransfer(t);
         _proccessBuffers.push_back_move(std::move(t->buffer));
         _submitTransfers.push_back(t);
-     }
+    }
+
     
     void TransferPool::submitThreadExecute()
     {
