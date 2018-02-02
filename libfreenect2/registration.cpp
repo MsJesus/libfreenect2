@@ -135,10 +135,10 @@ void RegistrationImpl::apply(const Frame *rgb, const Frame *depth, Frame *undist
       registered->width != 512 || registered->height != 424 || registered->bytes_per_pixel != 4)
     return;
 
-  const float *depth_data = (float*)depth->data;
-  const unsigned int *rgb_data = (unsigned int*)rgb->data;
-  float *undistorted_data = (float*)undistorted->data;
-  unsigned int *registered_data = (unsigned int*)registered->data;
+  const float *depth_data = (float*)(depth->data.get());
+  const unsigned int *rgb_data = (unsigned int*)(rgb->data.get());
+  float *undistorted_data = (float*)(undistorted->data.get());
+  unsigned int *registered_data = (unsigned int*)(registered->data.get());
   const int *map_dist = distort_map;
   const float *map_x = depth_to_color_map_x;
   const int *map_yi = depth_to_color_map_yi;
@@ -164,7 +164,7 @@ void RegistrationImpl::apply(const Frame *rgb, const Frame *depth, Frame *undist
 
   // initializing the depth_map with values outside of the Kinect2 range
   if(enable_filter){
-    filter_map = bigdepth ? (float*)bigdepth->data : new float[size_filter_map];
+    filter_map = bigdepth ? (float*)(bigdepth->data.get()) : new float[size_filter_map];
     p_filter_map = filter_map + offset_filter_map;
 
     for(float *it = filter_map, *end = filter_map + size_filter_map; it != end; ++it){
@@ -237,7 +237,7 @@ void RegistrationImpl::apply(const Frame *rgb, const Frame *depth, Frame *undist
 
   // reseting the pointers to the beginning
   map_c_off = depth_to_c_off;
-  undistorted_data = (float*)undistorted->data;
+  undistorted_data = (float*)(undistorted->data.get());
 
   /* Filter drops duplicate pixels due to aspect of two cameras. */
   if(enable_filter){
@@ -286,8 +286,8 @@ void RegistrationImpl::undistortDepth(const Frame *depth, Frame *undistorted) co
       undistorted->width != 512 || undistorted->height != 424 || undistorted->bytes_per_pixel != 4)
     return;
 
-  const float *depth_data = (float*)depth->data;
-  float *undistorted_data = (float*)undistorted->data;
+  const float *depth_data = (float*)(depth->data.get());
+  float *undistorted_data = (float*)(undistorted->data.get());
   const int *map_dist = distort_map;
 
   const int size_depth = 512 * 424;
@@ -329,7 +329,7 @@ void RegistrationImpl::getPointXYZRGB (const Frame* undistorted, const Frame* re
   }
   else
   {
-    float* registered_data = (float *)registered->data;
+    float* registered_data = (float *)(registered->data.get());
     rgb = registered_data[512*r+c];
   }
 }
@@ -344,7 +344,7 @@ void RegistrationImpl::getPointXYZ (const Frame *undistorted, int r, int c, floa
   const float bad_point = std::numeric_limits<float>::quiet_NaN();
   const float cx(depth.cx), cy(depth.cy);
   const float fx(1/depth.fx), fy(1/depth.fy);
-  float* undistorted_data = (float *)undistorted->data;
+  float* undistorted_data = (float *)(undistorted->data.get());
   const float depth_val = undistorted_data[512*r+c]/1000.0f; //scaling factor, so that value of 1 is one meter.
   if (isnan(depth_val) || depth_val <= 0.001)
   {

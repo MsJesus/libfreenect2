@@ -31,10 +31,21 @@
 
 #include <cstddef>
 #include <stdint.h>
+#include <memory>
 #include "config.h"
 
 namespace libfreenect2
 {
+    
+    class MallocDeleter
+    {
+    public:
+        
+        void operator() (void *ptr) const
+        {
+            std::free(ptr);
+        }
+    };
 
 /** @defgroup frame Frame Listeners
  * Receive decoded image frames, and the frame format.
@@ -55,33 +66,33 @@ class LIBFREENECT2_API Frame
   /** Pixel format. */
   enum Format
   {
-    Invalid = 0, ///< Invalid format.
-    Raw = 1, ///< Raw bitstream. 'bytes_per_pixel' defines the number of bytes
-    Float = 2, ///< A 4-byte float per pixel
-    BGRX = 4, ///< 4 bytes of B, G, R, and unused per pixel
-    RGBX = 5, ///< 4 bytes of R, G, B, and unused per pixel
-    Gray = 6, ///< 1 byte of gray per pixel
+    Invalid = 0,    ///< Invalid format.
+    Raw = 1,        ///< Raw bitstream. See 'bytes_per_pixel' for the number of bytes
+    Float = 2,      ///< A 4-byte float per pixel
+    BGRX = 4,       ///< 4 bytes of B, G, R, and unused per pixel
+    RGBX = 5,       ///< 4 bytes of R, G, B, and unused per pixel
+    Gray = 6,       ///< 1 byte of gray per pixel
   };
 
   size_t width;           ///< Length of a line (in pixels).
   size_t height;          ///< Number of lines in the frame.
-  size_t bytes_per_pixel; ///< Number of bytes in a pixel. If frame format is 'Raw' this is the buffer size.
-  unsigned char* data;    ///< Data of the frame (aligned). @see See Frame::Type for pixel format.
+  size_t bytes_per_pixel; ///< Number of bytes in a pixel.
+  size_t dataSize;        ///< Data size of frame. In common equals (width * height * bytesPerPixel)
+    std::unique_ptr<unsigned char, MallocDeleter> data;    ///< Data of the frame (aligned). @see See Frame::Type for pixel format.
   uint32_t timestamp;     ///< Unit: 0.125 millisecond. Usually incrementing by 266 (30Hz) or 533 (15Hz).
   uint32_t sequence;      ///< Increasing frame sequence number
   float exposure;         ///< From 0.5 (very bright) to ~60.0 (fully covered)
   float gain;             ///< From 1.0 (bright) to 1.5 (covered)
   float gamma;            ///< From 1.0 (bright) to 6.4 (covered)
-  uint32_t status;        ///< zero if ok; non-zero for errors.
   Format format;          ///< Byte format. Informative only, doesn't indicate errors.
+//  bool freeMemory;        ///< Free memory when destruct frame. Default value true
 
   /** Construct a new frame.
-   * @param width Width in pixel
-   * @param height Height in pixel
-   * @param bytes_per_pixel Bytes per pixel
+   * @param dataSize Memory data size to store frame data
    * @param data_ Memory to store frame data. If `NULL`, new memory is allocated.
+   * @param freeMemory Need free memory when destruct.
    */
-  Frame(size_t width, size_t height, size_t bytes_per_pixel, unsigned char *data_ = NULL);
+  Frame(size_t dataSize);
   virtual ~Frame();
 
   protected:

@@ -57,6 +57,9 @@ typedef PacketProcessor<DepthPacket> BaseDepthPacketProcessor;
 class DepthPacketProcessor : public BaseDepthPacketProcessor
 {
 public:
+  static const size_t TABLE_SIZE = 512*424;
+  static const size_t LUT_SIZE = 2048;
+    
   typedef Freenect2Device::Config Config;
 
   /** Parameters of depth processing. */
@@ -110,9 +113,6 @@ public:
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length) = 0;
-
-  static const size_t TABLE_SIZE = 512*424;
-  static const size_t LUT_SIZE = 2048;
   virtual void loadXZTables(const float *xtable, const float *ztable) = 0;
   virtual void loadLookupTable(const short *lut) = 0;
 
@@ -130,10 +130,10 @@ class CpuDepthPacketProcessor : public DepthPacketProcessor
 public:
   CpuDepthPacketProcessor();
   virtual ~CpuDepthPacketProcessor();
+    
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
-
+    
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
-
   virtual void loadXZTables(const float *xtable, const float *ztable);
   virtual void loadLookupTable(const short *lut);
 
@@ -152,12 +152,12 @@ class DumpDepthPacketProcessor : public DepthPacketProcessor
   DumpDepthPacketProcessor();
   virtual ~DumpDepthPacketProcessor();
 
-  virtual const char *name() { return "DUMP DEPTH"; }
-  virtual void process(const DepthPacket &packet);
+    virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
+    virtual void loadXZTables(const float *xtable, const float *ztable);
+    virtual void loadLookupTable(const short *lut);
 
-  virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
-  virtual void loadXZTables(const float *xtable, const float *ztable);
-  virtual void loadLookupTable(const short *lut);
+    virtual const char *name() { return "DUMP DEPTH"; }
+    virtual void process(const DepthPacket &packet);
 
 private:
   DumpDepthPacketProcessorImpl *impl_;

@@ -150,8 +150,10 @@ public:
     /** Allocate a new IR frame. */
     void newIrFrame()
     {
-        ir_frame = new Frame(1, 1, 2984960);
-//        ir_frame = new Frame(512, 424, 4);
+        ir_frame = new Frame(512 * 424 * 11/8 * 10);
+        ir_frame->width = 512;
+        ir_frame->height = 424;
+        ir_frame->bytes_per_pixel = 11/8 * 10;
         ir_frame->format = Frame::Raw;
     }
     
@@ -159,8 +161,10 @@ public:
     /** Allocate a new depth frame. */
     void newDepthFrame()
     {
-        depth_frame = new Frame(1, 1, 2984960);
-//        depth_frame = new Frame(512, 424, 4);
+        depth_frame = new Frame(512 * 424 * 11/8 * 10);
+        depth_frame->width = 512;
+        depth_frame->height = 424;
+        depth_frame->bytes_per_pixel = 11/8 * 10;
         depth_frame->format = Frame::Raw;
     }
 };
@@ -181,23 +185,29 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
         impl_->depth_frame->timestamp = packet.timestamp;
         impl_->depth_frame->sequence = packet.sequence;
         impl_->depth_frame->format = Frame::Raw;
-        std::memcpy(impl_->depth_frame->data, packet.buffer, packet.buffer_length);
+        std::memcpy(impl_->depth_frame->data.get(), packet.buffer, packet.buffer_length);
         
-        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
-        impl_->ir_frame->data = impl_->depth_frame->data;
-        impl_->ir_frame->timestamp = packet.timestamp;
-        impl_->ir_frame->sequence = packet.sequence;
-        impl_->ir_frame->data = packet.buffer;
-        impl_->ir_frame->format = Frame::Raw;
+//        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
+////        impl_->ir_frame->data = impl_->depth_frame->data;
+//        impl_->ir_frame->timestamp = packet.timestamp;
+//        impl_->ir_frame->sequence = packet.sequence;
+////        impl_->ir_frame->data = packet.buffer;
+//        impl_->ir_frame->format = Frame::Raw;
         
-        if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
-            impl_->newIrFrame();
-        }
-        
+//        if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
+//
+//        }
+//
         if(listener_->onNewFrame(Frame::Depth, impl_->depth_frame))
         {
-            impl_->newDepthFrame();
+            
         }
+        
+//        delete impl_->ir_frame;
+        delete impl_->depth_frame;
+        
+//        impl_->newIrFrame();
+        impl_->newDepthFrame();
     }
 }
 

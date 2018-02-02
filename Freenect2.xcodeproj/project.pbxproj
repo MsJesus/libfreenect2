@@ -7,11 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		94147CAD20221C73001D9E4F /* object.h in Headers */ = {isa = PBXBuildFile; fileRef = 94147CAB20221C73001D9E4F /* object.h */; };
-		94147CAE20221C73001D9E4F /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 94147CAC20221C73001D9E4F /* collection.h */; };
-		941AE6041F535DEB00073D32 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE6031F535DEB00073D32 /* registration.h */; };
-		941AE6311F53620D00073D32 /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE60A1F53620D00073D32 /* libusb.h */; };
-		941AE6491F53620D00073D32 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 941AE62E1F53620D00073D32 /* turbojpeg.h */; };
 		558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
@@ -254,6 +249,7 @@
 				94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */,
 				94B8A63F1F52E13F008CBD18 /* rgb_packet_processor.h */,
 				94B8A63E1F52E13F008CBD18 /* rgb_packet_processor.cpp */,
+				94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */,
 				94B8A6221F52E13F008CBD18 /* data_callback.h */,
 				94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */,
 				94B8A6261F52E13F008CBD18 /* depth_packet_stream_parser.h */,
@@ -270,7 +266,6 @@
 				94B8A63B1F52E13F008CBD18 /* registration.cpp */,
 				941AE6031F535DEB00073D32 /* registration.h */,
 				94B8A6431F52E13F008CBD18 /* threading.h */,
-				94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */,
 				94B8A6461F52E13F008CBD18 /* usb */,
 			);
 			path = libfreenect2;
@@ -303,43 +298,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		949708401F52E04A00BC9C22 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				94B8A64E1F52E13F008CBD18 /* async_packet_processor.h in Headers */,
-				94B8A6561F52E13F008CBD18 /* depth_packet_stream_parser.h in Headers */,
-				941AE6491F53620D00073D32 /* turbojpeg.h in Headers */,
-				94147CAE20221C73001D9E4F /* collection.h in Headers */,
-				94B8A6541F52E13F008CBD18 /* depth_packet_processor.h in Headers */,
-				94B8A6651F52E13F008CBD18 /* packet_processor.h in Headers */,
-				94B8A6801F52E215008CBD18 /* packet_pipeline.h in Headers */,
-				94147CAD20221C73001D9E4F /* object.h in Headers */,
-				94B8A6751F52E13F008CBD18 /* event_loop.h in Headers */,
-				94B8A6661F52E13F008CBD18 /* command.h in Headers */,
-				9498E8CA1F8FA9E500D4E7B6 /* config.h in Headers */,
-				94B8A6701F52E13F008CBD18 /* rgb_packet_stream_parser.h in Headers */,
-				94B8A6761F52E13F008CBD18 /* transfer_pool.h in Headers */,
-				94B8A6691F52E13F008CBD18 /* usb_control.h in Headers */,
-				94B8A64D1F52E13F008CBD18 /* allocator.h in Headers */,
-				941AE6041F535DEB00073D32 /* registration.h in Headers */,
-				94B8A65E1F52E13F008CBD18 /* logging.h in Headers */,
-				94B8A6671F52E13F008CBD18 /* command_transaction.h in Headers */,
-				94B8A6521F52E13F008CBD18 /* data_callback.h in Headers */,
-				9498E8CC1F8FA9E500D4E7B6 /* libfreenect2.h in Headers */,
-				94B8A67E1F52E1DB008CBD18 /* frame_listener_impl.h in Headers */,
-				94B8A66E1F52E13F008CBD18 /* rgb_packet_processor.h in Headers */,
-				94B8A6721F52E13F008CBD18 /* threading.h in Headers */,
-				94B8A6681F52E13F008CBD18 /* response.h in Headers */,
-				9498E8CB1F8FA9E500D4E7B6 /* frame_listener.h in Headers */,
-				9498E8CD1F8FA9E500D4E7B6 /* logger.h in Headers */,
-				941AE6311F53620D00073D32 /* libusb.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		946014411F8D231E008F88C6 /* protonect */ = {

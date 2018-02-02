@@ -82,7 +82,7 @@ private:
   DumpRgbPacketProcessorImpl *impl_;
 };
 
-#ifdef LIBFREENECT2_WITH_TURBOJPEG_SUPPORT
+
 class TurboJpegRgbPacketProcessorImpl;
 
 /** Processor to decode JPEG to image, using TurboJpeg. */
@@ -91,12 +91,12 @@ class TurboJpegRgbPacketProcessor : public RgbPacketProcessor
 public:
   TurboJpegRgbPacketProcessor();
   virtual ~TurboJpegRgbPacketProcessor();
+    
   virtual void process(const libfreenect2::RgbPacket &packet);
   virtual const char *name() { return "TurboJPEG"; }
 private:
   TurboJpegRgbPacketProcessorImpl *impl_; ///< Decoder implementation.
 };
-#endif
 
 
 } /* namespace libfreenect2 */

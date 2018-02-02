@@ -36,6 +36,5 @@
 #endif
 
 #define LIBFREENECT2_API __attribute__((visibility("default")))
-#define LIBFREENECT2_WITH_TURBOJPEG_SUPPORT
 
 #endif // LIBFREENECT2_CONFIG_H

@@ -299,7 +299,10 @@ public:
   /** Allocate a new IR frame. */
   void newIrFrame()
   {
-    ir_frame = new Frame(512, 424, 4);
+    ir_frame = new Frame(512 * 424 * 4);
+    ir_frame->width = 512;
+    ir_frame->height = 424;
+    ir_frame->bytes_per_pixel = 4;
     ir_frame->format = Frame::Float;
   }
 
@@ -312,7 +315,10 @@ public:
   /** Allocate a new depth frame. */
   void newDepthFrame()
   {
-    depth_frame = new Frame(512, 424, 4);
+    depth_frame = new Frame(512 * 424 * 4);
+    depth_frame->width = 512;
+    depth_frame->height = 424;
+    depth_frame->bytes_per_pixel = 4;
     depth_frame->format = Frame::Float;
   }
 
@@ -920,7 +926,7 @@ void CpuDepthPacketProcessor::process(const DepthPacket &packet)
     m_ptr = (m.ptr(0, 0)->val);
   }
 
-  Mat<float> out_ir(424, 512, impl_->ir_frame->data), out_depth(424, 512, impl_->depth_frame->data);
+  Mat<float> out_ir(424, 512, impl_->ir_frame->data.get()), out_depth(424, 512, impl_->depth_frame->data.get());
 
   if(impl_->enable_edge_filter)
   {

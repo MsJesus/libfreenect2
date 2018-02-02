@@ -662,7 +662,7 @@ bool Freenect2DeviceImpl::open()
   }
 
   unsigned rgb_xfer_size = 0x4000;
-  unsigned rgb_num_xfers = 40;
+  unsigned rgb_num_xfers = 20;
   unsigned ir_pkts_per_xfer = 8;
   unsigned ir_num_xfers = 60;
 

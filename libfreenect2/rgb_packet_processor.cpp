@@ -71,7 +71,10 @@ public:
     
     void newFrame()
     {
-        frame = new Frame(1920, 1080, 4);
+        frame = new Frame(2 * 1024 * 1024);
+        frame->width = 1920;
+        frame->height = 1080;
+        frame->bytes_per_pixel = 4;
         frame->format = Frame::Raw;
     }
 };
@@ -89,8 +92,6 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
 {
     if (listener_ != 0)
     {
-//        impl_->startTiming();
-
         impl_->frame->sequence = packet.sequence;
         impl_->frame->timestamp = packet.timestamp;
         impl_->frame->exposure = packet.exposure;
@@ -98,14 +99,16 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
         impl_->frame->gamma = packet.gamma;
         impl_->frame->bytes_per_pixel = packet.jpeg_buffer_length;
         
-        std::memcpy(impl_->frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
+        std::memcpy(impl_->frame->data.get(), packet.jpeg_buffer, packet.jpeg_buffer_length);
         
-//        impl_->stopTiming(LOG_INFO);
-
         if (listener_->onNewFrame(Frame::Color, impl_->frame))
         {
-            impl_->newFrame();
+//            impl_->newFrame();
         }
+        
+        delete impl_->frame;
+        
+        impl_->newFrame();
     }
 }
 

@@ -73,13 +73,6 @@ protected:
  public:
    DumpPacketPipeline();
    virtual ~DumpPacketPipeline();
-
-   // These are all required to decode depth data
-   const unsigned char* getDepthP0Tables(size_t* length);
-
-   const float* getDepthXTable(size_t* length);
-   const float* getDepthZTable(size_t* length);
-   const short* getDepthLookupTable(size_t* length);
  };
 
 /** Pipeline with CPU depth processing. */

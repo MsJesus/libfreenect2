@@ -38,11 +38,7 @@ namespace libfreenect2
 
 static RgbPacketProcessor *getDefaultRgbPacketProcessor()
 {
-#if defined(LIBFREENECT2_WITH_TURBOJPEG_SUPPORT)
   return new TurboJpegRgbPacketProcessor();
-#else
-  #warning No jpeg decoder is enabled
-#endif
 }
 
 class PacketPipelineComponents
