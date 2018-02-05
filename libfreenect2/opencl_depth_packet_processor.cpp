@@ -138,6 +138,7 @@ public:
       width = 512;
       height = 424;
       bytes_per_pixel = 4;
+      dataSize = 512 * 424 * 4;
     data = buffer->data;
   }
 
