@@ -273,12 +273,14 @@ int main(int argc, char *argv[])
     /// [registration setup]
     libfreenect2::Registration* registration = new libfreenect2::Registration(dev->getIrCameraParams(), dev->getColorCameraParams());
     libfreenect2::Frame undistorted(512 * 424 * 4), registered(512 * 424 * 4);
+    undistorted.format = Float;
     undistorted.width = 512;
     undistorted.height = 424;
     undistorted.bytes_per_pixel = 4;
     registered.width = 512;
     registered.height = 424;
     registered.bytes_per_pixel = 4;
+    registered.format = RGBX;
     /// [registration setup]
     
     size_t framecount = 0;

@@ -129,8 +129,8 @@ void RegistrationImpl::apply(const Frame *rgb, const Frame *depth, Frame *undist
 {
   // Check if all frames are valid and have the correct size
   if (!rgb || !depth || !undistorted || !registered ||
-      rgb->width != 1920 || rgb->height != 1080 || rgb->bytes_per_pixel != 4 ||
-      depth->width != 512 || depth->height != 424 || depth->bytes_per_pixel != 4 ||
+      rgb->width != 1920 || rgb->height != 1080 || rgb->bytes_per_pixel != 4 || rgb->format == Frame::Format::Raw ||
+      depth->width != 512 || depth->height != 424 || depth->bytes_per_pixel != 4 || depth->format == Frame::Format::Raw ||
       undistorted->width != 512 || undistorted->height != 424 || undistorted->bytes_per_pixel != 4 ||
       registered->width != 512 || registered->height != 424 || registered->bytes_per_pixel != 4)
     return;
@@ -282,7 +282,7 @@ void RegistrationImpl::undistortDepth(const Frame *depth, Frame *undistorted) co
 {
   // Check if all frames are valid and have the correct size
   if (!depth || !undistorted ||
-      depth->width != 512 || depth->height != 424 || depth->bytes_per_pixel != 4 ||
+      depth->width != 512 || depth->height != 424 || depth->bytes_per_pixel != 4 || depth->format == Frame::Format::Raw ||
       undistorted->width != 512 || undistorted->height != 424 || undistorted->bytes_per_pixel != 4)
     return;
 

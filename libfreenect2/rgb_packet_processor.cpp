@@ -83,6 +83,7 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
         frame->width = 1920;
         frame->height = 1080;
         frame->format = Frame::Raw;
+        frame->bytes_per_pixel = 4;
 
         frame->sequence = packet.sequence;
         frame->timestamp = packet.timestamp;
@@ -90,7 +91,6 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
         frame->gain = packet.gain;
         frame->gamma = packet.gamma;
         frame->dataSize = packet.jpeg_buffer_length;
-        frame->bytes_per_pixel = packet.jpeg_buffer_length;
 
         std::memcpy(frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
         

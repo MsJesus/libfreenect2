@@ -158,20 +158,20 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
         depth_frame->width = 512;
         depth_frame->height = 424;
         depth_frame->format = Frame::Raw;
+        depth_frame->bytes_per_pixel = 11/8 * 10;
         auto ir_frame = new Frame(0);
         ir_frame->width = 512;
         ir_frame->height = 424;
         ir_frame->format = Frame::Raw;
+        ir_frame->bytes_per_pixel = 11/8 * 10;
 
         depth_frame->dataSize = packet.buffer_length;
-        depth_frame->bytes_per_pixel = packet.buffer_length;
         depth_frame->timestamp = packet.timestamp;
         depth_frame->sequence = packet.sequence;
         depth_frame->format = Frame::Raw;
         std::memcpy(depth_frame->data, packet.buffer, packet.buffer_length);
         
         ir_frame->dataSize = packet.buffer_length;
-        ir_frame->bytes_per_pixel = packet.buffer_length;
         ir_frame->timestamp = packet.timestamp;
         ir_frame->sequence = packet.sequence;
         ir_frame->format = Frame::Raw;
