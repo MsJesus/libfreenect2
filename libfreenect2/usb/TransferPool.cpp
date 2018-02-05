@@ -26,7 +26,7 @@
 
 /** @file transfer_pool.cpp Data transfer implementation. */
 
-#include <libfreenect2/usb/transfer_pool.h>
+#include <libfreenect2/usb/TransferPool.h>
 #include <libfreenect2/logging.h>
 #include <iostream>
 
@@ -37,14 +37,14 @@ namespace libfreenect2
 namespace usb
 {
 
-    TransferPool::TransferPool(libusb_device_handle* device_handle, unsigned char device_endpoint) :
-    _enableSubmit(false),
-    _enableThreads(false),
-    _callback(nullptr),
-    device_handle_(device_handle),
-    device_endpoint_(device_endpoint),
-    _proccess_thread(nullptr),
-    _submit_thread(nullptr)
+    TransferPool::TransferPool(libusb_device_handle* deviceHandle, unsigned char deviceEndpoint) :
+        _enableSubmit(false),
+        _enableThreads(false),
+        _callback(nullptr),
+        _deviceHandle(deviceHandle),
+        _deviceEndpoint(deviceEndpoint),
+        _proccessThread(nullptr),
+        _submitThread(nullptr)
     {
     }
 
@@ -80,8 +80,8 @@ namespace usb
             auto transfer = allocateTransfer();
             
             transfer->setStopped(false);
-            transfer->transfer->dev_handle = device_handle_;
-            transfer->transfer->endpoint = device_endpoint_;
+            transfer->transfer->dev_handle = _deviceHandle;
+            transfer->transfer->endpoint = _deviceEndpoint;
             //    transfer->transfer->buffer = buffer->buffer;
             transfer->transfer->length = static_cast<int>(transfer_size);
             transfer->transfer->timeout = 1000;
@@ -122,13 +122,13 @@ namespace usb
             _submitTransfers.push_back(transfer.get());
         }
         
-        if (_submit_thread == nullptr)
+        if (_submitThread == nullptr)
         {
-            _submit_thread = new libfreenect2::thread(&TransferPool::submitThreadExecute, this);
+            _submitThread = new libfreenect2::thread(&TransferPool::submitThreadExecute, this);
         }
-        if (_proccess_thread == nullptr)
+        if (_proccessThread == nullptr)
         {
-            _proccess_thread = new libfreenect2::thread(&TransferPool::proccessThreadExecute, this);
+            _proccessThread = new libfreenect2::thread(&TransferPool::proccessThreadExecute, this);
         }
         
         return true;
@@ -175,17 +175,17 @@ namespace usb
         _proccessBuffers.clear();
         _avalaibleBuffers.clear();
         
-        if (_proccess_thread != nullptr)
+        if (_proccessThread != nullptr)
         {
-            _proccess_thread->join();
-            delete _proccess_thread;
-            _proccess_thread = nullptr;
+            _proccessThread->join();
+            delete _proccessThread;
+            _proccessThread = nullptr;
         }
-        if (_submit_thread != nullptr)
+        if (_submitThread != nullptr)
         {
-            _submit_thread->join();
-            delete _submit_thread;
-            _submit_thread = nullptr;
+            _submitThread->join();
+            delete _submitThread;
+            _submitThread = nullptr;
         }
 
         LOG_INFO << "complete transfer cancellation";
@@ -317,22 +317,22 @@ namespace usb
 
 #pragma mark - ISO TransferPool
     
-    void IsoTransferPool::allocate(size_t num_transfers, size_t num_packets, size_t packet_size)
+    void IsoTransferPool::allocate(size_t numTransfers, size_t numPackets, size_t packetSize)
     {
-        num_packets_ = num_packets;
-        packet_size_ = packet_size;
+        _numPackets = numPackets;
+        _packetSize = packetSize;
         
-        TransferPool::allocate(num_transfers, num_packets_ * packet_size_);
+        TransferPool::allocate(numTransfers, numPackets * packetSize);
     }
 
     
     std::unique_ptr<TransferPool::Transfer> IsoTransferPool::allocateTransfer()
     {
-        libusb_transfer* transfer = libusb_alloc_transfer(static_cast<int>(num_packets_));
+        libusb_transfer* transfer = libusb_alloc_transfer(static_cast<int>(_numPackets));
         
         transfer->type = LIBUSB_TRANSFER_TYPE_ISOCHRONOUS;
-        transfer->num_iso_packets = static_cast<int>(num_packets_);
-        libusb_set_iso_packet_lengths(transfer, static_cast<int>(packet_size_));
+        transfer->num_iso_packets = static_cast<int>(_numPackets);
+        libusb_set_iso_packet_lengths(transfer, static_cast<int>(_packetSize));
         
         return std::unique_ptr<TransferPool::Transfer>(new Transfer(transfer, this));
     }
@@ -340,14 +340,14 @@ namespace usb
     
     std::unique_ptr<TransferPool::Buffer> IsoTransferPool::allocateBuffer()
     {
-        return std::unique_ptr<TransferPool::Buffer>(new Buffer(num_packets_, packet_size_));
+        return std::unique_ptr<TransferPool::Buffer>(new Buffer(_numPackets, _packetSize));
     }
 
     
     void IsoTransferPool::processTransfer(Transfer* transfer)
     {
         const auto& buffer = transfer->buffer;
-        for(size_t i = 0; i < num_packets_; ++i)
+        for(size_t i = 0; i < _numPackets; ++i)
         {
             auto desc = transfer->transfer->iso_packet_desc[i];
             buffer->actualStatusCompleted[i] = (desc.status == LIBUSB_TRANSFER_COMPLETED);
@@ -359,14 +359,14 @@ namespace usb
     void IsoTransferPool::proccessBuffer(libfreenect2::usb::TransferPool::Buffer *buffer)
     {
         unsigned char *ptr = buffer->buffer;
-        for(size_t i = 0; i < num_packets_; ++i)
+        for(size_t i = 0; i < _numPackets; ++i)
         {
             if (!buffer->actualStatusCompleted[i]) continue;
             
             if (_callback)
                 _callback->onDataReceived(ptr, buffer->actualLength[i]);
             
-            ptr += packet_size_;
+            ptr += _packetSize;
         }
     }
     

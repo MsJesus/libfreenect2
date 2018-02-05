@@ -32,9 +32,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <include/config.h>
 #include <include/libfreenect2.h>
-#include <include/frame_listener.h>
 #include <libfreenect2/packet_processor.h>
 
 namespace libfreenect2
@@ -162,6 +160,33 @@ class DumpDepthPacketProcessor : public DepthPacketProcessor
 private:
   DumpDepthPacketProcessorImpl *impl_;
 };
+
+    
+    class OpenCLDepthPacketProcessorImpl;
+    
+    /** Depth packet processor using OpenCL. */
+    class OpenCLDepthPacketProcessor : public DepthPacketProcessor
+    {
+    public:
+        OpenCLDepthPacketProcessor(const int deviceId = -1);
+        virtual ~OpenCLDepthPacketProcessor();
+        
+        virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+        
+        virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
+        virtual void loadXZTables(const float *xtable, const float *ztable);
+        virtual void loadLookupTable(const short *lut);
+        
+        virtual bool good();
+        virtual const char *name() { return "OpenCL"; }
+        
+        virtual void process(const DepthPacket &packet);
+        
+    protected:
+        virtual Allocator *getAllocator();
+    private:
+        OpenCLDepthPacketProcessorImpl *impl_;
+    };
 
 } /* namespace libfreenect2 */
 #endif /* DEPTH_PACKET_PROCESSOR_H_ */

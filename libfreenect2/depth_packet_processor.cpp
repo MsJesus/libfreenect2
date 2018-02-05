@@ -128,44 +128,17 @@ public:
     
     short* lut_;
     
-    Frame *ir_frame, *depth_frame;
-    
     DumpDepthPacketProcessorImpl()
     : p0table_(NULL), xtable_(NULL), ztable_(NULL), lut_(NULL)
     {
-        newIrFrame();
-        newDepthFrame();
     }
     
     ~DumpDepthPacketProcessorImpl()
     {
-        delete ir_frame;
-        delete depth_frame;
         delete[] p0table_;
         delete[] xtable_;
         delete[] ztable_;
         delete[] lut_;
-    }
-    
-    /** Allocate a new IR frame. */
-    void newIrFrame()
-    {
-        ir_frame = new Frame(512 * 424 * 11/8 * 10);
-        ir_frame->width = 512;
-        ir_frame->height = 424;
-        ir_frame->bytes_per_pixel = 11/8 * 10;
-        ir_frame->format = Frame::Raw;
-    }
-    
-
-    /** Allocate a new depth frame. */
-    void newDepthFrame()
-    {
-        depth_frame = new Frame(512 * 424 * 11/8 * 10);
-        depth_frame->width = 512;
-        depth_frame->height = 424;
-        depth_frame->bytes_per_pixel = 11/8 * 10;
-        depth_frame->format = Frame::Raw;
     }
 };
     
@@ -181,33 +154,40 @@ void DumpDepthPacketProcessor::process(const DepthPacket &packet)
 {
     if (listener_ != 0)
     {
-        impl_->depth_frame->bytes_per_pixel = packet.buffer_length;
-        impl_->depth_frame->timestamp = packet.timestamp;
-        impl_->depth_frame->sequence = packet.sequence;
-        impl_->depth_frame->format = Frame::Raw;
-        std::memcpy(impl_->depth_frame->data.get(), packet.buffer, packet.buffer_length);
+        auto depth_frame = new Frame(512 * 424 * 11/8 * 10);
+        depth_frame->width = 512;
+        depth_frame->height = 424;
+        depth_frame->format = Frame::Raw;
+        auto ir_frame = new Frame(0);
+        ir_frame->width = 512;
+        ir_frame->height = 424;
+        ir_frame->format = Frame::Raw;
+
+        depth_frame->dataSize = packet.buffer_length;
+        depth_frame->bytes_per_pixel = packet.buffer_length;
+        depth_frame->timestamp = packet.timestamp;
+        depth_frame->sequence = packet.sequence;
+        depth_frame->format = Frame::Raw;
+        std::memcpy(depth_frame->data, packet.buffer, packet.buffer_length);
         
-//        impl_->ir_frame->bytes_per_pixel = packet.buffer_length;
-////        impl_->ir_frame->data = impl_->depth_frame->data;
-//        impl_->ir_frame->timestamp = packet.timestamp;
-//        impl_->ir_frame->sequence = packet.sequence;
-////        impl_->ir_frame->data = packet.buffer;
-//        impl_->ir_frame->format = Frame::Raw;
+        ir_frame->dataSize = packet.buffer_length;
+        ir_frame->bytes_per_pixel = packet.buffer_length;
+        ir_frame->timestamp = packet.timestamp;
+        ir_frame->sequence = packet.sequence;
+        ir_frame->format = Frame::Raw;
+        ir_frame->data = depth_frame->data;
         
-//        if (listener_->onNewFrame(Frame::Ir, impl_->ir_frame)) {
-//
-//        }
-//
-        if(listener_->onNewFrame(Frame::Depth, impl_->depth_frame))
+        if (!listener_->onNewFrame(Frame::Depth, depth_frame))
         {
-            
+            delete depth_frame;
         }
-        
-//        delete impl_->ir_frame;
-        delete impl_->depth_frame;
-        
-//        impl_->newIrFrame();
-        impl_->newDepthFrame();
+        depth_frame = nullptr;
+
+        if (!listener_->onNewFrame(Frame::Ir, ir_frame))
+        {
+            delete ir_frame;
+        }
+        ir_frame = nullptr;
     }
 }
 

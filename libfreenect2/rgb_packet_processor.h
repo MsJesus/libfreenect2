@@ -32,8 +32,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <include/config.h>
-#include <include/frame_listener.h>
+#include <include/libfreenect2.h>
 #include <libfreenect2/packet_processor.h>
 
 namespace libfreenect2

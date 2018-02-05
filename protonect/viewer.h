@@ -1,8 +1,7 @@
 #ifndef VIEWER_H
 #define VIEWER_H
 
-#include <include/config.h>
-#include <include/frame_listener.h>
+#include <include/libfreenect2.h>
 #include <iostream>
 #include <string>
 #include <map>

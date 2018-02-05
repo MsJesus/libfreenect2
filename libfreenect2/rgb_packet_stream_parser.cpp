@@ -26,7 +26,7 @@
 
 /** @file rgb_packet_stream_parser.cpp Parser implementation for retrieving JPEG data from a stream. */
 
-#include <include/config.h>
+#include <include/libfreenect2.h>
 #include <libfreenect2/rgb_packet_stream_parser.h>
 #include <libfreenect2/logging.h>
 #include <memory.h>

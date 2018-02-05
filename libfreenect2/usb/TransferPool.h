@@ -33,9 +33,9 @@
 #include <string>
 #include <libusb.h>
 
-#include <libfreenect2/data_callback.h>
 #include <libfreenect2/threading.h>
-#include <libfreenect2/usb/collection.h>
+#include <libfreenect2/usb/DataCallback.h>
+#include <libfreenect2/usb/Collection.h>
 
 namespace libfreenect2 {
 namespace usb {
@@ -43,7 +43,7 @@ namespace usb {
     class TransferPool
     {
     public:
-        TransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint);
+        TransferPool(libusb_device_handle *deviceHandle, unsigned char deviceEndpoint);
         
         virtual ~TransferPool();
         
@@ -72,10 +72,10 @@ namespace usb {
             bool *actualStatusCompleted;
             
             Buffer(size_t numberPackets, size_t sizePackets):
-            buffer(nullptr),
-            bufferSize(numberPackets * sizePackets),
-            actualLength(nullptr),
-            actualStatusCompleted(nullptr)
+                buffer(nullptr),
+                bufferSize(numberPackets * sizePackets),
+                actualLength(nullptr),
+                actualStatusCompleted(nullptr)
             {
                 buffer = new unsigned char[bufferSize];
                 
@@ -107,10 +107,10 @@ namespace usb {
         struct Transfer
         {
             Transfer(libusb_transfer *transfer, TransferPool *pool):
-            transfer(transfer),
-            pool(pool),
-            buffer(nullptr),
-            stopped(true)
+                transfer(transfer),
+                pool(pool),
+                buffer(nullptr),
+                stopped(true)
             {}
             
             libusb_transfer *transfer;
@@ -131,7 +131,7 @@ namespace usb {
         std::atomic_bool _enableSubmit;
         std::atomic_bool _enableThreads;
         DataCallback *_callback;
-
+        
         typedef std::vector<std::unique_ptr<Transfer>> TransferVector;
         TransferVector _transfers;
         
@@ -143,7 +143,7 @@ namespace usb {
         SyncBufferQueue _avalaibleBuffers;
         
         
-        void allocate(size_t num_transfers, size_t transfer_size);
+        void allocate(size_t numTransfers, size_t transferSize);
         
         virtual std::unique_ptr<Transfer> allocateTransfer() = 0;
         virtual std::unique_ptr<Buffer> allocateBuffer() = 0;
@@ -155,69 +155,69 @@ namespace usb {
         
     private:
         
-        libusb_device_handle *device_handle_;
-        unsigned char device_endpoint_;
+        libusb_device_handle        *_deviceHandle;
+        unsigned char               _deviceEndpoint;
         
-        libfreenect2::thread *_proccess_thread;
-        libfreenect2::thread *_submit_thread;
+        libfreenect2::thread        *_proccessThread;
+        libfreenect2::thread        *_submitThread;
         
         static void onTransferCompleteStatic(libusb_transfer *transfer);
         void onTransferComplete(Transfer *transfer);
         void proccessThreadExecute();
         void submitThreadExecute();
     };
-
-class BulkTransferPool : public TransferPool
-{
-public:
-    BulkTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint):
-    TransferPool(device_handle, device_endpoint)
-    {};
     
-    virtual ~BulkTransferPool() {};
-
-  void allocate(size_t num_transfers, size_t transfer_size);
-
-protected:
-    virtual std::unique_ptr<Transfer> allocateTransfer();
-    virtual std::unique_ptr<Buffer> allocateBuffer();
-
-    virtual void processTransfer(Transfer *transfer);
-    virtual void proccessBuffer(Buffer* buffer);
-
+    class BulkTransferPool : public TransferPool
+    {
+    public:
+        BulkTransferPool(libusb_device_handle *deviceHandle, unsigned char deviceEndpoint):
+            TransferPool(deviceHandle, deviceEndpoint)
+        {};
+        
+        virtual ~BulkTransferPool() {};
+        
+        void allocate(size_t numTransfers, size_t transferSize);
+        
+    protected:
+        virtual std::unique_ptr<Transfer> allocateTransfer();
+        virtual std::unique_ptr<Buffer> allocateBuffer();
+        
+        virtual void processTransfer(Transfer *transfer);
+        virtual void proccessBuffer(Buffer* buffer);
+        
+        
+        virtual const char *poolName(std::string suffix) { return (std::string("BULK USB ") + suffix).c_str(); };
+        
+    private:
+        size_t transfer_size_;
+    };
     
-    virtual const char *poolName(std::string suffix) { return (std::string("BULK USB ") + suffix).c_str(); };
-    
-private:
-    size_t transfer_size_;
-};
-
-class IsoTransferPool : public TransferPool
-{
-public:
-    IsoTransferPool(libusb_device_handle *device_handle, unsigned char device_endpoint):
-    TransferPool(device_handle, device_endpoint),
-    num_packets_(0),
-    packet_size_(0)
-    {};
-
-    virtual ~IsoTransferPool() {};
-
-    void allocate(size_t num_transfers, size_t num_packets, size_t packet_size);
-
-protected:
-    virtual std::unique_ptr<Transfer> allocateTransfer();
-    virtual std::unique_ptr<Buffer> allocateBuffer();
-
-    virtual void processTransfer(Transfer *transfer);
-    virtual void proccessBuffer(Buffer* buffer);
-
-    virtual const char *poolName(std::string suffix) { return (std::string("ISO USB ") + suffix).c_str(); };
-
-private:
-  size_t num_packets_;
-  size_t packet_size_;
-};
+    class IsoTransferPool : public TransferPool
+    {
+    public:
+        IsoTransferPool(libusb_device_handle *deviceHandle, unsigned char deviceEndpoint):
+            TransferPool(deviceHandle, deviceEndpoint),
+            _numPackets(0),
+            _packetSize(0)
+        {};
+        
+        virtual ~IsoTransferPool() {};
+        
+        void allocate(size_t numTransfers, size_t numPackets, size_t packetSize);
+        
+    protected:
+        virtual std::unique_ptr<Transfer> allocateTransfer();
+        virtual std::unique_ptr<Buffer> allocateBuffer();
+        
+        virtual void processTransfer(Transfer *transfer);
+        virtual void proccessBuffer(Buffer* buffer);
+        
+        virtual const char *poolName(std::string suffix) { return (std::string("ISO USB ") + suffix).c_str(); };
+        
+    private:
+        size_t _numPackets;
+        size_t _packetSize;
+    };
 
 } /* namespace usb */
 } /* namespace libfreenect2 */

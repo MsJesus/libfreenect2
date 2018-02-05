@@ -57,25 +57,12 @@ class DumpRgbPacketProcessorImpl: public WithPerfLogging
 {
 public:
     
-    Frame *frame;
-    
     DumpRgbPacketProcessorImpl()
     {
-        newFrame();
     }
     
     ~DumpRgbPacketProcessorImpl()
     {
-        delete frame;
-    }
-    
-    void newFrame()
-    {
-        frame = new Frame(2 * 1024 * 1024);
-        frame->width = 1920;
-        frame->height = 1080;
-        frame->bytes_per_pixel = 4;
-        frame->format = Frame::Raw;
     }
 };
 
@@ -92,23 +79,26 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
 {
     if (listener_ != 0)
     {
-        impl_->frame->sequence = packet.sequence;
-        impl_->frame->timestamp = packet.timestamp;
-        impl_->frame->exposure = packet.exposure;
-        impl_->frame->gain = packet.gain;
-        impl_->frame->gamma = packet.gamma;
-        impl_->frame->bytes_per_pixel = packet.jpeg_buffer_length;
+        auto frame = new Frame(2 * 1024 * 1024);
+        frame->width = 1920;
+        frame->height = 1080;
+        frame->format = Frame::Raw;
+
+        frame->sequence = packet.sequence;
+        frame->timestamp = packet.timestamp;
+        frame->exposure = packet.exposure;
+        frame->gain = packet.gain;
+        frame->gamma = packet.gamma;
+        frame->dataSize = packet.jpeg_buffer_length;
+        frame->bytes_per_pixel = packet.jpeg_buffer_length;
+
+        std::memcpy(frame->data, packet.jpeg_buffer, packet.jpeg_buffer_length);
         
-        std::memcpy(impl_->frame->data.get(), packet.jpeg_buffer, packet.jpeg_buffer_length);
-        
-        if (listener_->onNewFrame(Frame::Color, impl_->frame))
+        if (!listener_->onNewFrame(Frame::Color, frame))
         {
-//            impl_->newFrame();
+            delete frame;
         }
-        
-        delete impl_->frame;
-        
-        impl_->newFrame();
+        frame = nullptr;
     }
 }
 

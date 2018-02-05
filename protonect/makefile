@@ -13,6 +13,7 @@ LDFLAGS += -lfreenect2
 LDFLAGS += -lturbojpeg
 LDFLAGS += -lusb-1.0
 LDFLAGS += -lpthread
+LDFLAGS += -lOpenCL
 
 .PHONY: default all clean $(TARGET)
 

@@ -92,10 +92,6 @@ namespace usb {
                 
                 return handler(_object);
             }
-//            else
-//            {
-//                throw cavr::synchronized::TimeOut("");
-//            }
         }
     };
     

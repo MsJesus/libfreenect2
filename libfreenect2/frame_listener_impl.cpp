@@ -27,7 +27,9 @@
 /** @file frame_listener_impl.cpp Implementation classes for frame listeners. */
 
 #include <libfreenect2/frame_listener_impl.h>
-#include <libfreenect2/threading.h>
+//#include <libfreenect2/threading.h>
+#include <mutex>
+#include <condition_variable>
 
 namespace libfreenect2
 {
@@ -46,18 +48,21 @@ Frame::Frame(size_t dataSize) :
   format(Frame::Invalid),
   rawdata(NULL)
 {
-//  const size_t alignment = 64;
-//  size_t space = dataSize + alignment;
-//  rawdata = (unsigned char *)malloc(sizeof(char) * space);
-//  uintptr_t ptr = reinterpret_cast<uintptr_t>(rawdata);
-//  uintptr_t aligned = (ptr - 1u + alignment) & -alignment;
-//  data = reinterpret_cast<unsigned char *>(aligned);
-
-    data = decltype(data)(reinterpret_cast<unsigned char *>(malloc(dataSize)), MallocDeleter());
+    if (dataSize > 0)
+    {
+      const size_t alignment = 64;
+      size_t space = dataSize + alignment;
+      rawdata = (unsigned char *)malloc(sizeof(char) * space);
+      uintptr_t ptr = reinterpret_cast<uintptr_t>(rawdata);
+      uintptr_t aligned = (ptr - 1u + alignment) & -alignment;
+      data = reinterpret_cast<unsigned char *>(aligned);
+    }
+//    data = decltype(data)(reinterpret_cast<unsigned char *>(malloc(dataSize)), MallocDeleter());
 }
 
 Frame::~Frame()
 {
+    free(rawdata);
 }
 
 FrameListener::~FrameListener() {}
@@ -66,8 +71,8 @@ FrameListener::~FrameListener() {}
 class SyncMultiFrameListenerImpl
 {
 public:
-  libfreenect2::mutex mutex_;
-  libfreenect2::condition_variable condition_;
+  std::mutex mutex_;
+  std::condition_variable condition_;
   FrameMap next_frame_;
 
   const unsigned int subscribed_frame_types_;
@@ -100,14 +105,14 @@ SyncMultiFrameListener::~SyncMultiFrameListener()
 
 bool SyncMultiFrameListener::hasNewFrame() const
 {
-  libfreenect2::unique_lock l(impl_->mutex_);
+  std::unique_lock<std::mutex> l(impl_->mutex_);
 
   return impl_->hasNewFrame();
 }
 
 bool SyncMultiFrameListener::waitForNewFrame(FrameMap &frame, int milliseconds)
 {
-  libfreenect2::unique_lock l(impl_->mutex_);
+  std::unique_lock<std::mutex> l(impl_->mutex_);
 
   auto predicate = std::bind(&SyncMultiFrameListenerImpl::hasNewFrame, impl_);
 
@@ -127,11 +132,11 @@ bool SyncMultiFrameListener::waitForNewFrame(FrameMap &frame, int milliseconds)
 
 void SyncMultiFrameListener::waitForNewFrame(FrameMap &frame)
 {
-  libfreenect2::unique_lock l(impl_->mutex_);
+  std::unique_lock<std::mutex> l(impl_->mutex_);
 
   while(!impl_->hasNewFrame())
   {
-    WAIT_CONDITION(impl_->condition_, impl_->mutex_, l)
+      impl_->condition_.wait(l);
   }
 
   frame = impl_->next_frame_;
@@ -151,7 +156,7 @@ void SyncMultiFrameListener::release(FrameMap &frame)
   frame.clear();
 
   {
-    libfreenect2::lock_guard l(impl_->mutex_);
+    std::lock_guard<std::mutex> l(impl_->mutex_);
     impl_->current_frame_released_ = true;
   }
 }
@@ -161,7 +166,7 @@ bool SyncMultiFrameListener::onNewFrame(Frame::Type type, Frame *frame)
   if((impl_->subscribed_frame_types_ & type) == 0) return false;
 
   {
-    libfreenect2::lock_guard l(impl_->mutex_);
+    std::lock_guard<std::mutex> l(impl_->mutex_);
 
     if (!impl_->current_frame_released_)
       return false;

@@ -32,10 +32,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <include/config.h>
+#include <include/libfreenect2.h>
 
 #include <libfreenect2/depth_packet_processor.h>
-#include <libfreenect2/data_callback.h>
+#include <libfreenect2/usb/DataCallback.h>
 
 namespace libfreenect2
 {
@@ -56,7 +56,7 @@ LIBFREENECT2_PACK(struct DepthSubPacketFooter
  * Parser of th depth stream, recognizes valid depth packets in the stream, and
  * passes them on for further processing.
  */
-class DepthPacketStreamParser : public DataCallback
+class DepthPacketStreamParser : public usb::DataCallback
 {
 public:
   DepthPacketStreamParser();

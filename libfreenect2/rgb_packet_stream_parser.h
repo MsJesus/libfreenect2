@@ -31,15 +31,15 @@
 
 #include <stddef.h>
 
-#include <include/config.h>
+#include <include/libfreenect2.h>
 #include <libfreenect2/rgb_packet_processor.h>
-#include <libfreenect2/data_callback.h>
+#include <libfreenect2/usb/DataCallback.h>
 
 namespace libfreenect2
 {
 
 /** Parser for getting an RGB packet from the stream. */
-class RgbPacketStreamParser : public DataCallback
+class RgbPacketStreamParser : public usb::DataCallback
 {
 public:
   RgbPacketStreamParser();

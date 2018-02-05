@@ -926,7 +926,7 @@ void CpuDepthPacketProcessor::process(const DepthPacket &packet)
     m_ptr = (m.ptr(0, 0)->val);
   }
 
-  Mat<float> out_ir(424, 512, impl_->ir_frame->data.get()), out_depth(424, 512, impl_->depth_frame->data.get());
+  Mat<float> out_ir(424, 512, impl_->ir_frame->data), out_depth(424, 512, impl_->depth_frame->data);
 
   if(impl_->enable_edge_filter)
   {
@@ -963,7 +963,7 @@ void CpuDepthPacketProcessor::process(const DepthPacket &packet)
       }
   }
 
-  impl_->stopTiming(LOG_INFO);
+    impl_->stopTiming(LOG_INFO);
 
   if (listener_ != 0 ){
     if(listener_->onNewFrame(Frame::Ir, impl_->ir_frame))

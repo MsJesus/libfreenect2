@@ -29,14 +29,14 @@
 #ifndef PACKET_PIPELINE_H_
 #define PACKET_PIPELINE_H_
 
-#include <include/config.h>
-
 #include <stdlib.h>
+
+#include <include/libfreenect2.h>
+#include <libfreenect2/usb/DataCallback.h>
 
 namespace libfreenect2
 {
 
-class DataCallback;
 class RgbPacketProcessor;
 class DepthPacketProcessor;
 class PacketPipelineComponents;
@@ -54,7 +54,7 @@ class PacketPipelineComponents;
 class LIBFREENECT2_API PacketPipeline
 {
 public:
-  typedef DataCallback PacketParser;
+  typedef usb::DataCallback PacketParser;
 
   PacketPipeline();
   virtual ~PacketPipeline();
@@ -82,6 +82,15 @@ public:
   CpuPacketPipeline();
   virtual ~CpuPacketPipeline();
 };
+
+    
+    /** Pipeline with OpenCL depth processing. */
+    class LIBFREENECT2_API OpenCLPacketPipeline : public PacketPipeline
+    {
+    public:
+        OpenCLPacketPipeline();
+        virtual ~OpenCLPacketPipeline();
+    };
 
 ///@}
 } /* namespace libfreenect2 */

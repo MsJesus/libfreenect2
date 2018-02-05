@@ -31,8 +31,7 @@
 
 #include <map>
 
-#include <include/config.h>
-#include <include/frame_listener.h>
+#include <include/libfreenect2.h>
 
 namespace libfreenect2
 {

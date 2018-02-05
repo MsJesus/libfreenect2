@@ -13,6 +13,11 @@
 		558365102021D7E30035DF19 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		558365112021D7E30035DF19 /* libusb-1.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		558365122021D7E30035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		943FF042202772140086D707 /* Freenect2Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943FF040202772140086D707 /* Freenect2Device.cpp */; };
+		943FF045202776AD0086D707 /* Freenect2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943FF043202776AD0086D707 /* Freenect2.cpp */; };
+		943FF04720278AC90086D707 /* opencl_depth_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943FF04620278AC90086D707 /* opencl_depth_packet_processor.cpp */; };
+		943FF04D2027938E0086D707 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943FF04C2027938E0086D707 /* OpenCL.framework */; };
+		943FF04E202793FC0086D707 /* opencl_depth_packet_processor_resources.h in Sources */ = {isa = PBXBuildFile; fileRef = 943FF04A20278DC30086D707 /* opencl_depth_packet_processor_resources.h */; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
 		9460144D1F8D2337008F88C6 /* libFreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.dylib */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
@@ -24,15 +29,14 @@
 		94B8A6511F52E13F008CBD18 /* cpu_depth_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */; };
 		94B8A6531F52E13F008CBD18 /* depth_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6231F52E13F008CBD18 /* depth_packet_processor.cpp */; };
 		94B8A6551F52E13F008CBD18 /* depth_packet_stream_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */; };
-		94B8A6571F52E13F008CBD18 /* event_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6271F52E13F008CBD18 /* event_loop.cpp */; };
+		94B8A6571F52E13F008CBD18 /* EventLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6271F52E13F008CBD18 /* EventLoop.cpp */; };
 		94B8A65B1F52E13F008CBD18 /* frame_listener_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62B1F52E13F008CBD18 /* frame_listener_impl.cpp */; };
-		94B8A65C1F52E13F008CBD18 /* libfreenect2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62C1F52E13F008CBD18 /* libfreenect2.cpp */; };
 		94B8A65D1F52E13F008CBD18 /* logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A62D1F52E13F008CBD18 /* logging.cpp */; };
 		94B8A6641F52E13F008CBD18 /* packet_pipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6341F52E13F008CBD18 /* packet_pipeline.cpp */; };
 		94B8A66A1F52E13F008CBD18 /* registration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A63B1F52E13F008CBD18 /* registration.cpp */; };
 		94B8A66D1F52E13F008CBD18 /* rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A63E1F52E13F008CBD18 /* rgb_packet_processor.cpp */; };
 		94B8A66F1F52E13F008CBD18 /* rgb_packet_stream_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6401F52E13F008CBD18 /* rgb_packet_stream_parser.cpp */; };
-		94B8A6731F52E13F008CBD18 /* transfer_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6441F52E13F008CBD18 /* transfer_pool.cpp */; };
+		94B8A6731F52E13F008CBD18 /* TransferPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6441F52E13F008CBD18 /* TransferPool.cpp */; };
 		94B8A6771F52E13F008CBD18 /* usb_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6491F52E13F008CBD18 /* usb_control.cpp */; };
 		94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */; };
 /* End PBXBuildFile section */
@@ -63,12 +67,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		94147CAB20221C73001D9E4F /* object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = "<group>"; };
-		94147CAC20221C73001D9E4F /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
+		94147CAB20221C73001D9E4F /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
+		94147CAC20221C73001D9E4F /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
 		941AE6031F535DEB00073D32 /* registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registration.h; sourceTree = "<group>"; };
 		941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libusb-1.0.0.dylib"; sourceTree = "<group>"; };
 		941AE60A1F53620D00073D32 /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libusb.h; sourceTree = "<group>"; };
 		941AE62E1F53620D00073D32 /* turbojpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = turbojpeg.h; sourceTree = "<group>"; };
+		943FF040202772140086D707 /* Freenect2Device.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Freenect2Device.cpp; sourceTree = "<group>"; };
+		943FF041202772140086D707 /* Freenect2Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Freenect2Device.h; sourceTree = "<group>"; };
+		943FF043202776AD0086D707 /* Freenect2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Freenect2.cpp; sourceTree = "<group>"; };
+		943FF044202776AD0086D707 /* Freenect2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Freenect2.h; sourceTree = "<group>"; };
+		943FF04620278AC90086D707 /* opencl_depth_packet_processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_depth_packet_processor.cpp; sourceTree = "<group>"; };
+		943FF04920278C210086D707 /* cl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cl.hpp; sourceTree = "<group>"; };
+		943FF04A20278DC30086D707 /* opencl_depth_packet_processor_resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opencl_depth_packet_processor_resources.h; sourceTree = "<group>"; };
+		943FF04C2027938E0086D707 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		9460143C1F8D22F6008F88C6 /* protonect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = protonect.cpp; sourceTree = "<group>"; };
 		946014421F8D231E008F88C6 /* protonect */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = protonect; sourceTree = BUILT_PRODUCTS_DIR; };
 		949708421F52E04A00BC9C22 /* libFreenect2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFreenect2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,24 +92,20 @@
 		9498E8BE1F8E536E00D4E7B6 /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
 		9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.2.dylib; sourceTree = "<group>"; };
 		9498E8C11F8E53ED00D4E7B6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		9498E8C61F8FA9CC00D4E7B6 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		9498E8C71F8FA9CC00D4E7B6 /* frame_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener.h; sourceTree = "<group>"; };
 		9498E8C81F8FA9CC00D4E7B6 /* libfreenect2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libfreenect2.h; sourceTree = "<group>"; };
-		9498E8C91F8FA9CC00D4E7B6 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		94B8A6181F52E083008CBD18 /* Freenect2.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Freenect2.xcconfig; sourceTree = "<group>"; };
 		94B8A61A1F52E13F008CBD18 /* allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = allocator.cpp; sourceTree = "<group>"; };
 		94B8A61B1F52E13F008CBD18 /* allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = allocator.h; sourceTree = "<group>"; };
 		94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = async_packet_processor.h; sourceTree = "<group>"; };
 		94B8A61D1F52E13F008CBD18 /* command_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = command_transaction.cpp; sourceTree = "<group>"; };
 		94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cpu_depth_packet_processor.cpp; sourceTree = "<group>"; };
-		94B8A6221F52E13F008CBD18 /* data_callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data_callback.h; sourceTree = "<group>"; };
+		94B8A6221F52E13F008CBD18 /* DataCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCallback.h; sourceTree = "<group>"; };
 		94B8A6231F52E13F008CBD18 /* depth_packet_processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = depth_packet_processor.cpp; sourceTree = "<group>"; };
 		94B8A6241F52E13F008CBD18 /* depth_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = depth_packet_processor.h; sourceTree = "<group>"; };
 		94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = depth_packet_stream_parser.cpp; sourceTree = "<group>"; };
 		94B8A6261F52E13F008CBD18 /* depth_packet_stream_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = depth_packet_stream_parser.h; sourceTree = "<group>"; };
-		94B8A6271F52E13F008CBD18 /* event_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = event_loop.cpp; sourceTree = "<group>"; };
+		94B8A6271F52E13F008CBD18 /* EventLoop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventLoop.cpp; sourceTree = "<group>"; };
 		94B8A62B1F52E13F008CBD18 /* frame_listener_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = frame_listener_impl.cpp; sourceTree = "<group>"; };
-		94B8A62C1F52E13F008CBD18 /* libfreenect2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = libfreenect2.cpp; sourceTree = "<group>"; };
 		94B8A62D1F52E13F008CBD18 /* logging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logging.cpp; sourceTree = "<group>"; };
 		94B8A62E1F52E13F008CBD18 /* logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		94B8A6341F52E13F008CBD18 /* packet_pipeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = packet_pipeline.cpp; sourceTree = "<group>"; };
@@ -112,10 +120,10 @@
 		94B8A6401F52E13F008CBD18 /* rgb_packet_stream_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rgb_packet_stream_parser.cpp; sourceTree = "<group>"; };
 		94B8A6411F52E13F008CBD18 /* rgb_packet_stream_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_stream_parser.h; sourceTree = "<group>"; };
 		94B8A6431F52E13F008CBD18 /* threading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threading.h; sourceTree = "<group>"; };
-		94B8A6441F52E13F008CBD18 /* transfer_pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transfer_pool.cpp; sourceTree = "<group>"; };
+		94B8A6441F52E13F008CBD18 /* TransferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransferPool.cpp; sourceTree = "<group>"; };
 		94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = turbo_jpeg_rgb_packet_processor.cpp; sourceTree = "<group>"; };
-		94B8A6471F52E13F008CBD18 /* event_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event_loop.h; sourceTree = "<group>"; };
-		94B8A6481F52E13F008CBD18 /* transfer_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transfer_pool.h; sourceTree = "<group>"; };
+		94B8A6471F52E13F008CBD18 /* EventLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventLoop.h; sourceTree = "<group>"; };
+		94B8A6481F52E13F008CBD18 /* TransferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPool.h; sourceTree = "<group>"; };
 		94B8A6491F52E13F008CBD18 /* usb_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = usb_control.cpp; sourceTree = "<group>"; };
 		94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener_impl.h; sourceTree = "<group>"; };
 		94B8A67F1F52E215008CBD18 /* packet_pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_pipeline.h; sourceTree = "<group>"; };
@@ -138,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943FF04D2027938E0086D707 /* OpenCL.framework in Frameworks */,
 				558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */,
 				558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */,
 			);
@@ -189,6 +198,7 @@
 		9460144C1F8D2337008F88C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				943FF04C2027938E0086D707 /* OpenCL.framework */,
 				9498E8C11F8E53ED00D4E7B6 /* OpenGL.framework */,
 			);
 			name = Frameworks;
@@ -229,10 +239,8 @@
 		9498E8C51F8FA9CC00D4E7B6 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				9498E8C61F8FA9CC00D4E7B6 /* config.h */,
-				9498E8C71F8FA9CC00D4E7B6 /* frame_listener.h */,
 				9498E8C81F8FA9CC00D4E7B6 /* libfreenect2.h */,
-				9498E8C91F8FA9CC00D4E7B6 /* logger.h */,
+				943FF04920278C210086D707 /* cl.hpp */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -240,24 +248,28 @@
 		94B8A6191F52E13F008CBD18 /* libfreenect2 */ = {
 			isa = PBXGroup;
 			children = (
+				943FF043202776AD0086D707 /* Freenect2.cpp */,
+				943FF044202776AD0086D707 /* Freenect2.h */,
+				943FF040202772140086D707 /* Freenect2Device.cpp */,
+				943FF041202772140086D707 /* Freenect2Device.h */,
 				94B8A61A1F52E13F008CBD18 /* allocator.cpp */,
 				94B8A61B1F52E13F008CBD18 /* allocator.h */,
 				94B8A6351F52E13F008CBD18 /* packet_processor.h */,
 				94B8A61C1F52E13F008CBD18 /* async_packet_processor.h */,
+				94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */,
+				94B8A6261F52E13F008CBD18 /* depth_packet_stream_parser.h */,
 				94B8A6241F52E13F008CBD18 /* depth_packet_processor.h */,
 				94B8A6231F52E13F008CBD18 /* depth_packet_processor.cpp */,
 				94B8A61F1F52E13F008CBD18 /* cpu_depth_packet_processor.cpp */,
+				943FF04620278AC90086D707 /* opencl_depth_packet_processor.cpp */,
+				943FF04A20278DC30086D707 /* opencl_depth_packet_processor_resources.h */,
+				94B8A6401F52E13F008CBD18 /* rgb_packet_stream_parser.cpp */,
+				94B8A6411F52E13F008CBD18 /* rgb_packet_stream_parser.h */,
 				94B8A63F1F52E13F008CBD18 /* rgb_packet_processor.h */,
 				94B8A63E1F52E13F008CBD18 /* rgb_packet_processor.cpp */,
 				94B8A6451F52E13F008CBD18 /* turbo_jpeg_rgb_packet_processor.cpp */,
-				94B8A6221F52E13F008CBD18 /* data_callback.h */,
-				94B8A6251F52E13F008CBD18 /* depth_packet_stream_parser.cpp */,
-				94B8A6261F52E13F008CBD18 /* depth_packet_stream_parser.h */,
-				94B8A6401F52E13F008CBD18 /* rgb_packet_stream_parser.cpp */,
-				94B8A6411F52E13F008CBD18 /* rgb_packet_stream_parser.h */,
 				94B8A62B1F52E13F008CBD18 /* frame_listener_impl.cpp */,
 				94B8A67D1F52E1DB008CBD18 /* frame_listener_impl.h */,
-				94B8A62C1F52E13F008CBD18 /* libfreenect2.cpp */,
 				94B8A62D1F52E13F008CBD18 /* logging.cpp */,
 				94B8A62E1F52E13F008CBD18 /* logging.h */,
 				94B8A6341F52E13F008CBD18 /* packet_pipeline.cpp */,
@@ -287,12 +299,13 @@
 		94B8A6461F52E13F008CBD18 /* usb */ = {
 			isa = PBXGroup;
 			children = (
-				94147CAC20221C73001D9E4F /* collection.h */,
-				94147CAB20221C73001D9E4F /* object.h */,
-				94B8A6271F52E13F008CBD18 /* event_loop.cpp */,
-				94B8A6471F52E13F008CBD18 /* event_loop.h */,
-				94B8A6441F52E13F008CBD18 /* transfer_pool.cpp */,
-				94B8A6481F52E13F008CBD18 /* transfer_pool.h */,
+				94147CAB20221C73001D9E4F /* Object.h */,
+				94147CAC20221C73001D9E4F /* Collection.h */,
+				94B8A6221F52E13F008CBD18 /* DataCallback.h */,
+				94B8A6271F52E13F008CBD18 /* EventLoop.cpp */,
+				94B8A6471F52E13F008CBD18 /* EventLoop.h */,
+				94B8A6441F52E13F008CBD18 /* TransferPool.cpp */,
+				94B8A6481F52E13F008CBD18 /* TransferPool.h */,
 			);
 			path = usb;
 			sourceTree = "<group>";
@@ -386,19 +399,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943FF045202776AD0086D707 /* Freenect2.cpp in Sources */,
+				943FF04720278AC90086D707 /* opencl_depth_packet_processor.cpp in Sources */,
 				94B8A6641F52E13F008CBD18 /* packet_pipeline.cpp in Sources */,
-				94B8A65C1F52E13F008CBD18 /* libfreenect2.cpp in Sources */,
 				94B8A64F1F52E13F008CBD18 /* command_transaction.cpp in Sources */,
 				94B8A65B1F52E13F008CBD18 /* frame_listener_impl.cpp in Sources */,
-				94B8A6731F52E13F008CBD18 /* transfer_pool.cpp in Sources */,
+				94B8A6731F52E13F008CBD18 /* TransferPool.cpp in Sources */,
 				94B8A6511F52E13F008CBD18 /* cpu_depth_packet_processor.cpp in Sources */,
+				943FF04E202793FC0086D707 /* opencl_depth_packet_processor_resources.h in Sources */,
 				94B8A6531F52E13F008CBD18 /* depth_packet_processor.cpp in Sources */,
 				94B8A6551F52E13F008CBD18 /* depth_packet_stream_parser.cpp in Sources */,
 				94B8A66D1F52E13F008CBD18 /* rgb_packet_processor.cpp in Sources */,
 				94B8A65D1F52E13F008CBD18 /* logging.cpp in Sources */,
 				94B8A66A1F52E13F008CBD18 /* registration.cpp in Sources */,
 				94B8A6771F52E13F008CBD18 /* usb_control.cpp in Sources */,
-				94B8A6571F52E13F008CBD18 /* event_loop.cpp in Sources */,
+				943FF042202772140086D707 /* Freenect2Device.cpp in Sources */,
+				94B8A6571F52E13F008CBD18 /* EventLoop.cpp in Sources */,
 				94C58E9D201A36930025AD4A /* turbo_jpeg_rgb_packet_processor.cpp in Sources */,
 				94B8A64C1F52E13F008CBD18 /* allocator.cpp in Sources */,
 				94B8A66F1F52E13F008CBD18 /* rgb_packet_stream_parser.cpp in Sources */,

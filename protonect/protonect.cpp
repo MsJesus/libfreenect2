@@ -35,10 +35,8 @@
 #include <include/libfreenect2.h>
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>
-#include <libfreenect2/packet_pipeline.h>
-#include <include/logger.h>
 
-#define ENABLE_VIEWER 0
+#define ENABLE_VIEWER 1
 
 /// [headers]
 #ifdef __APPLE__
@@ -51,7 +49,7 @@
 
 bool protonect_shutdown = false; ///< Whether the running application should shut down.
 
-void sigint_handler(int s)
+static void sigint_handler(int s)
 {
     protonect_shutdown = true;
 }
@@ -64,7 +62,7 @@ libfreenect2::Freenect2Device *devtopause;
 //Though libusb operations are generally thread safe, I cannot guarantee
 //everything above is thread safe when calling start()/stop() while
 //waitForNewFrame().
-void sigusr1_handler(int s)
+static void sigusr1_handler(int s)
 {
     if (devtopause == 0)
         return;
@@ -93,7 +91,7 @@ int main(int argc, char *argv[])
 {
     std::string program_path(argv[0]);
     std::cerr << "Version: " << LIBFREENECT2_VERSION << std::endl;
-    std::cerr << "Usage: " << program_path << " [dump | cpu] [<device serial>]" << std::endl;
+    std::cerr << "Usage: " << program_path << " [dump | cpu | cl] [<device serial>]" << std::endl;
     std::cerr << "        [-norgb | -nodepth] [-help] [-version]" << std::endl;
     std::cerr << "        [-frames <number of frames to process>]" << std::endl;
     std::cerr << "To pause and unpause: pkill -USR1 protonect" << std::endl;
@@ -114,11 +112,11 @@ int main(int argc, char *argv[])
     /// [context]
     libfreenect2::Freenect2 freenect2;
     libfreenect2::Freenect2Device *dev = 0;
-    libfreenect2::PacketPipeline *pipeline = 0;
     /// [context]
     
     std::string serial = "";
-    
+    std::string pipeline = "dump";
+
     bool viewer_enabled = true;
     bool enable_rgb = true;
     bool enable_depth = true;
@@ -136,20 +134,29 @@ int main(int argc, char *argv[])
         }
         else if(arg == "dump")
         {
-            if (!pipeline)
+            if (pipeline != arg)
             {
                 /// [pipeline]
-                pipeline = new libfreenect2::DumpPacketPipeline();
+                pipeline = arg;
                 enable_registration = false;
                 /// [pipeline]
             }
         }
         else if(arg == "cpu")
         {
-            if(!pipeline)
+            if (pipeline != arg)
             {
                 /// [pipeline]
-                pipeline = new libfreenect2::CpuPacketPipeline();
+                pipeline = arg;
+                /// [pipeline]
+            }
+        }
+        else if(arg == "cl")
+        {
+            if (pipeline != arg)
+            {
+                /// [pipeline]
+                pipeline = arg;
                 /// [pipeline]
             }
         }
@@ -209,17 +216,9 @@ int main(int argc, char *argv[])
     /// [discovery]
     
     
-    if(pipeline)
-    {
-        /// [open]
-        dev = freenect2.openDevice(serial);
-//        dev = freenect2.openDevice(serial, pipeline);
-        /// [open]
-    }
-    else
-    {
-        dev = freenect2.openDevice(serial);
-    }
+    /// [open]
+    dev = freenect2.openDevice(serial, pipeline);
+    /// [open]
     
     if(dev == 0)
     {
@@ -266,7 +265,13 @@ int main(int argc, char *argv[])
     
     /// [registration setup]
     libfreenect2::Registration* registration = new libfreenect2::Registration(dev->getIrCameraParams(), dev->getColorCameraParams());
-    libfreenect2::Frame undistorted(512, 424, 4), registered(512, 424, 4);
+    libfreenect2::Frame undistorted(512 * 424 * 4), registered(512 * 424 * 4);
+    undistorted.width = 512;
+    undistorted.height = 424;
+    undistorted.bytes_per_pixel = 4;
+    registered.width = 512;
+    registered.height = 424;
+    registered.bytes_per_pixel = 4;
     /// [registration setup]
     
     size_t framecount = 0;

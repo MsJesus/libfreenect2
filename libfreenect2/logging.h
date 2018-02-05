@@ -30,8 +30,7 @@
 #include <string>
 #include <sstream>
 
-#include <include/config.h>
-#include <include/logger.h>
+#include <include/libfreenect2.h>
 
 namespace libfreenect2
 {

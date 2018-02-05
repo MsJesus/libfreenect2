@@ -24,28 +24,34 @@
  * either License.
  */
 
-/** @file data_callback.h Callback interface on arrival of new data. */
+#ifndef EVENT_LOOP_H_
+#define EVENT_LOOP_H_
 
-#ifndef DATA_CALLBACK_H_
-#define DATA_CALLBACK_H_
+#include <libfreenect2/threading.h>
 
-#include <stddef.h>
-#include <include/config.h>
+namespace libfreenect2 {
+namespace usb {
+        
+    class EventLoop
+    {
+    public:
+        
+        EventLoop();
+        virtual ~EventLoop();
+        
+        void start(void *usbContext);
+        void stop();
+        
+    private:
+        
+        bool                    _shutdown;
+        libfreenect2::thread    *_thread;
+        void                    *_usbContext;
+        
+        static void staticExecute(void *cookie);
+        void execute();
+    };
 
-namespace libfreenect2
-{
-
-class DataCallback
-{
-public:
-  /**
-   * Callback that new data has arrived.
-   * @param buffer Buffer with new data.
-   * @param n Size of the new data.
-   */
-  virtual void onDataReceived(unsigned char *buffer, size_t n) = 0;
-};
-
-} // namespace libfreenect2
-
-#endif // DATA_CALLBACK_H_
+} /* namespace usb */
+} /* namespace libfreenect2 */
+#endif /* EVENT_LOOP_H_ */

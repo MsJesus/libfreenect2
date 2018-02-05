@@ -205,25 +205,30 @@ bool Viewer::render()
         {
             renderShader.use();
 
-            rgb.allocate(frame->width, frame->height);
-            std::copy(frame->data, frame->data + frame->width * frame->height * frame->bytes_per_pixel, rgb.data);
-            rgb.flipY();
-            rgb.upload();
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            if ((frame->format != libfreenect2::Frame::Raw) && (frame->format != libfreenect2::Frame::Invalid))
+            {
+                rgb.allocate(frame->width, frame->height);
+                std::copy(frame->data, frame->data + frame->width * frame->height * frame->bytes_per_pixel, rgb.data);
+                rgb.flipY();
+                rgb.upload();
+                glDrawArrays(GL_TRIANGLES, 0, 6);
 
-            rgb.deallocate();
-
+                rgb.deallocate();
+            }
         }
         else
         {
             renderGrayShader.use();
 
-            ir.allocate(frame->width, frame->height);
-            std::copy(frame->data, frame->data + frame->width * frame->height * frame->bytes_per_pixel, ir.data);
-            ir.flipY();
-            ir.upload();
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            ir.deallocate();
+            if ((frame->format != libfreenect2::Frame::Raw) && (frame->format != libfreenect2::Frame::Invalid))
+            {
+                ir.allocate(frame->width, frame->height);
+                std::copy(frame->data, frame->data + frame->width * frame->height * frame->bytes_per_pixel, ir.data);
+                ir.flipY();
+                ir.upload();
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                ir.deallocate();
+            }
         }
 
         gl()->glDeleteBuffers(1, &triangle_vbo);
