@@ -81,8 +81,6 @@ static void sigusr1_handler(int s)
  * Main application entry point.
  *
  * Accepted argumemnts:
- * - cpu Perform depth processing with the CPU.
- * - gl  Perform depth processing with OpenGL.
  * - <number> Serial number of the device to open.
  * - -noviewer Disable viewer window.
  */
@@ -91,7 +89,7 @@ int main(int argc, char *argv[])
 {
     std::string program_path(argv[0]);
     std::cerr << "Version: " << LIBFREENECT2_VERSION << std::endl;
-    std::cerr << "Usage: " << program_path << " [dump | cpu | cl] [<device serial>]" << std::endl;
+    std::cerr << "Usage: " << program_path << " [<device serial>]" << std::endl;
     std::cerr << "        [-norgb | -nodepth] [-help] [-version]" << std::endl;
     std::cerr << "        [-frames <number of frames to process>]" << std::endl;
     std::cerr << "To pause and unpause: pkill -USR1 protonect" << std::endl;
@@ -115,7 +113,6 @@ int main(int argc, char *argv[])
     /// [context]
     
     std::string serial = "";
-    std::string pipeline = "";
 
     bool viewer_enabled = true;
     bool enable_rgb = true;
@@ -131,34 +128,6 @@ int main(int argc, char *argv[])
         {
             // Just let the initial lines display at the beginning of main
             return 0;
-        }
-        else if(arg == "dump")
-        {
-            if (pipeline != arg)
-            {
-                /// [pipeline]
-                pipeline = arg;
-                enable_registration = false;
-                /// [pipeline]
-            }
-        }
-        else if(arg == "cpu")
-        {
-            if (pipeline != arg)
-            {
-                /// [pipeline]
-                pipeline = arg;
-                /// [pipeline]
-            }
-        }
-        else if(arg == "cl")
-        {
-            if (pipeline != arg)
-            {
-                /// [pipeline]
-                pipeline = arg;
-                /// [pipeline]
-            }
         }
         else if(arg.find_first_not_of("0123456789") == std::string::npos) //check if parameter could be a serial number
         {
@@ -217,14 +186,7 @@ int main(int argc, char *argv[])
     
     
     /// [open]
-    if (pipeline == "")
-    {
-        dev = freenect2.openDevice(serial);
-    }
-    else
-    {
-        dev = freenect2.openDevice(serial, pipeline);
-    }
+    dev = freenect2.openDevice(serial);
     /// [open]
     
     if(dev == 0)
@@ -273,14 +235,14 @@ int main(int argc, char *argv[])
     /// [registration setup]
     libfreenect2::Registration* registration = new libfreenect2::Registration(dev->getIrCameraParams(), dev->getColorCameraParams());
     libfreenect2::Frame undistorted(512 * 424 * 4), registered(512 * 424 * 4);
-    undistorted.format = Float;
+    undistorted.format = libfreenect2::Frame::Float;
     undistorted.width = 512;
     undistorted.height = 424;
     undistorted.bytes_per_pixel = 4;
     registered.width = 512;
     registered.height = 424;
     registered.bytes_per_pixel = 4;
-    registered.format = RGBX;
+    registered.format = libfreenect2::Frame::RGBX;
     /// [registration setup]
     
     size_t framecount = 0;

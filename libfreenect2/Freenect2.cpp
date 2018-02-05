@@ -52,21 +52,11 @@ namespace libfreenect2 {
         return impl_->openDevice(idx, impl_->createDefaultPacketPipeline());
     }
 
-    Freenect2Device *Freenect2::openDevice(int idx, const std::string &pipeline)
-    {
-        return impl_->openDevice(idx, impl_->createPacketPipelineByName(pipeline));
-    }
-
     Freenect2Device *Freenect2::openDevice(const std::string &serial)
     {
         return impl_->openDevice(serial, impl_->createDefaultPacketPipeline());
     }
     
-    Freenect2Device *Freenect2::openDevice(const std::string &serial, const std::string& pipeline)
-    {
-        return impl_->openDevice(serial, impl_->createPacketPipelineByName(pipeline));
-    }
-
     Freenect2Device *Freenect2::openDefaultDevice()
     {
         return impl_->openDefaultDevice(impl_->createDefaultPacketPipeline());

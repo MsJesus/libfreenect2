@@ -325,26 +325,12 @@ namespace libfreenect2
          */
         Freenect2Device *openDevice(int idx);
         
-        /** Open device by index.
-         * @param idx Index number. Index numbers are not determinstic during enumeration.
-         * @param pipeline New PacketPipeline instance. This is always automatically freed.
-         * @return New device object, or NULL on failure
-         */
-        Freenect2Device *openDevice(int idx, const std::string &pipeline);
-        
         /** Open device by serial number with default pipeline.
          * @param serial Serial number
          * @return New device object, or NULL on failure
          */
         Freenect2Device *openDevice(const std::string &serial);
         
-        /** Open device by serial number.
-         * @param serial Serial number
-         * @param pipeline New PacketPipeline instance. This is always automatically freed.
-         * @return New device object, or NULL on failure
-         */
-        Freenect2Device *openDevice(const std::string &serial, const std::string& pipeline);
-
         /** Open the first device with default pipeline.
          * @return New device object, or NULL on failure
          */

@@ -174,8 +174,9 @@ namespace libfreenect2 {
         ir_pkts_per_xfer = 64;
         ir_num_xfers = 8;
 #elif defined(__linux__)
+        rgb_num_xfers = 6;
         ir_pkts_per_xfer = 64;
-        ir_num_xfers = 4;
+        ir_num_xfers = 6;
 #endif
         
         const char *xfer_str;
