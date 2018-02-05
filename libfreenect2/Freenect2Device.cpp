@@ -15,8 +15,8 @@ namespace libfreenect2 {
     Freenect2Device::Config::Config() :
         MinDepth(0.5f),
         MaxDepth(4.5f), //set to > 8000 for best performance when using the kde pipeline
-        EnableBilateralFilter(true),
-        EnableEdgeAwareFilter(true)
+        EnableBilateralFilter(false),
+        EnableEdgeAwareFilter(false)
     {}
 
     Freenect2Device::~Freenect2Device()
