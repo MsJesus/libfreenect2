@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     /// [context]
     
     std::string serial = "";
-    std::string pipeline = "dump";
+    std::string pipeline = "";
 
     bool viewer_enabled = true;
     bool enable_rgb = true;
@@ -217,7 +217,14 @@ int main(int argc, char *argv[])
     
     
     /// [open]
-    dev = freenect2.openDevice(serial, pipeline);
+    if (pipeline == "")
+    {
+        dev = freenect2.openDevice(serial);
+    }
+    else
+    {
+        dev = freenect2.openDevice(serial, pipeline);
+    }
     /// [open]
     
     if(dev == 0)
