@@ -9,7 +9,7 @@
 #ifndef __cavr_synchronized_collection_h__
 #define __cavr_synchronized_collection_h__
 
-#include <libfreenect2/usb/object.h>
+#include <libfreenect2/usb/Object.h>
 
 
 namespace libfreenect2 {
