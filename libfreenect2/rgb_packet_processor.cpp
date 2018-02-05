@@ -79,7 +79,7 @@ void DumpRgbPacketProcessor::process(const RgbPacket &packet)
 {
     if (listener_ != 0)
     {
-        auto frame = new Frame(2 * 1024 * 1024);
+        auto frame = new Frame(packet.jpeg_buffer_length);
         frame->width = 1920;
         frame->height = 1080;
         frame->format = Frame::Raw;
