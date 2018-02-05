@@ -118,7 +118,7 @@ CpuPacketPipeline::~CpuPacketPipeline() { }
     
     OpenCLPacketPipeline::OpenCLPacketPipeline()
     {
-        comp_->initialize(getDefaultRgbPacketProcessor(), new OpenCLDepthPacketProcessor());
+        comp_->initialize(new DumpRgbPacketProcessor(), new OpenCLDepthPacketProcessor());
     }
     
     OpenCLPacketPipeline::~OpenCLPacketPipeline() { }

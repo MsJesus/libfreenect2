@@ -318,7 +318,7 @@ namespace libfreenect2 {
                 LOG_WARNING << "`" << pipeline_env << "' pipeline is not available.";
         }
         
-        return new DumpPacketPipeline();
+        return new OpenCLPacketPipeline();
     }
 
     
