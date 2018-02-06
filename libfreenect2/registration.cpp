@@ -48,6 +48,7 @@ class RegistrationImpl
 public:
   RegistrationImpl(Freenect2Device::IrCameraParams depth_p, Freenect2Device::ColorCameraParams rgb_p);
 
+  void shiftColor(float depth, float& cx, float& cy) const;
   void apply(int dx, int dy, float dz, float& cx, float &cy) const;
   void apply(const Frame* rgb, const Frame* depth, Frame* undistorted, Frame* registered, const bool enable_filter, Frame* bigdepth, int* color_depth_map) const;
   void undistortDepth(const Frame *depth, Frame *undistorted) const;
@@ -114,10 +115,18 @@ void RegistrationImpl::apply( int dx, int dy, float dz, float& cx, float &cy) co
 {
   const int index = dx + dy * 512;
   float rx = depth_to_color_map_x[index];
-  cy = depth_to_color_map_y[index];
-
-  rx += (color.shift_m / dz);
-  cx = rx * color.fx + color.cx;
+  float ry = depth_to_color_map_y[index];
+  shiftColor(dz, rx, ry);
+  
+  cx = rx;
+  cy = ry;
+}
+    
+void RegistrationImpl::shiftColor(float d, float &cx, float &cy) const
+{
+  cx += (color.shift_m / d);
+  cx *= color.fx;
+  cx += color.cx;
 }
 
 void Registration::apply(const Frame *rgb, const Frame *depth, Frame *undistorted, Frame *registered, const bool enable_filter, Frame *bigdepth, int *color_depth_map) const
@@ -357,6 +366,12 @@ void RegistrationImpl::getPointXYZ (const Frame *undistorted, int r, int c, floa
     y = (r + 0.5 - cy) * fy * depth_val;
     z = depth_val;
   }
+}
+    
+void Registration::mapDepthToColor(float dx, float dy, float depth, float &cx, float &cy) const
+{
+  impl_->depth_to_color(dx, dy, cx, cy);
+  impl_->shiftColor(depth, cx, cy);
 }
 
 Registration::Registration(Freenect2Device::IrCameraParams depth_p, Freenect2Device::ColorCameraParams rgb_p):

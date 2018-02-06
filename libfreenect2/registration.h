@@ -111,6 +111,14 @@ public:
    * @param[out] z Z coordinate of the 3-D point (meter).
    */
   void getPointXYZ (const Frame* undistorted, int r, int c, float& x, float& y, float& z) const;
+    
+    
+  /** Calculates pixel position on color image from given position on depth image.
+   * @param dx, dy pixel position on depth image
+   * @param dz depth
+   * @param[out] cx, cy pixel position on color image
+   */
+  void mapDepthToColor(float dx, float dy, float depth, float& cx, float& cy) const;
 
 private:
   RegistrationImpl *impl_;
