@@ -176,7 +176,7 @@ namespace libfreenect2 {
 #elif defined(__linux__)
         rgb_num_xfers = 8;
         ir_pkts_per_xfer = 64;
-        ir_num_xfers = 5;
+        ir_num_xfers = 4;
 #endif
         
         const char *xfer_str;
