@@ -121,8 +121,9 @@ public:
   {
     if(b == NULL)
       return;
-    release_opencl(static_cast<OpenCLBuffer *>(b));
-    delete b;
+    OpenCLBuffer *temp = static_cast<OpenCLBuffer *>(b);
+    release_opencl(temp);
+    delete temp;
   }
 };
 
