@@ -90,6 +90,7 @@ private:
       CHECK_CL_PARAM(b->data = (unsigned char*)queue.enqueueMapBuffer(b->buffer, CL_TRUE, CL_MAP_READ, 0, size, NULL, NULL, &err));
     }
 
+    b->allocator = this;
     b->length = 0;
     b->capacity = size;
     return true;
