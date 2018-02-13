@@ -173,7 +173,7 @@ Logger *getGlobalLogger()
 void setGlobalLogger(Logger *logger)
 {
   if (userLogger_ != &defaultLogger_)
-    delete userLogger_;
+//    delete userLogger_;
   userLogger_ = logger;
 }
 
