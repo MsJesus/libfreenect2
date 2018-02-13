@@ -237,8 +237,8 @@ public:
     deviceInitialized = initDevice(deviceId);
 
     input_buffer_allocator = new PoolAllocator(new OpenCLAllocator(context, queue, true));
-    ir_buffer_allocator = new OpenCLAllocator(context, queue, false);
-    depth_buffer_allocator = new OpenCLAllocator(context, queue, false);
+    ir_buffer_allocator = new PoolAllocator(new OpenCLAllocator(context, queue, false));
+    depth_buffer_allocator = new PoolAllocator(new OpenCLAllocator(context, queue, false));
 
     newIrFrame();
     newDepthFrame();
