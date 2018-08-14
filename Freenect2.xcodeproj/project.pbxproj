@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		558365002020C11D0035DF19 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 941AE6091F53620D00073D32 /* libusb-1.0.0.dylib */; };
 		558365012020C1220035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C58EA3201A37420025AD4A /* libturbojpeg-dynamic.dylib */; };
 		558365102021D7E30035DF19 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -20,6 +19,7 @@
 		943FF04E202793FC0086D707 /* opencl_depth_packet_processor_resources.h in Sources */ = {isa = PBXBuildFile; fileRef = 943FF04A20278DC30086D707 /* opencl_depth_packet_processor_resources.h */; };
 		9460144B1F8D2331008F88C6 /* protonect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9460143C1F8D22F6008F88C6 /* protonect.cpp */; };
 		9460144D1F8D2337008F88C6 /* libFreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 949708421F52E04A00BC9C22 /* libFreenect2.dylib */; };
+		9491B2CB21230723007F12F8 /* libglfw.3.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; };
 		9498E8B81F8E4BE300D4E7B6 /* viewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B71F8E4BE300D4E7B6 /* viewer.cpp */; };
 		9498E8BB1F8E522800D4E7B6 /* flextGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9498E8B91F8E522800D4E7B6 /* flextGL.cpp */; };
 		9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9498E8BF1F8E536E00D4E7B6 /* libglfw.3.2.dylib */; };
@@ -61,6 +61,16 @@
 				558365102021D7E30035DF19 /* libglfw.3.2.dylib in CopyFiles */,
 				558365112021D7E30035DF19 /* libusb-1.0.0.dylib in CopyFiles */,
 				558365122021D7E30035DF19 /* libturbojpeg-dynamic.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9491B2CA21230710007F12F8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				9491B2CB21230723007F12F8 /* libglfw.3.2.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9498E8C21F8E53ED00D4E7B6 /* OpenGL.framework in Frameworks */,
-				558364FE2020BDEA0035DF19 /* libturbojpeg-dynamic.dylib in Frameworks */,
 				9460144D1F8D2337008F88C6 /* libFreenect2.dylib in Frameworks */,
 				9498E8C01F8E536E00D4E7B6 /* libglfw.3.2.dylib in Frameworks */,
 			);
@@ -319,6 +328,7 @@
 			buildPhases = (
 				9460143E1F8D231E008F88C6 /* Sources */,
 				9460143F1F8D231E008F88C6 /* Frameworks */,
+				9491B2CA21230710007F12F8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
